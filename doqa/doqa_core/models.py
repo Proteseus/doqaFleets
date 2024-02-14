@@ -1,11 +1,7 @@
 import uuid
 from django.contrib.gis.db import models as gisModels
 from django.db import models
-
-class User(models.Model):
-    username = models.CharField(max_length=255)
-    password = models.CharField(max_length=255)
-    # Add other user-related fields as needed
+from django.contrib.auth.models import User
 
 class Vehicle(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -16,14 +12,20 @@ class Vehicle(models.Model):
     current_location = gisModels.PointField(null=True, blank=True)
     last_maintenance_date = models.DateField(null=True, blank=True)
     next_maintenance_date = models.DateField(null=True, blank=True)
-    # Add other vehicle-related fields as needed
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, editable=False)
+
+    def __str__(self):
+        return self.registration_number
 
 class Employee(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100)
     contact_number = models.CharField(max_length=15)
     driver_license_number = models.CharField(max_length=20)
-    # Add other employee-related fields as needed
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, editable=False)
+
+    def __str__(self):
+        return self.name
 
 class Alert(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -31,7 +33,10 @@ class Alert(models.Model):
     alert_type = models.CharField(max_length=50)
     timestamp = models.DateTimeField()
     status = models.CharField(max_length=10)
-    # Add other alert-related fields as needed
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, editable=False)
+
+    def __str__(self):
+        return self.vehicle
 
 class Maintenance(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -40,7 +45,11 @@ class Maintenance(models.Model):
     scheduled_date = models.DateField()
     completed_date = models.DateField(null=True, blank=True)
     status = models.CharField(max_length=10)
-    # Add other maintenance-related fields as needed
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, editable=False)
+
+    def __str__(self):
+        return self.id
+
 
 class Report(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -48,29 +57,28 @@ class Report(models.Model):
     report_type = models.CharField(max_length=50)
     value = models.DecimalField(max_digits=10, decimal_places=2)
     timestamp = models.DateTimeField()
-    # Add other report-related fields as needed
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, editable=False)
 
-class Orders(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE)
-    description = models.TextField()
-    order_date = models.DateField()
-    completion_date = models.DateField(null=True, blank=True)
-    status = models.CharField(max_length=10)
-    # Add other order-related fields as needed
+    def __str__(self):
+        return self.id
+
 
 class Trips(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE)
+    driver_id = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='trips')
     start_location = gisModels.PointField()
     end_location = gisModels.PointField()
     planned_start_time = models.DateTimeField()
     planned_end_time = models.DateTimeField()
     actual_start_time = models.DateTimeField(null=True, blank=True)
     actual_end_time = models.DateTimeField(null=True, blank=True)
-    driver_id = models.ForeignKey(Employee, on_delete=models.CASCADE)
     status = models.CharField(max_length=15)
-    # Add other trip-related fields as needed
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, editable=False)
+
+    def __str__(self):
+        return self.id
+
 
 class Inventory(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -79,28 +87,9 @@ class Inventory(models.Model):
     unit_of_measurement = models.CharField(max_length=20)
     last_restock_date = models.DateField()
     reorder_threshold = models.IntegerField()
-    # Add other inventory-related fields as needed
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, editable=False)
 
-class VehicleAssignment(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
-    vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE)
-    assignment_start_time = models.DateTimeField()
-    assignment_end_time = models.DateTimeField(null=True, blank=True)
-    # Add other vehicle assignment-related fields as needed
+    def __str__(self):
+        return self.item_name
 
-class OrderAssignment(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
-    order = models.ForeignKey(Orders, on_delete=models.CASCADE)
-    assignment_start_time = models.DateTimeField()
-    assignment_end_time = models.DateTimeField(null=True, blank=True)
-    # Add other order assignment-related fields as needed
 
-class TripAssignment(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
-    trip = models.ForeignKey(Trips, on_delete=models.CASCADE)
-    assignment_start_time = models.DateTimeField()
-    assignment_end_time = models.DateTimeField(null=True, blank=True)
-    # Add other trip assignment-related fields as needed
