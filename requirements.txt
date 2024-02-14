@@ -2,3 +2,4 @@ django
 folium
 requests
 polyline
+psycopg2
