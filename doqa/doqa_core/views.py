@@ -1,5 +1,6 @@
 from logging import log
 from django.db.models.fields import Empty
+from django.contrib.gis.geos import Point
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
@@ -15,20 +16,29 @@ def map(request):
     # return render(request, 'map.html', {'mapbox_access_token': map_token})
     return render(request, 'showmap.html')
 
-def showroute(request,lat1,long1,lat2,long2):
+def showroute(request, lat1='default_lat1', long1='default_long1', lat2='default_lat2', long2='default_long2'):
     figure = folium.Figure()
-    lat1,long1,lat2,long2=float(lat1),float(long1),float(lat2),float(long2)
-    route=get_route(long1,lat1,long2,lat2)
-    m = folium.Map(location=[(route['start_point'][0]),
-                                 (route['start_point'][1])], 
-                       zoom_start=10)
+    lat1, long1, lat2, long2 = float(lat1), float(long1), float(lat2), float(long2)
+    route = get_route(long1, lat1, long2, lat2)
+    
+    m = folium.Map(location=[route['start_point'][0], route['start_point'][1]], zoom_start=10)
     m.add_to(figure)
-    folium.PolyLine(route['route'],weight=8,color='blue',opacity=0.6).add_to(m)
-    folium.Marker(location=route['start_point'],icon=folium.Icon(icon='play', color='green')).add_to(m)
-    folium.Marker(location=route['end_point'],icon=folium.Icon(icon='stop', color='red')).add_to(m)
+    folium.PolyLine(route['route'], weight=8, color='blue', opacity=0.6).add_to(m)
+    folium.Marker(location=route['start_point'], icon=folium.Icon(icon='play', color='blue')).add_to(m)
+    folium.Marker(location=route['end_point'], icon=folium.Icon(icon='stop', color='red')).add_to(m)
+    
     figure.render()
-    context={'map':figure}
-    return render(request,'showroute.html',context)
+    
+    # Initialize the form with the map data
+    initial_form_data = {
+        'start_location': Point(route['start_point'][1], route['start_point'][0]),
+        'end_location': Point(route['end_point'][1], route['end_point'][0]),
+    }
+    
+    form = TripsForm(initial=initial_form_data)
+
+    context = {'map': figure, 'form': form}
+    return render(request, 'showroute.html', context)
 
 @login_required
 def create_vehicle(request):

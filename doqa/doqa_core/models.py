@@ -1,5 +1,5 @@
 import uuid
-from django.contrib.gis.db import models as gisModels
+from django.contrib.gis.db.models import PointField
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -9,7 +9,7 @@ class Vehicle(models.Model):
     make = models.CharField(max_length=50)
     model = models.CharField(max_length=50)
     year = models.IntegerField()
-    current_location = gisModels.PointField(null=True, blank=True)
+    current_location = PointField(null=True, blank=True)
     last_maintenance_date = models.DateField(null=True, blank=True)
     next_maintenance_date = models.DateField(null=True, blank=True)
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, editable=False)
@@ -67,8 +67,8 @@ class Trips(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE)
     driver_id = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='trips')
-    start_location = gisModels.PointField()
-    end_location = gisModels.PointField()
+    start_location = PointField()
+    end_location = PointField()
     planned_start_time = models.DateTimeField()
     planned_end_time = models.DateTimeField()
     actual_start_time = models.DateTimeField(null=True, blank=True)
