@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 import folium
 
 from .forms import VehicleForm, EmployeeForm, MaintenanceForm, TripsForm, InventoryForm
-from .models import Vehicle, Employee, Maintenance, Trips, Inventory
+from .models import Vehicle, Employee, Maintenance, Trip, Inventory
 from .getroute import get_route
 
 
@@ -45,9 +45,10 @@ def create_vehicle(request):
     if request.method == 'POST':
         form = VehicleForm(request.POST)
         if form.is_valid():
-            form.instance.created_by = request.user
-            form.save(commit=True)
-            return redirect('vehicle_list')  # Replace 'vehicle_list' with the actual URL or view name
+            vehicle = form.save(commit=False)
+            vehicle.created_by = request.user
+            vehicle.save(commit=True)
+            return redirect('vehicle_list')
     else:
         form = VehicleForm()
 
@@ -61,11 +62,11 @@ def create_employee(request):
             emp = form.save(commit=False)
             emp.created_by = request.user
             emp.save()
-            return redirect('employee_list')  # Replace 'vehicle_list' with the actual URL or view name
+            return redirect('employee_list')
     else:
         form = EmployeeForm()
 
-    return render(request, 'create_vehicle.html', {'form': form})
+    return render(request, 'create_employee.html', {'form': form})
 
 @login_required
 def create_maintenance(request):
@@ -74,7 +75,7 @@ def create_maintenance(request):
         if form.is_valid():
             instance = form.save(commit=False)
             instance.save()
-            return redirect('vehicle_detail')  # Replace 'vehicle_list' with the actual URL or view name
+            return redirect('vehicle_detail')
     else:
         form = MaintenanceForm()
 
@@ -88,11 +89,11 @@ def create_trip(request):
         if form.is_valid():
             instance = form.save(commit=False)
             instance.save()
-            return redirect('trip_list')  # Replace 'vehicle_list' with the actual URL or view name
+            return redirect('trip_list')
     else:
         form = TripsForm()
 
-    return render(request, 'create_vehicle.html', {'form': form})
+    return redirect('showroute')
 
 @login_required
 def create_inventory(request):
@@ -101,7 +102,7 @@ def create_inventory(request):
         if form.is_valid():
             instance = form.save(commit=False)
             instance.save()
-            return redirect('inventory_list')  # Replace 'vehicle_list' with the actual URL or view name
+            return redirect('inventory_list')
     else:
         form = InventoryForm()
 
@@ -110,4 +111,14 @@ def create_inventory(request):
 @login_required
 def employee_list(request):
     employees = Employee.objects.all()
-    return render(request, 'employee_list.html', {'employees': employees})
+    return render(request, 'lists/employee_list.html', {'employees': employees})
+
+@login_required
+def vehicle_list(request):
+    vehicles = Vehicle.objects.all()
+    return render(request, 'lists/vehicle_list.html', {'vehicles': vehicles}
+                  )
+@login_required
+def trips_list(request):
+    trips = Trip.objects.all()
+    return render(request, 'lists/trips_list.html', {'trips': trips})
