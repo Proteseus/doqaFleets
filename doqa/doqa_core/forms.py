@@ -1,11 +1,14 @@
 from django import forms
-from .models import Vehicle, Employee, Maintenance, Trips, Inventory
+from .models import Vehicle, Employee, Maintenance, Trip, Inventory
 from django.contrib.gis.forms import PointField
 
 class VehicleForm(forms.ModelForm):
+    last_maintenance_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+    next_maintenance_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+    
     class Meta:
         model = Vehicle
-        fields = '__all__'
+        fields = '__all__' 
 
 class EmployeeForm(forms.ModelForm):
     class Meta:
@@ -19,11 +22,18 @@ class MaintenanceForm(forms.ModelForm):
 
 class TripsForm(forms.ModelForm):
     class Meta:
-        model = Trips
+        model = Trip
         fields = '__all__'
-
-    start_location = PointField(widget=forms.TextInput(attrs={'class': 'location-input'}))
-    end_location = PointField(widget=forms.TextInput(attrs={'class': 'location-input'}))
+    
+    start_location = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'location-input', 'id': 'id_start_location'}),
+    )
+    end_location = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'location-input', 'id': 'id_end_location'}),
+    )
+    
+    # start_location = PointField(widget=forms.TextInput(attrs={'class': 'location-input'}))
+    # end_location = PointField(widget=forms.TextInput(attrs={'class': 'location-input'}))
 
     # Set default values for status and leave actual_times nullable
     status = forms.CharField(initial='Pending', widget=forms.HiddenInput())
