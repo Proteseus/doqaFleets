@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Vehicle, Employee, Maintenance, Trips, Inventory, Report, Alert
+from .models import Vehicle, Employee, Maintenance, Trip, Inventory, Report, Alert
 
 @admin.register(Vehicle)
 class VehicleAdmin(admin.ModelAdmin):
@@ -16,7 +16,7 @@ class MaintenanceAdmin(admin.ModelAdmin):
     list_display = ['id', 'vehicle', 'description', 'scheduled_date', 'completed_date', 'status']
     # Add other configurations as needed
 
-@admin.register(Trips)
+@admin.register(Trip)
 class TripsAdmin(admin.ModelAdmin):
     list_display = ['id', 'vehicle', 'planned_start_time', 'planned_end_time', 'status']
     # Add other configurations as needed
