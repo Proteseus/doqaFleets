@@ -63,7 +63,7 @@ class Report(models.Model):
         return self.id
 
 
-class Trips(models.Model):
+class Trip(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE)
     driver_id = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='trips')
