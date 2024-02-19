@@ -1,0 +1,24 @@
+{% extends '../base.html' %}
+
+{% block content %}
+  <h2>Employee List</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Contact Number</th>
+        <th>Driver License Number</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for employee in employees %}
+        <tr>
+          <td>{{ employee.name }}</td>
+          <td>{{ employee.contact_number }}</td>
+          <td>{{ employee.driver_license_number }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
+

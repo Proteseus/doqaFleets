@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            display: flex;
+        }
+        #map-container {
+            width: 60vw;
+            height: 100vh;
+            position: relative;
+        }
+        #form-container {
+            width: 30vw;
+            height: 100vh;
+            overflow-y: auto;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
+</head>
+<body>
+
+<div id="map-container"></div>
+<div id="form-container">
+    <form id="trip-form" method="post" action="{% url 'register_trip' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="button" id="update-map-btn">Update Map</button>
+        <button type="button" id="submit-form-btn">Submit Form</button>
+    </form>
+</div>
+
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<!-- Include Mapbox GL JS -->
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js"></script>
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.css" rel="stylesheet">
+
+<!-- Add the following script for handling partial form submission and Mapbox integration -->
+<script>
+    $(document).ready(function () {
+        mapboxgl.accessToken = 'pk.eyJ1IjoiaG9ycmlibGVib2IxMSIsImEiOiJjbHNvZm42ZWEwYmViMmprNTRpaThvZ2ZhIn0.ROEbyxFl7m7I-7KNof8kMQ';
+
+        var map = new mapboxgl.Map({
+            container: 'map-container',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: [0, 0],
+            zoom: 2
+        });
+
+        var startMarker = new mapboxgl.Marker({ color: 'green' });
+        var endMarker = new mapboxgl.Marker({ color: 'red' });
+
+        $("#update-map-btn").click(function (e) {
+            e.preventDefault();
+            updateMap();
+        });
+
+        $("#submit-form-btn").click(function () {
+            $("#trip-form").submit();
+        });
+
+        function updateMap() {
+            var startLocation = $("#id_start_location").val();
+            var endLocation = $("#id_end_location").val();
+
+            // Clear existing markers
+            startMarker.remove();
+            endMarker.remove();
+
+            // Add start marker
+            if (startLocation) {
+                startMarker.setLngLat(JSON.parse(startLocation)).addTo(map);
+            }
+
+            // Add end marker
+            if (endLocation) {
+                endMarker.setLngLat(JSON.parse(endLocation)).addTo(map);
+            }
+
+            // Draw a route if both start and end locations are present
+            if (startLocation && endLocation) {
+                map.addSource('route', {
+                    'type': 'geojson',
+                    'data': {
+                        'type': 'Feature',
+                        'properties': {},
+                        'geometry': {
+                            'type': 'LineString',
+                            'coordinates': [
+                                JSON.parse(startLocation),
+                                JSON.parse(endLocation)
+                            ]
+                        }
+                    }
+                });
+                map.addLayer({
+                    'id': 'route',
+                    'type': 'line',
+                    'source': 'route',
+                    'layout': {
+                        'line-join': 'round',
+                        'line-cap': 'round'
+                    },
+                    'paint': {
+                        'line-color': '#888',
+                        'line-width': 8
+                    }
+                });
+            }
+
+            // Fit the map to the bounds of the markers
+            var bounds = new mapboxgl.LngLatBounds();
+            if (startLocation) {
+                bounds.extend(JSON.parse(startLocation));
+            }
+            if (endLocation) {
+                bounds.extend(JSON.parse(endLocation));
+            }
+            map.fitBounds(bounds, { padding: 50 });
+        }
+    });
+</script>
+</body>
+</html>

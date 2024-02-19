@@ -1,0 +1,35 @@
+{% extends '../base.html' %}
+
+{% block content %}
+
+<h2>Trip List</h2>
+
+<table class='table'>
+    <thead>
+        <tr>
+            <th>Trip ID</th>
+            <th>Vehicle</th>
+            <th>Driver</th>
+            <th>Start Location</th>
+            <th>End Location</th>
+            <th>Planned Start Time</th>
+            <th>Planned End Time</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for trip in trips %}
+        <tr>
+            <td>{{ trip.id }}</td>
+            <td>{{ trip.vehicle }}</td>
+            <td>{{ trip.driver_id }}</td>
+            <td>{{ trip.start_location }}</td>
+            <td>{{ trip.end_location }}</td>
+            <td>{{ trip.planned_start_time }}</td>
+            <td>{{ trip.planned_end_time }}</td>
+            <td>{{ trip.status }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

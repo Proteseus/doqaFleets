@@ -1,0 +1,31 @@
+{% extends '../base.html' %}
+
+{% block content %}
+  <h2>Vehicle List</h2>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Registration Number</th>
+        <th>Make</th>
+        <th>Model</th>
+        <th>Year</th>
+        <th>Last Maintenance</th>
+        <th>Next Maintenance</th>
+
+      </tr>
+    </thead>
+    <tbody>
+      {% for vehicle in vehicles %}
+        <tr>
+          <td>{{ vehicle.registration_number }}</td>
+          <td>{{ vehicle.make }}</td>
+          <td>{{ vehicle.model }}</td>
+          <td>{{ vehicle.year }}</td>
+          <td>{{ vehicle.last_maintenance_date }}</td>
+          <td>{{ vehicle.next_maintenance_date }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

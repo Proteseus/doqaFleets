@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Route between the locations</title>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.css" rel="stylesheet">
+</head>
+<body>
+    <div style="display: flex; justify-content: space-between;">
+        <!-- Left column for the route -->
+        <div style="flex: 1;">
+            <!-- Map container -->
+            <div id="map" style="height: 400px;"></div>
+
+            <!-- Include Mapbox GL JS library -->
+            <script src="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js"></script>
+
+            <script>
+                mapboxgl.accessToken = 'pk.eyJ1IjoiaG9ycmlibGVib2IxMSIsImEiOiJjbHNvZm42ZWEwYmViMmprNTRpaThvZ2ZhIn0.ROEbyxFl7m7I-7KNof8kMQ';
+                var map = new mapboxgl.Map({
+                    container: 'map', // HTML element ID where the map will be rendered
+                    style: 'mapbox://styles/mapbox/streets-v11', // Map style
+                    center: [38.686443, 8.950428], // Initial center coordinates
+                    zoom: 12, // Initial zoom level
+                });
+            </script>
+        </div>
+
+        <!-- Right column for the trip assignment form -->
+        <div style="flex: 1; padding: 20px;">
+            <h2>Trip Assignment Form</h2>
+            <form method="post" action="{% url 'register_trip' %}">
+                {% csrf_token %}
+                <!-- Add your form fields here -->
+                {{ form.as_p }}
+                <!-- Button to update the map -->
+                <button type="button" onclick="updateMap()">Update Map</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript for Autocomplete using Mapbox Geocoding -->
+    <script>
+        function initAutocomplete() {
+            var startInput = document.getElementById('start-location');
+            var endInput = document.getElementById('end-location');
+
+            var options = {
+                countries: 'ET', // Specify the country codes you want to restrict results to
+            };
+
+            var geocoder = new mapboxgl.Geocoder({
+                accessToken: mapboxgl.accessToken,
+                countries: options.countries,
+            });
+
+            startInput.parentNode.insertBefore(
+                geocoder.onAdd(map),
+                startInput.nextSibling
+            );
+
+            endInput.parentNode.insertBefore(
+                geocoder.onAdd(map),
+                endInput.nextSibling
+            );
+        }
+
+        // Call the initAutocomplete function when the page loads
+        map.on('load', initAutocomplete);
+    </script>
+</body>
+</html>
