@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.gis',
+    'widget_tweaks',
+    'django_extensions',
     'doqa_core'
 ]
 
