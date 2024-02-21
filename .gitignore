@@ -1,6 +1,4 @@
 venDoqaFleets
-doqa/doqa_core/templates
-doqa/doqa_core/static
 __pycache__
 doqa/__pycache__
 doqa/doqa_core/__pycache__
