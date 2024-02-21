@@ -20,7 +20,7 @@ def showroute(request, lat1='default_lat1', long1='default_long1', lat2='default
     figure = folium.Figure()
     lat1, long1, lat2, long2 = float(lat1), float(long1), float(lat2), float(long2)
     route = get_route(long1, lat1, long2, lat2)
-    
+    # print("\n#ROUTE: ", route) 
     m = folium.Map(location=[route['start_point'][0], route['start_point'][1]], zoom_start=10)
     m.add_to(figure)
     folium.PolyLine(route['route'], weight=8, color='blue', opacity=0.6).add_to(m)
@@ -38,7 +38,7 @@ def showroute(request, lat1='default_lat1', long1='default_long1', lat2='default
     form = TripsForm(initial=initial_form_data)
 
     context = {'map': figure, 'form': form}
-    return render(request, 'showroute.html', context)
+    return render(request, 'map.html', context)
 
 @login_required
 def create_vehicle(request):
@@ -47,7 +47,7 @@ def create_vehicle(request):
         if form.is_valid():
             vehicle = form.save(commit=False)
             vehicle.created_by = request.user
-            vehicle.save(commit=True)
+            vehicle.save()
             return redirect('vehicle_list')
     else:
         form = VehicleForm()
@@ -87,9 +87,11 @@ def create_trip(request):
     if request.method == 'POST':
         form = TripsForm(request.POST)
         if form.is_valid():
-            instance = form.save(commit=False)
-            instance.save()
-            return redirect('trip_list')
+            print(form.cleaned_data['start_location'])
+            trip = form.save(commit=True)
+            trip.created_by = request.user
+            trip.save()
+            return redirect('trips_list')
     else:
         form = TripsForm()
 
