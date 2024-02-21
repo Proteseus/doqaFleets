@@ -1,39 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <title>Route between the locations</title>
-    {{ map.header.render|safe }}
-    <style>
-        .grid-container {
-            margin: 0;
-            display: grid;
-            grid-template-columns: 70% 30%;
-        }
-        #map {
-            max-width: 68%;
-            grid-column-start: 1;
-            grid-column-end: 2;
-        }
-        #form-container {
-            grid-column-start: 2;
-            grid-column-end: 3;
-        }
-    </style>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block content %}
     <div class="grid-container">
-        <div id="map">
-            {% if map %}
-            {{ map.html.render|safe }}
-            <script>
-                {{ map.script.render|safe }}
-            </script>
-            {% endif %}
-        </div>
-
-
+        {% block map %}
+        {% endblock %}
         <div id="form-container">
             <h2>Trip Assignment Form</h2>
             <form id="tripForm" method="post" action="{% url 'register_trip' %}">
@@ -108,6 +77,5 @@
         // Call the initAutocomplete function when the page loads
         map.on('load', initAutocomplete);
     </script>
-</body>
-</html>
+    {% endblock %}
 
