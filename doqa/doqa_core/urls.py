@@ -3,7 +3,7 @@ from .views import map, showroute, create_vehicle, create_employee, create_maint
 
 urlpatterns = [
     path('map/', map, name='map'),
-    path('showroute/', showroute, {'lat1': 8.950333, 'long1': 38.686444, 'lat2': 9.0180031, 'long2': 38.7977998}, name='showroute'),
+    path('route/', showroute, {'lat1': 8.950333, 'long1': 38.686444, 'lat2': 9.0180031, 'long2': 38.7977998}, name='showroute'),
     #path('showroute/<str:lat1>,<str:long1>,<str:lat2>,<str:long2>/', showroute, name='showroute_with_params'),
     # path('', showroute, name='showroute'),
     path('routed/<str:lat1>,<str:long1>,<str:lat2>,<str:long2>', showroute, name='showroute_updated'),
