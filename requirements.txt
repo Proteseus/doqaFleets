@@ -3,3 +3,4 @@ folium
 requests
 polyline
 psycopg2
+django-leaflet
