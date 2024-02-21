@@ -1,0 +1,3 @@
+[submodule "doqa/doqa_core/templates/doqaFleets-UI"]
+	path = doqa/doqa_core/templates/doqaFleets-UI
+	url = https://github.com/Proteseus/doqaFleets-UI
