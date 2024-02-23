@@ -1,24 +1,9 @@
-{% extends 'showroute.html' %}
+
     {% block extra_head %}
         {{ map.header.render|safe }}
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
         <title>Route between the locations</title>
-        <style>
-            .grid-container {
-                margin: 0;
-                display: grid;
-                grid-template-columns: 65% 30%;
-            }
-            #map {
-                max-width: 60%;
-                grid-column-start: 1;
-                grid-column-end: 2;
-            }
-            #form-container {
-                grid-column-start: 2;
-                grid-column-end: 3;
-            }
-        </style>
+        
     {% endblock %}
     
     {% block map %}
@@ -30,5 +15,5 @@
                 </script>
             {% endif %}
         </div>
-        {{ block.super }}
+        
     {% endblock %}

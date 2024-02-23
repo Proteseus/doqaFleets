@@ -1,81 +1,65 @@
 {% extends 'base.html' %}
+{% load widget_tweaks %}
 {% block content %}
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            .grid-container {
+                margin: 0;
+                display: grid;
+                grid-template-columns: 65% 30%;
+            }
+            #map {
+                max-width: 60%;
+                top: 63px;
+                grid-column-start: 1;
+                grid-column-end: 2;
+            }
+            #form-container {
+                grid-column-start: 2;
+                grid-column-end: 3;
+            }
+            @media (min-width: 1200px)
+            .mt-5 {
+                max-width: 100%;
+            }
+        </style>
     <div class="grid-container">
-        {% block map %}
-        {% endblock %}
+        {% include "map.html" %}
         <div id="form-container">
             <h2>Trip Assignment Form</h2>
             <form id="tripForm" method="post" action="{% url 'register_trip' %}">
                 {% csrf_token %}
-                {{ form.as_p }}
-                <button type="button" onclick="updateMap()">Update Map</button>
+                
+                <label> {{ form.vehicle.label_tag }} </label>
+                {% render_field form.vehicle %}
+                
+                <label> {{ form.driver_id.label_tag }} </label>
+                {% render_field form.driver_id %}
+                
+                <label> {{ form.start_location.label_tag }} </label>
+                {% render_field form.start_location %}
+                
+                <label> {{ form.end_location.label_tag }} </label>
+                {% render_field form.end_location %}
+                
+                <label> {{ form.planned_start_time.label_tag }} </label>
+                {% render_field form.planned_start_time %}
+                
+                <label> {{ form.planned_end_time.label_tag }} </label>
+                {% render_field form.planned_end_time %}
+                
+                <label> {{ form.fuax_start.label_tag }} </label>
+                {% render_field form.fuax_start %}
+                
+                <input type="text" name="faux_start" id="faux_start" hx-post="/get_coord/" hx-trigger="change" hx-target="#id_start_location" hx-swap="innerHTML">
+                
+                <button type="button">Update Map</button>
                 <button type="submit">Register</button>
             </form>
         </div>
     </div>
-    <script>
-        function updateMap() {
-            // Get values from the form
-            var startLocation = document.getElementById("id_start_location").value;
-            var endLocation = document.getElementById("id_end_location").value;
-            
-            console.log(startLocation+','+endLocation)
-            // Make an Ajax request to update the map
-            // Use your actual endpoint and method for updating the map
-            var starts = startLocation.split(','); 
-            var ends = endLocation.split(',');
-            var url = '/routed/' + starts[0] + ',' + starts[1] + ',' + ends[0] + ',' + ends[1];
-
-            $.ajax({
-                url: url,
-                type: 'GET',
-                success: function(data) {
-                    console.log('Success:', data);
-                    // Handle the response as needed
-                },
-                error: function(error) {
-                    console.error('Error:', error);
-                    // Handle errors
-                }
-            }
-        }
-    </script>
-
-    <!-- JavaScript for Autocomplete using Mapbox Geocoding -->
-    <script src="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js"></script>
-    <link
-            href="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.css"
-            rel="stylesheet"
-            />
-    <script>
-        mapboxgl.accessToken = 'pk.eyJ1IjoiaG9ycmlibGVib2IxMSIsImEiOiJjbHNvZm42ZWEwYmViMmprNTRpaThvZ2ZhIn0.ROEbyxFl7m7I-7KNof8kMQ';
-
-        function initAutocomplete() {
-            var startInput = document.getElementById('start-location');
-            var endInput = document.getElementById('end-location');
-
-            var options = {
-                countries: 'ET', // Specify the country codes you want to restrict results to
-            };
-
-            var geocoder = new mapboxgl.Geocoder({
-                accessToken: mapboxgl.accessToken,
-                countries: options.countries,
-            });
-
-            startInput.parentNode.insertBefore(
-                geocoder.onAdd(map),
-                startInput.nextSibling
-            );
-
-            endInput.parentNode.insertBefore(
-                geocoder.onAdd(map),
-                endInput.nextSibling
-            );
-        }
-
-        // Call the initAutocomplete function when the page loads
-        map.on('load', initAutocomplete);
-    </script>
     {% endblock %}
 

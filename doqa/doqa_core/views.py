@@ -1,15 +1,52 @@
 from logging import log
+import pprint
 from django.db.models.fields import Empty
 from django.contrib.gis.geos import Point
-from django.shortcuts import render, redirect
+from django.http import JsonResponse
+from django.shortcuts import HttpResponse, render, redirect, get_object_or_404
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 
 import folium
 
-from .forms import VehicleForm, EmployeeForm, MaintenanceForm, TripsForm, InventoryForm
+from .forms import LoginForm, VehicleForm, EmployeeForm, MaintenanceForm, TripsForm, InventoryForm
 from .models import Vehicle, Employee, Maintenance, Trip, Inventory
 from .getroute import get_route
+from .utils import find_coordinates
 
+def login_(request):
+    if request.user.is_authenticated:
+        return redirect('trips_list')
+    if request.method == 'POST':
+        form = LoginForm(request, data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect('dashboard')
+        else:
+            messages.error(request, 'Invalid login credentials')
+    else:
+        form = LoginForm()
+
+    return render(request, 'login.html', {'form': form})
+
+def dashboard(request):
+    vehicle_count = Vehicle.objects.count()
+    employee_count = Employee.objects.count()
+    maintenance_order_count = Maintenance.objects.count()
+    trip_count = Trip.objects.count()
+
+    inventory_data = Inventory.objects.all()
+
+    context = {
+        'vehicle_count': vehicle_count,
+        'employee_count': employee_count,
+        'maintenance_order_count': maintenance_order_count,
+        'trip_count': trip_count,
+        'inventory_data': inventory_data,
+    }
+
+    return render(request, 'dashboard.html', context)
 
 def map(request):
     map_token = 'pk.eyJ1IjoiaG9ycmlibGVib2IxMSIsImEiOiJjbHNvZm42ZWEwYmViMmprNTRpaThvZ2ZhIn0.ROEbyxFl7m7I-7KNof8kMQ'
@@ -38,14 +75,30 @@ def showroute(request, lat1='default_lat1', long1='default_long1', lat2='default
     form = TripsForm(initial=initial_form_data)
 
     context = {'map': figure, 'form': form}
-    return render(request, 'map.html', context)
+    return render(request, 'showroute.html', context)
+
+def coordinates(request):
+    if request.method == 'POST':
+        pprint.pprint(request, indent=4)
+        loc = request.POST.get('faux_start')
+        pprint.pprint(loc)
+        if loc:
+            coord = find_coordinates(loc)
+            point_val = f"POINT({coord['result'][0]} {coord['result'][1]})"
+            print(point_val)
+            return HttpResponse(point_val)
+        else:
+            return JsonResponse({'error': 'Missing location parameter'}, status=400)
+    else:
+        # Return an error response for non-GET requests
+        return JsonResponse({'error': 'Invalid request method'}, status=405)
 
 @login_required
 def create_vehicle(request):
     if request.method == 'POST':
-        form = VehicleForm(request.POST)
+        form = VehicleForm(request.POST, request.FILES)
         if form.is_valid():
-            vehicle = form.save(commit=False)
+            vehicle = form.save(commit=True)
             vehicle.created_by = request.user
             vehicle.save()
             return redirect('vehicle_list')
@@ -115,7 +168,7 @@ def employee_list(request):
     employees = Employee.objects.all()
     return render(request, 'lists/employee_list.html', {'employees': employees})
 
-@login_required
+#@login_required
 def vehicle_list(request):
     vehicles = Vehicle.objects.all()
     return render(request, 'lists/vehicle_list.html', {'vehicles': vehicles}
@@ -124,3 +177,22 @@ def vehicle_list(request):
 def trips_list(request):
     trips = Trip.objects.all()
     return render(request, 'lists/trips_list.html', {'trips': trips})
+
+@login_required
+def trip_detail(request, trip_id):
+    trip = get_object_or_404(Trip, id=trip_id)
+    return render(request, 'details/trip_details.html', {'trip': trip})
+
+@login_required
+def edit_trip(request, trip_id):
+    trip = get_object_or_404(Trip, id=trip_id)
+
+    if request.method == 'POST':
+        form = TripsForm(request.POST, instance=trip)
+        if form.is_valid():
+            form.save()
+            return redirect('trip_list')
+    else:
+        form = TripsForm(instance=trip)
+
+    return render(request, 'edits/edit_trip.html', {'form': form, 'trip': trip})
