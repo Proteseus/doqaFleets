@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Trip Detail</h2>
+
+    <ul>
+        <li><strong>Trip ID:</strong> {{ trip.id }}</li>
+        <li><strong>Vehicle:</strong> {{ trip.vehicle }}</li>
+        <li><strong>Driver:</strong> {{ trip.driver_id }}</li>
+        <li><strong>Start Location:</strong> {{ trip.start_location }}</li>
+        <li><strong>End Location:</strong> {{ trip.end_location }}</li>
+        <li><strong>Planned Start Time:</strong> {{ trip.planned_start_time }}</li>
+        <li><strong>Planned End Time:</strong> {{ trip.planned_end_time }}</li>
+        <li><strong>Status:</strong> {{ trip.status }}</li>
+    </ul>
+
+    <a href="{% url 'trip_list' %}">Back to Trip List</a>
+{% endblock %}

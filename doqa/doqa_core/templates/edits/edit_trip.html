@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Edit Trip</h2>
+
+    <form method="post" action="{% url 'edit_trip' trip.id %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <label for="id_status">Status:</label>
+        <select name="status" id="id_status">
+            <option value="In Progress" {% if trip.status == 'In Progress' %}selected{% endif %}>In Progress</option>
+            <option value="Complete" {% if trip.status == 'Complete' %}selected{% endif %}>Complete</option>
+        </select>
+
+        <button type="submit">Update Trip</button>
+    </form>
+
+    <a href="{% url 'trip_detail' trip.id %}">Back to Trip Detail</a>
+{% endblock %}
