@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 class Vehicle(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     registration_number = models.CharField(max_length=20)
+    image = models.ImageField(upload_to ='uploads/vehicles/', null=True)
     make = models.CharField(max_length=50)
     model = models.CharField(max_length=50)
     year = models.IntegerField()
