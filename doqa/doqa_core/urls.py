@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import login_, dashboard, map, coordinates, showroute, create_vehicle, create_employee, create_maintenance, create_trip, create_inventory, employee_list, vehicle_list, trips_list, trip_detail, edit_trip
+from .views import login_, dashboard, map, coordinates, showroute, create_vehicle, create_employee, create_maintenance, create_trip, create_inventory, employee_list, vehicle_list, trips_list, trip_detail, edit_trip, delete_trip, delete_employee
 
 urlpatterns = [
     path('login/', login_, name='login'),
@@ -17,6 +17,7 @@ urlpatterns = [
     
     path('register_employee/', create_employee, name='register_employee'),
     path('employee_list/', employee_list, name='employee_list'),
+    path('employee/<uuid:emp_id>/delete/', delete_employee, name='delete_employee'),
     
     path('register_maintenance/', create_maintenance, name='register_maintenance'),
     
@@ -24,7 +25,8 @@ urlpatterns = [
     path('trips_list/', trips_list, name='trips_list'),
     path('trip/<uuid:trip_id>/', trip_detail, name='trip_detail'),
     path('trip/<uuid:trip_id>/edit/', edit_trip, name='edit_trip'),
-
+    path('trip/<uuid:trip_id>/delete/', delete_trip, name='delete_trip'),
+    
     path('register_inventory/', create_inventory, name='register_inventory'),
 ]
 

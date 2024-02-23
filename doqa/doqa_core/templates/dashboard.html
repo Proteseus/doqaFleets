@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container mt-4">
+    <h2 class="mb-4">Dashboard</h2>
+
+    <div class="row">
+      <div class="col-md-3 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Total Vehicles</h5>
+            <p class="card-text">{{ vehicle_count }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Total Employees</h5>
+            <p class="card-text">{{ employee_count }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Total Maintenance Orders</h5>
+            <p class="card-text">{{ maintenance_order_count }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Total Trips</h5>
+            <p class="card-text">{{ trip_count }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="mt-4">Inventory Table</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Column1</th>
+          <th>Column2</th>
+          <!-- Add other column headers based on your Inventory model fields -->
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in inventory_data %}
+          <tr>
+            <td>{{ item.item_name }}</td>
+            <td>{{ item.quantity }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

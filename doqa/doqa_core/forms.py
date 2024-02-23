@@ -33,16 +33,25 @@ class MaintenanceForm(forms.ModelForm):
         fields = '__all__'
 
 class TripsForm(forms.ModelForm):
-    fuax_loc = forms.CharField(widget=forms.TextInput())
+    #fuax_loc = forms.CharField(widget=forms.TextInput())
     class Meta:
         model = Trip
-        fields = ['vehicle', 'driver_id', 'planned_start_time', 'planned_end_time', 'start_location', 'end_location', 'fuax_loc']
+        fields = ['vehicle', 'driver_id', 'planned_start_time', 'planned_end_time', 'start_location', 'end_location']
         widgets = {
             'planned_start_time': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
             'planned_end_time': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
             'start_location': forms.TextInput(attrs={'type': 'location-input'}),
             'end_location': forms.TextInput(attrs={'type': 'location-input'}),
         }
+
+    STATUS_CHOICES = [
+        ('In Progress', 'In Progress'),
+        ('Complete', 'Complete'),
+    ]
+
+    status = forms.ChoiceField(choices=STATUS_CHOICES, widget=forms.Select())
+    actual_start_time = forms.DateTimeField(required=False, widget=forms.DateTimeInput(attrs={'type': 'datetime-local'}))
+    actual_end_time = forms.DateTimeField(required=False, widget=forms.DateTimeInput(attrs={'type': 'datetime-local'}))
 
     def clean_start_location(self):
         start_location_str = self.cleaned_data['start_location']

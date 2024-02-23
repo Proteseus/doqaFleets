@@ -13,9 +13,10 @@
     <tbody>
       {% for employee in employees %}
         <tr>
-          <td>{{ employee.name }}</td>
-          <td>{{ employee.contact_number }}</td>
-          <td>{{ employee.driver_license_number }}</td>
+            <td>{{ employee.name }}</td>
+            <td>{{ employee.contact_number }}</td>
+            <td>{{ employee.driver_license_number }}</td>
+            <td><a href="{% url 'delete_employee' employee.id %}">Delete</a></td>
         </tr>
       {% endfor %}
     </tbody>

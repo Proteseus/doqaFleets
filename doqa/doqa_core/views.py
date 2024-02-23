@@ -168,7 +168,7 @@ def employee_list(request):
     employees = Employee.objects.all()
     return render(request, 'lists/employee_list.html', {'employees': employees})
 
-#@login_required
+@login_required
 def vehicle_list(request):
     vehicles = Vehicle.objects.all()
     return render(request, 'lists/vehicle_list.html', {'vehicles': vehicles}
@@ -190,9 +190,28 @@ def edit_trip(request, trip_id):
     if request.method == 'POST':
         form = TripsForm(request.POST, instance=trip)
         if form.is_valid():
-            form.save()
-            return redirect('trip_list')
+            print(form.cleaned_data)
+            up_trip = form.save(commit=True)
+            up_trip.actual_start_time = form.cleaned_data['actual_start_time']
+            up_trip.actual_end_time = form.cleaned_data['actual_end_time']
+            up_trip.status = form.cleaned_data['status']
+            up_trip.save()
+            
+            return redirect('trips_list')
     else:
         form = TripsForm(instance=trip)
 
     return render(request, 'edits/edit_trip.html', {'form': form, 'trip': trip})
+
+@login_required
+def delete_trip(request, trip_id):
+    trip = get_object_or_404(Trip, id=trip_id)
+    trip.delete()
+    return redirect('trips_list')
+
+@login_required
+def delete_employee(request, emp_id):
+    emp = get_object_or_404(Employee, id=emp_id)
+    emp.delete()
+    return redirect('employee_list')
+

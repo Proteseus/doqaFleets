@@ -28,6 +28,10 @@
             <td>{{ trip.planned_start_time }}</td>
             <td>{{ trip.planned_end_time }}</td>
             <td>{{ trip.status }}</td>
+            <td>
+                <a href="{% url 'edit_trip' trip.id %}">Edit</a>
+                <a href="{% url 'delete_trip' trip.id %}">Delete</a>
+            </td>
         </tr>
         {% endfor %}
     </tbody>
