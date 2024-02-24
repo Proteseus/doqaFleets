@@ -1,0 +1,29 @@
+{% extends '../base.html' %}
+
+{% block content %}
+
+<h2>Inventory List</h2>
+
+<table class='table'>
+    <thead>
+        <tr>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Unit of Measerment</th>
+            <th>Last Restoke Date</th>
+            <th>Reorder Threshold</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for inv in inventories %}
+        <tr>
+            <td>{{ inv.item_name }}</td>
+            <td>{{ inv.quantity }}</td>
+            <td>{{ inv.unit_of_measurement }}</td>
+            <td>{{ inv.last_restoke_date }}</td>
+            <td>{{ inv.reorder_threshold }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
