@@ -27,36 +27,26 @@
             }
         </style>
     <div class="grid-container">
-        {% include "map.html" %}
+    {% block extra_head %}
+        {{ map.header.render|safe }}
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <title>Route between the locations</title>
+    {% endblock %}
+
+        <div id="map">
+            {% if map %}
+                {{ map.html.render|safe }}
+                <script>
+                    {{ map.script.render|safe }}
+                </script>
+            {% endif %}
+        </div>
+
         <div id="form-container">
             <h2>Trip Assignment Form</h2>
             <form id="tripForm" method="post" action="{% url 'register_trip' %}">
                 {% csrf_token %}
-                
-                <label> {{ form.vehicle.label_tag }} </label>
-                {% render_field form.vehicle %}
-                
-                <label> {{ form.driver_id.label_tag }} </label>
-                {% render_field form.driver_id %}
-                
-                <label> {{ form.start_location.label_tag }} </label>
-                {% render_field form.start_location %}
-                
-                <label> {{ form.end_location.label_tag }} </label>
-                {% render_field form.end_location %}
-                
-                <label> {{ form.planned_start_time.label_tag }} </label>
-                {% render_field form.planned_start_time %}
-                
-                <label> {{ form.planned_end_time.label_tag }} </label>
-                {% render_field form.planned_end_time %}
-                
-                <label> {{ form.fuax_start.label_tag }} </label>
-                {% render_field form.fuax_start %}
-                
-                <input type="text" name="faux_start" id="faux_start" hx-post="/get_coord/" hx-trigger="change" hx-target="#id_start_location" hx-swap="innerHTML">
-                
-                <button type="button">Update Map</button>
+                {{ form.as_p }}
                 <button type="submit">Register</button>
             </form>
         </div>

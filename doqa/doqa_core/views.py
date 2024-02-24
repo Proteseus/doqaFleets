@@ -53,6 +53,39 @@ def map(request):
     # return render(request, 'map.html', {'mapbox_access_token': map_token})
     return render(request, 'showmap.html')
 
+def pre_route(request):
+    return render(request, 'routing/pre_route.html')
+
+def coordinates(loc):
+    if loc:
+        coord = find_coordinates(loc)
+        loc_title = coord['result'][0]
+        point_val = f"{coord['result'][1]}, {coord['result'][2]}"
+        return loc_title, point_val
+
+def get_options(request):
+    if request.method == 'GET':
+        for key in request.GET.keys():
+            selector = request.GET.get(key)
+
+            loc = coordinates(selector)
+            options = []
+            options.append({'label': loc[0], 'value': loc[1]})
+            response_data = "\n".join([f'<option value="{option["value"]}">{option["label"]}</option>' for option in options])
+
+        return HttpResponse(response_data)
+
+def result(request):
+    route = ""
+    for key in request.POST.keys():
+        if key in ['start_location', 'end_location']:
+            route += request.POST.get(key).replace(" ", "")
+            if key == 'start_location':
+                route += ","
+    coords = route.split(',')
+    showroute_url = f'/route/{route}'
+    return redirect('showroute', lat1=coords[0], long1=coords[1], lat2=coords[2], long2=coords[3])
+
 def showroute(request, lat1='default_lat1', long1='default_long1', lat2='default_lat2', long2='default_long2'):
     figure = folium.Figure()
     lat1, long1, lat2, long2 = float(lat1), float(long1), float(lat2), float(long2)
@@ -76,22 +109,6 @@ def showroute(request, lat1='default_lat1', long1='default_long1', lat2='default
 
     context = {'map': figure, 'form': form}
     return render(request, 'showroute.html', context)
-
-def coordinates(request):
-    if request.method == 'POST':
-        pprint.pprint(request, indent=4)
-        loc = request.POST.get('faux_start')
-        pprint.pprint(loc)
-        if loc:
-            coord = find_coordinates(loc)
-            point_val = f"POINT({coord['result'][0]} {coord['result'][1]})"
-            print(point_val)
-            return HttpResponse(point_val)
-        else:
-            return JsonResponse({'error': 'Missing location parameter'}, status=400)
-    else:
-        # Return an error response for non-GET requests
-        return JsonResponse({'error': 'Invalid request method'}, status=405)
 
 @login_required
 def create_vehicle(request):

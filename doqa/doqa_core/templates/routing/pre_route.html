@@ -1,0 +1,28 @@
+{% extends '../base.html' %}
+
+{% block content %}
+<form id="selectorsForm" method='post' action="/results/">
+    {% csrf_token %}
+
+    <label for="selector1">Selector 1:</label>
+    <input type="text" id="selector1" list="res" name="start_location" hx-trigger="change" hx-get="/get_options" hx-target="#res">
+
+    <datalist id="res">
+        {% for option in options %}
+            <option value="{{ option.value }}">{{ option.label }}</option>
+        {% endfor %}
+    </datalist>
+    
+    <label for="selector">Selector 2:</label>
+    <input type="text" id="selector2" list="res2" name="end_location" hx-trigger="change" hx-get="/get_options" hx-target="#res2">
+
+    <datalist id="res2">
+        {% for option in options %}
+            <option value="{{ option.value }}">{{ option.label }}</option>
+        {% endfor %}
+    </datalist>
+
+    <button type="submit">Submit</button>
+
+</form>
+{% endblock %}

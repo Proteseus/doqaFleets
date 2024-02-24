@@ -16,7 +16,7 @@ def find_coordinates(location):
     if response.status_code == 200:
         data = response.json()
         if len(data['items']) >= 1:
-            result = {'result': [data['items'][0]['position']['lng'], data['items'][0]['position']['lat']]}
+            result = {'result': [data['items'][0]['title'], data['items'][0]['position']['lat'], data['items'][0]['position']['lng']]}
             print(result)
             return result
         else:
@@ -26,3 +26,4 @@ def find_coordinates(location):
         print(f"Error: {response.status_code}, {response.text}")
         return {'status': response.status_code, 'message': response.text}
 
+find_coordinates('vibes hotel')
