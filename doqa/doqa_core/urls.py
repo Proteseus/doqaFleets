@@ -1,14 +1,15 @@
 from django.urls import path
-from .views import login_, dashboard, pre_route, get_options, result, map, coordinates, showroute, create_vehicle, create_employee, create_maintenance, create_trip, create_inventory, employee_list, vehicle_list, trips_list, trip_detail, edit_trip, delete_trip, delete_employee
+from .views import login_, logout_, dashboard, pre_route, get_options, result, coordinates, showroute, create_vehicle, create_employee, create_maintenance, create_trip, create_inventory, employee_list, vehicle_list, inventory_list, trips_list, trip_detail, edit_trip, delete_trip, delete_employee
 
 urlpatterns = [
     path('login/', login_, name='login'),
+    path('logout/', logout_, name='logout'),
 
-    path('dashboard/', dashboard, name='dashboard'),
+    path('', dashboard, name='dashboard'),
 
     path('selectors/', pre_route, name='selectors'),
     
-    path('map/', map, name='map'),
+#    path('map/', map, name='map'),
     path('route/<str:lat1>,<str:long1>,<str:lat2>,<str:long2>/', showroute, name='showroute'),
     #path('showroute/<str:lat1>,<str:long1>,<str:lat2>,<str:long2>/', showroute, name='showroute_with_params'),
     # path('', showroute, name='showroute'),
@@ -29,7 +30,7 @@ urlpatterns = [
     path('trip/<uuid:trip_id>/edit/', edit_trip, name='edit_trip'),
     path('trip/<uuid:trip_id>/delete/', delete_trip, name='delete_trip'),
     
-    path('register_inventory/', create_inventory, name='register_inventory'),
+    path('inventory_list/', inventory_list, name='inventory_list'),
 ]
 
 htmx_patterns = [

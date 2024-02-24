@@ -24,6 +24,16 @@
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'trips_list' %}">Trips</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'inventory_list' %}">Inventory</a>
+            </li>
+            {% if user.is_authenticated %}
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-danger" href="{% url 'logout' %}">Logout</a>
+                    </li>
+                </ul>
+            {% endif %}
           </ul>
         </div>
     </nav>

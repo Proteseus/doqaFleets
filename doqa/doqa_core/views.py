@@ -4,7 +4,7 @@ from django.db.models.fields import Empty
 from django.contrib.gis.geos import Point
 from django.http import JsonResponse
 from django.shortcuts import HttpResponse, render, redirect, get_object_or_404
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
 import folium
@@ -30,6 +30,12 @@ def login_(request):
 
     return render(request, 'login.html', {'form': form})
 
+@login_required
+def logout_(request):
+    logout(request)
+    return redirect('login')
+
+@login_required
 def dashboard(request):
     vehicle_count = Vehicle.objects.count()
     employee_count = Employee.objects.count()
@@ -48,11 +54,7 @@ def dashboard(request):
 
     return render(request, 'dashboard.html', context)
 
-def map(request):
-    map_token = 'pk.eyJ1IjoiaG9ycmlibGVib2IxMSIsImEiOiJjbHNvZm42ZWEwYmViMmprNTRpaThvZ2ZhIn0.ROEbyxFl7m7I-7KNof8kMQ'
-    # return render(request, 'map.html', {'mapbox_access_token': map_token})
-    return render(request, 'showmap.html')
-
+@login_required
 def pre_route(request):
     return render(request, 'routing/pre_route.html')
 
@@ -86,6 +88,7 @@ def result(request):
     showroute_url = f'/route/{route}'
     return redirect('showroute', lat1=coords[0], long1=coords[1], lat2=coords[2], long2=coords[3])
 
+@login_required
 def showroute(request, lat1='default_lat1', long1='default_long1', lat2='default_lat2', long2='default_long2'):
     figure = folium.Figure()
     lat1, long1, lat2, long2 = float(lat1), float(long1), float(lat2), float(long2)
