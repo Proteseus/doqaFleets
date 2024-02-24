@@ -36,14 +36,14 @@ def dashboard(request):
     maintenance_order_count = Maintenance.objects.count()
     trip_count = Trip.objects.count()
 
-    inventory_data = Inventory.objects.all()
+    trip_data = Trip.objects.all()
 
     context = {
         'vehicle_count': vehicle_count,
         'employee_count': employee_count,
         'maintenance_order_count': maintenance_order_count,
         'trip_count': trip_count,
-        'inventory_data': inventory_data,
+        'trip_data': trip_data,
     }
 
     return render(request, 'dashboard.html', context)
@@ -188,8 +188,13 @@ def employee_list(request):
 @login_required
 def vehicle_list(request):
     vehicles = Vehicle.objects.all()
-    return render(request, 'lists/vehicle_list.html', {'vehicles': vehicles}
-                  )
+    return render(request, 'lists/vehicle_list.html', {'vehicles': vehicles})
+
+@login_required
+def inventory_list(request):
+    inventories = Inventory.objects.all()
+    return render(request, 'lists/inventory_list.html', {'inventory': inventories})
+
 @login_required
 def trips_list(request):
     trips = Trip.objects.all()
@@ -213,7 +218,7 @@ def edit_trip(request, trip_id):
             up_trip.actual_end_time = form.cleaned_data['actual_end_time']
             up_trip.status = form.cleaned_data['status']
             up_trip.save()
-            
+
             return redirect('trips_list')
     else:
         form = TripsForm(instance=trip)
