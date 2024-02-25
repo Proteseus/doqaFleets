@@ -1,6 +1,7 @@
 django
 django-extensions
 django-widget-tweaks
+django-tailwind
 folium
 requests
 polyline
