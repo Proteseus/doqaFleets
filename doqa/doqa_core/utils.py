@@ -77,4 +77,3 @@ def find_city(location):
         print(f"Error: {response.status_code}, {response.text}")
         return {'status': response.status_code, 'message': response.text}
 
-find_address('50.1158056,8.6786751')

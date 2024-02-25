@@ -10,7 +10,7 @@ urlpatterns = [
     path('selectors/', pre_route, name='selectors'),
     
 #    path('map/', map, name='map'),
-    path('route/<str:lat1>,<str:long1>,<str:lat2>,<str:long2>/', showroute, name='showroute'),
+    path('route/<str:lat1>,<str:long1>,<str:start_name>,<str:lat2>,<str:long2>,<str:end_name>/', showroute, name='showroute'),
     #path('showroute/<str:lat1>,<str:long1>,<str:lat2>,<str:long2>/', showroute, name='showroute_with_params'),
     # path('', showroute, name='showroute'),
     path('routed/<str:lat1>,<str:long1>,<str:lat2>,<str:long2>', showroute, name='showroute_updated'),

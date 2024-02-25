@@ -23,8 +23,8 @@ def login_(request):
             user = form.get_user()
             login(request, user)
             return redirect('dashboard')
-        else:
-            messages.error(request, 'Invalid login credentials')
+        #else:
+            #messages.error(request, 'Invalid login credentials')
     else:
         form = LoginForm()
 
@@ -40,7 +40,7 @@ def dashboard(request):
     vehicle_count = Vehicle.objects.count()
     employee_count = Employee.objects.count()
     maintenance_order_count = Maintenance.objects.count()
-    trip_count = Trip.objects.count()
+    trip_count = Trip.objects.filter(status='PENDING').count()
 
     trip_data = Trip.objects.all()
 
@@ -49,7 +49,7 @@ def dashboard(request):
         'employee_count': employee_count,
         'maintenance_order_count': maintenance_order_count,
         'trip_count': trip_count,
-        'trip_data': trip_data,
+        'trips': trip_data,
     }
 
     return render(request, 'dashboard.html', context)
@@ -73,7 +73,7 @@ def get_options(request):
             loc = coordinates(selector)
             options = []
             options.append({'label': loc[0], 'value': loc[1]})
-            response_data = "\n".join([f'<option value="{option["value"]}">{option["label"]}</option>' for option in options])
+            response_data = "\n".join([f'<option value="{option["value"]}, {option["label"]}">{option["label"]}</option>' for option in options])
 
         return HttpResponse(response_data)
 
@@ -81,17 +81,19 @@ def result(request):
     route = ""
     for key in request.POST.keys():
         if key in ['start_location', 'end_location']:
+            print(request.POST.get(key))
             route += request.POST.get(key).replace(" ", "")
             if key == 'start_location':
                 route += ","
     coords = route.split(',')
     showroute_url = f'/route/{route}'
-    return redirect('showroute', lat1=coords[0], long1=coords[1], lat2=coords[2], long2=coords[3])
+    return redirect('showroute', lat1=coords[0], long1=coords[1], start_name=coords[2], lat2=coords[3], long2=coords[4], end_name=coords[5])
 
 @login_required
-def showroute(request, lat1='default_lat1', long1='default_long1', lat2='default_lat2', long2='default_long2'):
+def showroute(request, lat1=None, long1=None, start_name=None, lat2=None, long2=None, end_name=None):
     figure = folium.Figure()
-    lat1, long1, lat2, long2 = float(lat1), float(long1), float(lat2), float(long2)
+    if lat1 is not None:
+        lat1, long1, lat2, long2 = float(lat1), float(long1), float(lat2), float(long2)
     route = get_route(long1, lat1, long2, lat2)
     # print("\n#ROUTE: ", route) 
     m = folium.Map(location=[route['start_point'][0], route['start_point'][1]], zoom_start=10)
@@ -106,6 +108,8 @@ def showroute(request, lat1='default_lat1', long1='default_long1', lat2='default
     initial_form_data = {
         'start_location': Point(route['start_point'][1], route['start_point'][0]),
         'end_location': Point(route['end_point'][1], route['end_point'][0]),
+        'start_location_name': start_name,
+        'end_location_name': end_name
     }
     
     form = TripsForm(initial=initial_form_data)
@@ -206,7 +210,9 @@ def trips_list(request):
 @login_required
 def trip_detail(request, trip_id):
     trip = get_object_or_404(Trip, id=trip_id)
-    return render(request, 'details/trip_details.html', {'trip': trip})
+    driver = get_object_or_404(Employee, name=trip.driver_id)
+    vehicle = get_object_or_404(Vehicle, id=trip.vehicle.id)
+    return render(request, 'details/trip_details.html', {'trip': trip, 'driver': driver, 'vehicle': vehicle})
 
 @login_required
 def edit_trip(request, trip_id):
