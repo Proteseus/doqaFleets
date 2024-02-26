@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.gis',
     'widget_tweaks',
     'django_extensions',
+    'tailwind',
     'doqa_core'
 ]
 
@@ -138,6 +139,8 @@ MEDIA_ROOT = BASE_DIR/'media'
 MEDIA_URL = '/media/'
 
 LOGIN_URL = '/login/'
+
+TAILWIND_APP_NAME = 'doqa_core'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
