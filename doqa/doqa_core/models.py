@@ -3,21 +3,6 @@ from django.contrib.gis.db.models import PointField
 from django.db import models
 from django.contrib.auth.models import User
 
-class Vehicle(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    registration_number = models.CharField(max_length=20)
-    image = models.ImageField(upload_to ='uploads/vehicles/', null=True)
-    make = models.CharField(max_length=50)
-    model = models.CharField(max_length=50)
-    year = models.IntegerField()
-    current_location = PointField(null=True, blank=True)
-    last_maintenance_date = models.DateField(null=True, blank=True)
-    next_maintenance_date = models.DateField(null=True, blank=True)
-    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, editable=False)
-
-    def __str__(self):
-        return self.registration_number
-
 class Employee(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100)
@@ -27,6 +12,22 @@ class Employee(models.Model):
 
     def __str__(self):
         return self.name
+
+class Vehicle(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    registration_number = models.CharField(max_length=20)
+    image = models.ImageField(upload_to ='uploads/vehicles/', null=True)
+    make = models.CharField(max_length=50)
+    model = models.CharField(max_length=50)
+    year = models.IntegerField()
+    driver_id = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='trips')
+    current_location = PointField(null=True, blank=True)
+    last_maintenance_date = models.DateField(null=True, blank=True)
+    next_maintenance_date = models.DateField(null=True, blank=True)
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, editable=False)
+
+    def __str__(self):
+        return self.registration_number
 
 class Alert(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -67,7 +68,6 @@ class Report(models.Model):
 class Trip(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE)
-    driver_id = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='trips')
     start_location_name = models.CharField()
     start_location = PointField()
     end_location_name = models.CharField()

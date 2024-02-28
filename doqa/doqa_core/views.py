@@ -198,6 +198,21 @@ def vehicle_list(request):
     return render(request, 'lists/vehicle_list.html', {'vehicles': vehicles})
 
 @login_required
+def vehicle_detail(request, vehicle_id):
+    vehicle = get_object_or_404(Vehicle, id=vehicle_id)
+    maintenance_orders = Maintenance.objects.filter(vehicle=vehicle.registration_number)
+    trips = Trip.objects.filter(vehicle=vehicle.registration_number)
+
+    context = {
+        'vehicle': vehicle,
+        'maintenance_orders': maintenance_orders,
+        'trips': trips,
+    }
+
+    return render(request, 'details/vehicle_details.html', context)
+
+
+@login_required
 def inventory_list(request):
     inventories = Inventory.objects.all()
     return render(request, 'lists/inventory_list.html', {'inventory': inventories})

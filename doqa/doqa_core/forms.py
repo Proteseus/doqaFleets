@@ -36,7 +36,7 @@ class TripsForm(forms.ModelForm):
     #fuax_loc = forms.CharField(widget=forms.TextInput())
     class Meta:
         model = Trip
-        fields = ['vehicle', 'driver_id', 'planned_start_time', 'planned_end_time', 'start_location', 'end_location']
+        fields = ['vehicle', 'planned_start_time', 'planned_end_time', 'start_location', 'end_location']
         widgets = {
             'planned_start_time': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
             'planned_end_time': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
