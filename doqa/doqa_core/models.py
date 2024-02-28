@@ -46,7 +46,7 @@ class Maintenance(models.Model):
     description = models.TextField()
     scheduled_date = models.DateField()
     completed_date = models.DateField(null=True, blank=True)
-    status = models.CharField(max_length=10)
+    status = models.CharField(max_length=10, default='PENDING')
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, editable=False)
 
     def __str__(self):

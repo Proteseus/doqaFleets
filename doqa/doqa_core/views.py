@@ -136,7 +136,7 @@ def create_employee(request):
     if request.method == 'POST':
         form = EmployeeForm(request.POST)
         if form.is_valid():
-            emp = form.save(commit=False)
+            emp = form.save(commit=True)
             emp.created_by = request.user
             emp.save()
             return redirect('employee_list')
@@ -150,13 +150,14 @@ def create_maintenance(request):
     if request.method == 'POST':
         form = MaintenanceForm(request.POST)
         if form.is_valid():
-            instance = form.save(commit=False)
-            instance.save()
-            return redirect('vehicle_detail')
+            m_order = form.save(commit=True)
+            m_order.created_by = request.user
+            m_order.save()
+            return redirect('vehicle_detail', form.cleaned_data['vehicle'].id)
     else:
         form = MaintenanceForm()
 
-    return render(request, 'create_vehicle.html', {'form': form})
+    return render(request, 'details/vehicle_details.html', {'form': form})
 
 
 @login_required
@@ -172,7 +173,7 @@ def create_trip(request):
     else:
         form = TripsForm()
 
-    return redirect('showroute')
+    return redirect('trips_list')
 
 @login_required
 def create_inventory(request):
@@ -190,7 +191,8 @@ def create_inventory(request):
 @login_required
 def employee_list(request):
     employees = Employee.objects.all()
-    return render(request, 'lists/employee_list.html', {'employees': employees})
+    form = EmployeeForm()
+    return render(request, 'lists/employee_list.html', {'employees': employees, 'form': form})
 
 @login_required
 def vehicle_list(request):
@@ -200,13 +202,18 @@ def vehicle_list(request):
 @login_required
 def vehicle_detail(request, vehicle_id):
     vehicle = get_object_or_404(Vehicle, id=vehicle_id)
-    maintenance_orders = Maintenance.objects.filter(vehicle=vehicle.registration_number)
-    trips = Trip.objects.filter(vehicle=vehicle.registration_number)
+    driver = Employee.objects.filter(id=vehicle.driver_id_id)
+    maintenance_orders = Maintenance.objects.filter(vehicle=vehicle_id)
+    trips = Trip.objects.filter(vehicle=vehicle_id)
+
+    form = MaintenanceForm()
 
     context = {
         'vehicle': vehicle,
+        'driver': driver,
         'maintenance_orders': maintenance_orders,
         'trips': trips,
+        'form': form
     }
 
     return render(request, 'details/vehicle_details.html', context)

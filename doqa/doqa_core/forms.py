@@ -1,4 +1,5 @@
 from django import forms
+from django.utils.http import formatdate
 from .models import Vehicle, Employee, Maintenance, Trip, Inventory
 from django.contrib.gis.forms import PointField
 from django.contrib.gis.geos import Point
@@ -30,18 +31,24 @@ class EmployeeForm(forms.ModelForm):
 class MaintenanceForm(forms.ModelForm):
     class Meta:
         model = Maintenance
-        fields = '__all__'
+        fields = ['vehicle', 'description', 'scheduled_date', 'status']
+        widgets = {
+                'vehicle': forms.TextInput(),
+                'scheduled_date': forms.DateInput(attrs={'type': 'date'})
+                }
 
 class TripsForm(forms.ModelForm):
     #fuax_loc = forms.CharField(widget=forms.TextInput())
     class Meta:
         model = Trip
-        fields = ['vehicle', 'planned_start_time', 'planned_end_time', 'start_location', 'end_location']
+        fields = ['vehicle', 'planned_start_time', 'planned_end_time', 'start_location', 'end_location', 'start_location_name', 'end_location_name']
         widgets = {
             'planned_start_time': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
             'planned_end_time': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
             'start_location': forms.TextInput(attrs={'type': 'location-input'}),
             'end_location': forms.TextInput(attrs={'type': 'location-input'}),
+            'start_location_name': forms.TextInput(attrs={'type': 'location-input'}),
+            'end_location_name': forms.TextInput(attrs={'type': 'location-input'}),
         }
 
     STATUS_CHOICES = [
