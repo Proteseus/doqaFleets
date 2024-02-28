@@ -1,31 +1,190 @@
 {% extends '../base.html' %}
+{% load static %}
 
 {% block content %}
-  <h2>Vehicle List</h2>
+<body>
+    <div class="w-full h-screen relative bg-white overflow-hidden flex flex-row items-start justify-start text-left text-[1.5rem] text-foundation-grey-normal font-satoshi-body-small">
+        <!-- Main Screen -->
+        <div class="self-stretch flex-1 flex flex-col items-start justify-start">
+            <!-- Header -->
+            <div class="self-stretch bg-foundation-white-light flex flex-col items-start justify-start py-[1.25rem] px-[2.25rem] gap-[0.75rem_0rem] border-b-[1px] border-solid border-foundation-white-normal-hover">
+                <div class="self-stretch overflow-hidden flex flex-row items-center justify-start gap-[0rem_2rem]">
+                    <div class="flex-1 relative leading-[120%] font-medium">
+                        Vehicle Management
+                    </div>
+                    <div class="flex flex-row items-center justify-start gap-[0rem_0.5rem] text-[1rem]">
+                        <img class="w-[1.5rem] relative h-[1.5rem]" alt="" src="{% static "img/solarlogin3boldduotone.a3232c09.svg" %}">
+                        <a href="{% url 'logout' %}" onclick="return confirm('Are you sure you want to logout?');" class="relative leading-[120%]">Logout</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Header -->
 
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Registration Number</th>
-        <th>Make</th>
-        <th>Model</th>
-        <th>Year</th>
-        <th>Last Maintenance</th>
-        <th>Next Maintenance</th>
+            <!-- Title and text -->
+            <div class="self-stretch flex flex-col items-start justify-center pt-[2.25rem] px-[2rem] pb-[1.5rem] gap-[1.5rem_0rem] text-[2rem]">
+                <div class="self-stretch flex flex-row items-start justify-between py-[0rem] pr-[2rem] pl-[0rem]">
+                    <div class="relative leading-[120%] font-medium">
+                        Vehicle Overview
+                    </div>
+                    <div class="flex flex-row items-start justify-start gap-[0rem_1.5rem] text-[1.25rem] text-foundation-green-normal">
+                        <button id="openDrawerBtn2" class="text-xl rounded-rounded-lg cursor-pointer py-boundvariablesdata4 px-boundvariablesdata9 border-[1px] border-solid border-foundation-green-normal text-foundation-green-normal bg-white hover:bg-foundation-white-light-active">
+                            New Vehicle
+                        </button>
+                        <button id="openDrawerBtn" class="font-medium text-xl cursor-pointer rounded-rounded-lg bg-foundation-green-normal text-white hover:bg-foundation-green-normal-hover overflow-hidden py-boundvariablesdata4 px-boundvariablesdata9 ">
+                            Schedule Maintenance
+                        </button>
+                    </div>
+                </div>
+                <!--* Schedule Maintainance Drawer -->
+                <!--* don't fucking ask me why 88vh works. It just does -->
+                <section id="drawer" class="h-[88vh] overflow-y-scroll hidden fixed top-[87.2px] right-0 overflow-x-hidden transition-all duration-500 z-10 bg-foundation-white-light box-border overflow-hidden flex-col items-start justify-start p-[2.25rem] text-left text-[1.5rem] text-foundation-white-dark-active font-satoshi-body-small border-l-[1px] border-solid border-foundation-white-normal-hover">
+                    <div class="self-stretch flex flex-col items-start justify-start gap-[2.5rem_0rem]">
+                        <div class="self-stretch flex flex-row items-center justify-between text-center">
+                            <div class="relative leading-[120%] font-medium">
+                                Schedule Maintenance
+                            </div>
+                            <div id="closeDrawerBtn" class="px-2 py-2 cursor-pointer">
+                                <img class="w-[1.25rem] relative h-[1.25rem]" alt="" src="{% static "img/solardoublealtarrowrightlineduotone.99509c5d.svg" %}">
+                            </div>
+                        </div>
+                        <form class="self-stretch flex flex-col items-start justify-start gap-[1.5rem_0rem] text-base text-foundation-grey-normal">
+                            <div class="w-full">
+                                <label for="vehicleId" class="block mb-2">Vehicle ID</label>
+                                <input type="text" name="vehicleId" id="vehicleId" class="w-[90%] rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" placeholder="A23143" required="">
+                            </div>
+                            <div class="w-full">
+                                <label for="description" class="block mb-2">Description</label>
+                                <textarea name="description" id="description" class="w-[90%] h-44 rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" placeholder="What's wrong with the vehicle?" required=""></textarea>
+                            </div>
+                            <div class="w-full">
+                                <label for="scheduledDate" class="block mb-2 text-base">Scheduled Date</label>
+                                <input type="date" name="scheduledDate" id="scheduledDate" class="w-[90%] rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" required="">
+                            </div>
 
-      </tr>
-    </thead>
-    <tbody>
-      {% for vehicle in vehicles %}
-        <tr>
-          <td>{{ vehicle.registration_number }}</td>
-          <td>{{ vehicle.make }}</td>
-          <td>{{ vehicle.model }}</td>
-          <td>{{ vehicle.year }}</td>
-          <td>{{ vehicle.last_maintenance_date }}</td>
-          <td>{{ vehicle.next_maintenance_date }}</td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+                        </form>
+                        <!--* Buttons Container -->
+                        <div class="self-stretch flex flex-row items-start justify-between py-2 px-0">
+                            <button id="closeDrawerBtnCancel" class="w-[10.688rem] text-xl text-foundation-red-normal cursor-pointer hover:bg-foundation-white-light-active bg-transparent rounded-rounded-lg py-boundvariablesdata4 px-boundvariablesdata9 border-[1px] border-solid border-foundation-red-normal">
+                                Cancel
+                            </button>
+                            <!-- Form submit button -->
+                            <button type="submit" class="w-[10.688rem] text-xl rounded-rounded-lg bg-foundation-green-normal text-white cursor-pointer hover:bg-foundation-green-normal-hover overflow-hidden py-boundvariablesdata4 px-boundvariablesdata9 ">
+                                Next
+                            </button>
+                        </div>
+                        <!--* Buttons Container -->
+                    </div>
+                </section>
+
+                <!--* Schedule Maintainance Drawer -->
+                <!--* New Vehicle and Vehicle Detail Drawer -->
+                <section id="drawer2" class=" h-[88vh] overflow-y-scroll hidden fixed top-[87.2px] right-0 overflow-x-hidden transition-all duration-500 z-10 bg-foundation-white-light box-border overflow-hidden flex-col items-start justify-start p-[2.25rem] text-left text-[1.5rem]  font-satoshi-body-small border-l-[1px] border-solid border-foundation-white-normal-hover">
+                    <form class="self-stretch pb-12 flex flex-col items-start justify-start gap-[1.5rem_0rem] text-base">
+                        <!-- New Vehicle title and close arrow -->
+                        <div class="self-stretch flex flex-row items-center justify-between text-center">
+                            <div class="relative pb-4 leading-[120%] font-medium text-5xl text-foundation-white-dark-active">
+                                New Vehicle
+                            </div>
+                            <div id="closeDrawerBtn2" class="px-2 py-2 cursor-pointer">
+                                <img class="w-[1.25rem] relative h-[1.25rem]" alt="" src="{% static "img/solardoublealtarrowrightlineduotone.99509c5d.svg" %}">
+                            </div>
+                        </div>
+                        <!-- New Vehicle title and close arrow -->
+                        <div class="w-full">
+                            <label for="registrationNumber" class="block mb-2">Registration Number</label>
+                            <input type="text" name="registrationNumber" id="registrationNumber" class="w-[90%] rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" placeholder="A23143" required="">
+                        </div>
+                        <div class="w-full">
+                            <label for="make" class="block mb-2">Make</label>
+                            <input type="text" name="make" id="make" class="w-[90%] rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" placeholder="IVECO" required="">
+                        </div>
+                        <div class="w-full">
+                            <label for="model" class="block mb-2">Model</label>
+                            <input type="text" name="model" id="model" class="w-[90%] rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" placeholder="Daily 4x4" required="">
+                        </div>
+                        <div class="w-full">
+                            <label for="year" class="block mb-2">Year</label>
+                            <input type="number" maxlength="4" name="year" id="year" class="w-[90%] rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" placeholder="2021" required="">
+                        </div>
+                    </form>
+                    <!--* Buttons Container -->
+                    <div class="self-stretch flex flex-row items-start justify-between py-2 px-0">
+                        <button id="closeDrawerBtn" class="w-[10.688rem] text-xl text-foundation-red-normal cursor-pointer hover:bg-foundation-white-light-active bg-transparent rounded-rounded-lg py-boundvariablesdata4 px-boundvariablesdata9 border-[1px] border-solid border-foundation-red-normal">
+                            Cancel
+                        </button>
+                        <!-- Form submit button -->
+                        <button type="submit" class="w-[10.688rem] text-xl rounded-rounded-lg bg-foundation-green-normal text-white cursor-pointer hover:bg-foundation-green-normal-hover overflow-hidden py-boundvariablesdata4 px-boundvariablesdata9 ">
+                            Add
+                        </button>
+                    </div>
+                    <!--* Buttons Container -->
+                </section>
+                <!--* New Vehicle and Vehicle Detail Drawer -->
+
+
+                <!-- Vehicle Table -->
+                <div class="relative overflow-x-auto py-6 px-9">
+                    <table class="w-full text-base text-left">
+                        <thead class="text-foundation-white-dark-active bg-foundation-grey-light">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">Registration Number</th>
+                                <th scope="col" class="px-6 py-3">Make</th>
+                                <th scope="col" class="px-6 py-3">Model</th>
+                                <th scope="col" class="px-6 py-3">Year</th>
+                                <th scope="col" class="px-6 py-3">Next Maintenance</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for vehicle in vehicles %}
+                                <tr data-href="{% url 'vehicle_detail' vehicle.id %}" class="hover: cursor-pointer hover:bg-foundation-white-light-active">
+                                    <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap">{{ vehicle.registration_number }}</th>
+                                    <td class="px-6 py-4">{{ vehicle.make }}</td>
+                                    <td class="px-6 py-4">{{ vehicle.model }}</td>
+                                    <td class="px-6 py-4">{{ vehicle.year }}</td>
+                                    <td class="px-6 py-4">{{ vehicle.next_maintenance_date }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Vehicle Table -->
+            </div>
+            <!-- Main Screen -->
+        </div>
+
+
+        <script>
+            const openDrawerBtn = document.getElementById("openDrawerBtn");
+            const openDrawerBtn2 = document.getElementById("openDrawerBtn2");
+            const closeDrawerBtn = document.getElementById("closeDrawerBtn");
+            const closeDrawerBtnCancel = document.getElementById("closeDrawerBtnCancel");
+            const closeDrawerBtn2 = document.getElementById("closeDrawerBtn2");
+            const drawer = document.getElementById("drawer");
+            const drawer2 = document.getElementById("drawer2");
+            openDrawerBtn.addEventListener("click", ()=>{
+                drawer.style.display = "flex";
+                drawer.style.width = "480px";
+            });
+            openDrawerBtn2.addEventListener("click", ()=>{
+                drawer2.style.display = "flex";
+                drawer2.style.width = "480px";
+            });
+            closeDrawerBtn.addEventListener("click", ()=>{
+                drawer.style.display = "none";
+            });
+            closeDrawerBtn2.addEventListener("click", ()=>{
+                drawer2.style.display = "none";
+            });
+            //For the Cancel button
+            closeDrawerBtnCancel.addEventListener("click", ()=>{
+                drawer.style.display = "none";
+            });
+            //Navigates to vehicle detail for each table entry
+            const tableRows = document.querySelectorAll(" tbody tr");
+            for (const tableRow of tableRows)tableRow.addEventListener("click", function() {
+                window.open(this.dataset.href, "_blank"); // opening it in a new tab
+            });
+        </script>
+    </div>
+</body>
 {% endblock %}

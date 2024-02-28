@@ -1,13 +1,164 @@
 {% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block extra_head %}
+    {{ map.header.render|safe }}
+{% endblock %}
 
 {% block content %}
-<h2>Edit Trip</h2>
+<body>
+    <div class="w-full relative bg-white h-screen flex flex-row items-start justify-start text-left text-[1.5rem] text-foundation-grey-normal font-satoshi-body-small">
+        <!-- Main Screen -->
 
-    <form method="post" action="{% url 'edit_trip' trip.id %}">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Update Trip</button>
-    </form>
+        <div class="self-stretch flex flex-col items-start justify-start">
+            <div class="w-full bg-foundation-white-light box-border flex flex-col items-start justify-start py-[1.25rem] px-[2.25rem] border-b-[1px] border-solid border-foundation-white-normal-hover">
+                <!-- Header -->
+                <div class="self-stretch overflow-hidden flex flex-row items-center justify-start gap-[0rem_2rem]">
+                    <div class="flex-1 relative leading-[120%] font-medium">
+                        Trip Management
+                    </div>
+                    <!-- Search Container -->
+                    <div class="w-[27.5rem] flex flex-row items-center justify-start gap-[0.5rem_0rem] text-[0.875rem] text-gray-900 font-text-xs-font-normal">
+                        <!-- Search bar with it's icon -->
+                        <img class="z-10 left-8 w-[1rem] relative h-[1rem] object-cover before:left-5" alt="" src="/solarmagniferlineduotone@2x.fef703b1.png">
+                        <input placeholder="Search" class="ps-10 w-4/5 rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active">
+                        <!-- Search bar with it's icon END-->
+                    </div>
+                    <!-- Search Container -->
 
-    <a href="{% url 'trip_detail' trip.id %}">Back to Trip Detail</a>
+                    <div class="flex flex-row items-center justify-start gap-[0rem_0.5rem] text-[1rem]">
+                        <img class="w-[1.5rem] relative h-[1.5rem]" alt="" src="/solarlogin3boldduotone.a3232c09.svg">
+
+                        <div class="relative leading-[120%]">Logout</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Header -->
+
+            <div class="w-screen flex-1 flex flex-col items-start justify-start text-[0.75rem]">
+                <!-- Render map in here -->
+                <div class="w-full h-full relative overflow-hidden shrink-0 map-object">
+                    {% if map %}
+                    {{ map.html.render|safe }}
+                    <script>
+                        {{ map.script.render|safe }}
+                    </script>
+                    {% endif %}
+                </div>
+                <!-- Render map here -->
+                <button id="openDrawerBtn" class="fixed top-32 right-16 z-10 font-medium cursor-pointer rounded-rounded-lg bg-foundation-green-normal text-white hover:bg-foundation-green-normal-hover flex flex-row items-center justify-center overflow-hidden py-boundvariablesdata4 px-boundvariablesdata9 gap-2 w-fit text-[1.25rem] text-white">
+                    <img class="w-[1.25rem] relative h-[1.25rem]" alt="" src="/double-alt-arrow-left-white.14ea06f8.svg">
+                    Edit Trip
+                </button>
+
+                <!--  Drawer -->
+                <!--* don't fucking ask me why 88vh works. It just does -->
+                <section id="drawer" class="h-[88vh] flex w-[480px] fixed top-[87.2px] right-0 overflow-y-scroll overflow-x-hidden transition-all duration-500 z-10 bg-foundation-white-light box-border shrink-0 flex-col items-start justify-start p-[2.25rem] gap-[1.5rem_0rem] text-center text-[1rem] text-foundation-white-dark-active border-l-[1px] border-solid border-foundation-white-normal-hover">
+                    <!-- New trip title and close arrow -->
+                    <div class="self-stretch flex flex-row items-center justify-start text-left text-foundation-grey-normal">
+                        <b class="flex-1 relative leading-[120%]">Edit Trip Details</b>
+                        <div id="closeDrawerBtn" class="px-2 py-2 cursor-pointer">
+                            <img class="w-[1.25rem] relative h-[1.25rem]" alt="" src="{% static "img/solardoublealtarrowrightlineduotone.99509c5d.svg" %}">
+                        </div>
+                    </div>
+                    <!-- New trip title and close arrow -->
+                    <form method="post" action="{% url 'edit_trip' trip.id %}" class="w-full">
+                        {% csrf_token %}
+<div class="self-stretch flex flex-col items-start justify-start text-left text-[0.75rem] text-foundation-grey-normal">
+                            <div class="self-stretch overflow-hidden flex flex-row items-center justify-between py-boundvariablesdata1 px-[0rem] text-center text-[1rem] text-foundation-blue-normal">
+                                <!-- Location Info -->
+                                <div class="flex flex-row items-center justify-between w-full gap-[0.875rem_0rem] text-left text-[0.75rem] text-foundation-white-dark-active">
+                                    <div class="flex flex-row items-center justify-start">
+                                        <div class="flex flex-col items-start justify-start gap-[0.25rem_0rem]">
+                                            <b class="relative leading-[120%]">{{ form.start_location }}</b>
+                                            <b class="relative leading-[120%]">{{ form.start_location_name }}</b>
+                                            <div class="relative text-[0.625rem] leading-[120%]">
+                                                Start Location
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-row items-center justify-start">
+                                        <div class="flex flex-col items-start justify-start gap-[0.25rem_0rem]">
+                                            <b class="relative leading-[120%]">{{ form.end_location }}</b>
+                                            <b class="relative leading-[120%]">{{ form.end_location_name }}</b>
+                                            <div class="relative text-[0.625rem] leading-[120%]">
+                                                End Location
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Location Info -->
+                            </div>
+                        </div>
+                        <div class="self-stretch relative box-border h-[0.063rem] border-t-[1px] border-solid border-gray-200"></div>
+                        <!-- Schedule Details -->
+                        <div class="flex flex-col items-start justify-start gap-2 py-6">
+                            <b class="relative leading-[120%]">Assign Schedule</b>
+                            <div class="self-stretch flex flex-col items-start justify-start gap-[1.5rem_0rem] text-left text-foundation-grey-normal">
+                                <div class="w-full flex flex-col items-start py-2">
+                                    <label for="startingTimeDate" class="block mb-2 text-foundation-grey-normal">Planned Start Time</label>
+                                    {% render_field form.planned_start_time class="w-[90%] rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" placeholder="2456789" required="" %}
+                                </div>
+                                <div class="w-full flex flex-col items-start py-2">
+                                    <label for="endTimeDate" class="block mb-2 text-foundation-grey-normal">Planned End Time</label>
+                                    {% render_field form.planned_end_time class="w-[90%] rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" placeholder="" required="" %}
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Schedule Details -->
+                        <div class="self-stretch relative box-border h-[0.063rem] border-t-[1px] border-solid border-gray-200"></div>
+
+                        <!-- Vehicle Details -->
+                        <div class="flex flex-col items-start justify-start gap-2 py-6">
+                            <b class="relative leading-[120%]"> Assign Vehicle</b>
+                            <div class="self-stretch flex flex-col items-start justify-start gap-[1.5rem_0rem] text-left text-foundation-grey-normal">
+                                <div class="w-full flex flex-col items-start py-2">
+                                    <label for="registrationNumber" class="block mb-2">Vehicle License Plate</label>
+                                    {% render_field form.vehicle readonly=True class="w-[90%] rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" placeholder="A23143" required="" %}
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Vehicle Details -->
+                        <!-- Status -->
+                        <div class="flex flex-col items-start justify-start gap-2 py-6">
+                            <b class="relative leading-[120%]">Status</b>
+                            <div class="self-stretch flex flex-col items-start justify-start gap-[1.5rem_0rem] text-left text-foundation-grey-normal">
+                                <div class="w-full flex flex-col items-start py-2">
+                                    <label for="registrationNumber" class="block mb-2">Change Status</label>
+                                    {% render_field form.status class="w-[98%] rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" required="" %}
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Status -->
+                        <!--* Buttons Container -->
+                        <div class="self-stretch flex flex-row items-start justify-between py-2 px-0">
+                            <!-- ! Return to trip management page -->
+                            <button id="closeDrawerBtn" class="min-w-[10.688rem] text-xl text-foundation-red-normal cursor-pointer hover:bg-foundation-white-light-active bg-transparent rounded-rounded-lg py-boundvariablesdata4 px-boundvariablesdata9 border-[1px] border-solid border-foundation-red-normal">
+                                Cancel
+                            </button>
+                            <!-- Form submit button -->
+                            <button type="submit" class="w-[10.688rem] text-xl rounded-rounded-lg bg-foundation-green-normal text-white cursor-pointer hover:bg-foundation-green-normal-hover overflow-hidden py-boundvariablesdata4 px-boundvariablesdata9 border-[1px] border-solid border-foundation-green-normal">
+                                Save
+                            </button>
+                        </div>
+                    </form>
+                </section>
+                <!-- Drawer -->
+            </div>
+        </div>
+    </div>
+    <script>const openDrawerBtn = document.getElementById("openDrawerBtn");
+        const closeDrawerBtn = document.getElementById("closeDrawerBtn");
+        const drawer = document.getElementById("drawer");
+        openDrawerBtn.addEventListener("click", ()=>{
+            drawer.style.display = "flex";
+            drawer.style.width = "480px";
+        });
+        closeDrawerBtn.addEventListener("click", ()=>{
+            drawer.style.display = "none";
+        });
+
+    </script>
+    <script src="/EditTrip.e100f903.js"></script>
+</body>
 {% endblock %}

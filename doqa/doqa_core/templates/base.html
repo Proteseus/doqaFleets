@@ -1,3 +1,5 @@
+{% load static tailwind_tags %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,47 +7,84 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}doqaFleets{% endblock %}</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    {% block extra_head %}{% endblock %}
-</head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="{% url 'selectors' %}">doqaFleets</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'employee_list' %}">Employees</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'vehicle_list' %}">Vehicles</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'trips_list' %}">Trips</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'inventory_list' %}">Inventory</a>
-            </li>
-            {% if user.is_authenticated %}
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-danger" href="{% url 'logout' %}">Logout</a>
-                    </li>
-                </ul>
-            {% endif %}
-          </ul>
-        </div>
-    </nav>
+    <link rel="stylesheet" href="{% static 'css/gb.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/Dashboard.css' %}" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space Grotesk:wght@400;500&display=swap">
 
-    <div class="container mt-5">
-        {% block content %}
-        {% endblock %}
-    </div>
+    <style>
+    @font-face {
+        font-family: Satoshi;
+        src: url("{% static "otf/Satoshi-Regular.43133080.otf" %}");
+        font-weight: 400;
+    }
 
+    @font-face {
+        font-family: Satoshi;
+        src: url("{% static "otf/Satoshi-Medium.f335f454.otf" %}");
+        font-weight: 500;
+    }
+
+    @font-face {
+        font-family: Satoshi;
+        src: url("{% static "otf/Satoshi-Bold.326d1817.otf" %}");
+        font-weight: 700;
+    }
+    </style>
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
+    {% tailwind_css %}
+    {% block extra_head %}{% endblock %}
+</head>
+<section>
+  <!-- * If we don't this div the frame duplicates 
+         * the side bar 3 times. We need this div.
+    * -->
+  <div class="h-screen m-auto w-full flex flex-row">
+    <!-- Side Bar -->
+    <div class="w-[5rem] bg-foundation-white-light box-border h-full flex flex-col items-center justify-between border-r-[1px] border-solid border-foundation-white-normal-hover">
+        <img class="w-[5rem] relative h-[5rem]" alt="" src="{% static "img/logo-container.054a5658.svg" %}">
+      <!-- Navigation -->
+      <nav class="flex-1 overflow-hidden flex flex-col items-center justify-around">
+        <ul class="rounded-mini bg-foundation-green-light flex flex-col items-center justify-start p-[0.125rem] gap-6 mb-8">
+          <li class="rounded-mini flex flex-row items-center justify-start py-4 px-5 active:bg-foundation-green-light border-[1px] border-solid border-foundation-green-light-active shadow-[0px_4px_4px_rgba(0,_0,_0,_0.08),_0px_4px_8px_rgba(50,_50,_71,_0.01)]">
+              <a style="min-width: 20px" href="{% url 'dashboard' %}">
+                  <img class="w-[1rem] relative h-[1rem] overflow-hidden shrink-0" alt="dashboard_icon" src="{% static "img/solarwidget4boldduotone.9680120d.svg" %}">
+            </a>
+          </li>
+          <li class="rounded-mini overflow-hidden flex flex-row items-center justify-start py-4 px-5">
+              <a style="min-width: 20px" href="{% url 'trips_list' %}">
+                  <img class="w-[1rem] relative h-[1rem] overflow-hidden shrink-0" alt="trip_icon" src="{% static "img/solarrouting3lineduotone.983e010b.svg" %}">
+            </a>
+          </li>
+          <li class="rounded-mini overflow-hidden flex flex-row items-center justify-start py-4 px-5">
+              <a style="min-width: 20px" href="{% url 'vehicle_list' %}">
+                  <img class="w-[1rem] relative h-[1rem] overflow-hidden shrink-0" alt="vehicle_icon" src="{% static "img/solarbuslineduotone.44930932.svg" %}">
+            </a>
+          </li>
+          <li class="rounded-mini overflow-hidden flex flex-row items-center justify-start py-4 px-5">
+              <a style="min-width: 20px" href="{% url 'employee_list' %}">
+                  <img class="w-[1rem] relative h-[1rem] overflow-hidden shrink-0" alt="drivers_icon" src="{% static "img/solarusersgrouproundedlineduotone.a200ef7b.svg" %}">
+            </a>
+          </li>
+          <li class="rounded-mini overflow-hidden flex flex-row items-center justify-start py-4 px-5">
+              <a style="min-width: 20px" href="{% url 'inventory_list' %}">
+                  <img class="w-[1rem] relative h-[1rem] overflow-hidden shrink-0" alt="inventory_icon" src="{% static "img/solarusersgrouproundedlineduotone.a200ef7b.svg" %}">
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <!-- Navigation -->
+    </div>
+    <!-- Side Bar -->
+
+    <!-- Main Screen rendered in here-->
+    {% block content %}
+
+    {% endblock %}
+    <!-- Main Screen rendered in here-->
+  </div>
+</section>
 </html>
