@@ -20,7 +20,7 @@ class Vehicle(models.Model):
     make = models.CharField(max_length=50)
     model = models.CharField(max_length=50)
     year = models.IntegerField()
-    driver_id = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='trips')
+    driver_id = models.ForeignKey(Employee, on_delete=models.CASCADE)
     current_location = PointField(null=True, blank=True)
     last_maintenance_date = models.DateField(null=True, blank=True)
     next_maintenance_date = models.DateField(null=True, blank=True)

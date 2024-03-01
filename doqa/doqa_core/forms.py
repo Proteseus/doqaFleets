@@ -16,12 +16,10 @@ class LoginForm(AuthenticationForm):
     )
 
 class VehicleForm(forms.ModelForm):
-    last_maintenance_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
     next_maintenance_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
-    
     class Meta:
         model = Vehicle
-        fields = '__all__' 
+        fields = ['registration_number', 'make', 'model', 'year', 'next_maintenance_date', 'driver_id']
 
 class EmployeeForm(forms.ModelForm):
     class Meta:

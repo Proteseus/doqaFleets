@@ -120,7 +120,7 @@ def showroute(request, lat1=None, long1=None, start_name=None, lat2=None, long2=
 @login_required
 def create_vehicle(request):
     if request.method == 'POST':
-        form = VehicleForm(request.POST, request.FILES)
+        form = VehicleForm(request.POST)
         if form.is_valid():
             vehicle = form.save(commit=True)
             vehicle.created_by = request.user
@@ -129,7 +129,7 @@ def create_vehicle(request):
     else:
         form = VehicleForm()
 
-    return render(request, 'create_vehicle.html', {'form': form})
+    return render(request, 'lists/vehicle_list.html', {'form': form})
 
 @login_required
 def create_employee(request):
@@ -143,7 +143,7 @@ def create_employee(request):
     else:
         form = EmployeeForm()
 
-    return render(request, 'create_employee.html', {'form': form})
+    return render(request, 'lists/employee_list.html', {'form': form})
 
 @login_required
 def create_maintenance(request):
@@ -186,7 +186,7 @@ def create_inventory(request):
     else:
         form = InventoryForm()
 
-    return render(request, 'create_vehicle.html', {'form': form})
+    return render(request, 'lists/inventory_list.html', {'form': form})
 
 @login_required
 def employee_list(request):
@@ -197,7 +197,8 @@ def employee_list(request):
 @login_required
 def vehicle_list(request):
     vehicles = Vehicle.objects.all()
-    return render(request, 'lists/vehicle_list.html', {'vehicles': vehicles})
+    form = VehicleForm()
+    return render(request, 'lists/vehicle_list.html', {'vehicles': vehicles, 'form': form})
 
 @login_required
 def vehicle_detail(request, vehicle_id):
