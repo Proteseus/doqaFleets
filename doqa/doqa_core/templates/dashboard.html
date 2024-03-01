@@ -82,13 +82,13 @@
               <tbody>
                 {% for trip in trips %}
                     <tr data-href="{% url 'trip_detail' trip.id %}" class="hover: cursor-pointer hover:bg-foundation-white-light-active">
-                        <td>{{ trip.vehicle }}</td>
-                        <td>{{ trip.driver_id }}</td>
-                        <td>{{ trip.start_location }}</td>
-                        <td>{{ trip.end_location }}</td>
-                        <td>{{ trip.planned_start_time }}</td>
-                        <td>{{ trip.planned_end_time }}</td>
-                        <td>{{ trip.status }}</td>
+                        <td scope="row" class="px-6 py-4 font-medium whitespace-nowrap">{{ trip.vehicle }}</td>
+                        <td class="px-6 py-4">{{ trip.vehicle.driver_id }}</td>
+                        <td class="px-6 py-4">{{ trip.start_location_name }}</td>
+                        <td class="px-6 py-4">{{ trip.end_location_name }}</td>
+                        <td class="px-6 py-4">{{ trip.planned_start_time }}</td>
+                        <td class="px-6 py-4">{{ trip.planned_end_time }}</td>
+                        <td class="px-6 py-4">{{ trip.status }}</td>
                     </tr>
                 {% endfor %}
               </tbody>
