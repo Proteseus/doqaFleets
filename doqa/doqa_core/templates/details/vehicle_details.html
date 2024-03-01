@@ -140,7 +140,7 @@
                         <tbody>
                             {% for trip in trips %}
                             <tr data-href="{% url 'trip_detail' trip.id %}" class="hover: cursor-pointer hover:bg-foundation-white-light-active">
-                                <td class="px-6 py-4">{{ trip.driver_id }}</td>
+                                <td class="px-6 py-4">{{ trip.vehicle.driver_id }}</td>
                                 <td class="px-6 py-4">{{ trip.start_location_name }}</td>
                                 <td class="px-6 py-4">{{ trip.end_location_name }}</td>
                                 <td class="px-6 py-4">{{ trip.planned_start_time }}</td>

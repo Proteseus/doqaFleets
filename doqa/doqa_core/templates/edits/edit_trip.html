@@ -17,20 +17,10 @@
                     <div class="flex-1 relative leading-[120%] font-medium">
                         Trip Management
                     </div>
-                    <!-- Search Container -->
-                    <div class="w-[27.5rem] flex flex-row items-center justify-start gap-[0.5rem_0rem] text-[0.875rem] text-gray-900 font-text-xs-font-normal">
-                        <!-- Search bar with it's icon -->
-                        <img class="z-10 left-8 w-[1rem] relative h-[1rem] object-cover before:left-5" alt="" src="/solarmagniferlineduotone@2x.fef703b1.png">
-                        <input placeholder="Search" class="ps-10 w-4/5 rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active">
-                        <!-- Search bar with it's icon END-->
-                    </div>
-                    <!-- Search Container -->
-
                     <div class="flex flex-row items-center justify-start gap-[0rem_0.5rem] text-[1rem]">
-                        <img class="w-[1.5rem] relative h-[1.5rem]" alt="" src="/solarlogin3boldduotone.a3232c09.svg">
-
-                        <div class="relative leading-[120%]">Logout</div>
-                    </div>
+                        <img class="w-[1.5rem] relative h-[1.5rem]" alt="" src="{% static "img/solarlogin3boldduotone.a3232c09.svg" %}">
+                        <a href="{% url 'logout' %}" onclick="return confirm('Are you sure you want to logout?');" class="relative leading-[120%]">Logout</a>
+                     </div>
                 </div>
             </div>
             <!-- Header -->
