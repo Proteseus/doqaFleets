@@ -6,8 +6,9 @@ from django.contrib.auth.models import User
 class Employee(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100)
-    contact_number = models.CharField(max_length=15)
-    driver_license_number = models.CharField(max_length=20)
+    contact_number = models.CharField(max_length=15, unique=True)
+    driver_license_number = models.CharField(max_length=20, unique=True)
+    assigned = models.BooleanField(default=False)
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, editable=False)
 
     def __str__(self):
@@ -15,12 +16,12 @@ class Employee(models.Model):
 
 class Vehicle(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    registration_number = models.CharField(max_length=20)
+    registration_number = models.CharField(max_length=20, unique=True)
     image = models.ImageField(upload_to ='uploads/vehicles/', null=True)
     make = models.CharField(max_length=50)
     model = models.CharField(max_length=50)
     year = models.IntegerField()
-    driver_id = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    driver_id = models.OneToOneField(Employee, on_delete=models.CASCADE)
     current_location = PointField(null=True, blank=True)
     last_maintenance_date = models.DateField(null=True, blank=True)
     next_maintenance_date = models.DateField(null=True, blank=True)

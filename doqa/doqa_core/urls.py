@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import login_, logout_, dashboard, pre_route, get_options, result, coordinates, showroute, create_vehicle, create_employee, create_maintenance, create_trip, create_inventory, employee_list, vehicle_list, vehicle_detail, inventory_list, trips_list, trip_detail, edit_trip, delete_trip, delete_employee
+from .views import login_, logout_, dashboard, pre_route, get_options, result, coordinates, showroute, create_vehicle, create_employee, create_maintenance, create_trip, create_inventory, employee_list, vehicle_list, vehicle_detail, inventory_list, trips_list, trip_detail, edit_trip, delete_trip, delete_employee, check_contact_uniqueness, check_license_uniqueness, check_regitration_uniqueness
 
 urlpatterns = [
     path('login/', login_, name='login'),
@@ -38,6 +38,9 @@ htmx_patterns = [
     path('get_coord/', coordinates, name='get_coordinates'),
     path('get_options/', get_options, name='get_options'),
     path('results/', result, name='results'),
+    path('check_contact_uniqueness/', check_contact_uniqueness, name='check_contact_uniqueness'),
+    path('check_license_uniqueness/', check_license_uniqueness, name='check_license_uniqueness'),
+    path('check_regitration_uniqueness/', check_regitration_uniqueness, name='check_regitration_uniqueness'),
 
 ]
 
