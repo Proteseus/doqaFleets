@@ -9,10 +9,9 @@ from django.contrib.auth.decorators import login_required
 
 import folium
 
-from .forms import LoginForm, VehicleForm, EmployeeForm, MaintenanceForm, TripsForm, InventoryForm
+from .forms import LoginForm, VehicleForm, EmployeeForm, MaintenanceForm, TripsForm, EditTripsForm, InventoryForm
 from .models import Vehicle, Employee, Maintenance, Trip, Inventory
-from .getroute import get_route
-from .utils import find_coordinates
+from .utils import find_coordinates, get_route
 
 def login_(request):
     if request.user.is_authenticated:
@@ -122,10 +121,13 @@ def create_vehicle(request):
     if request.method == 'POST':
         form = VehicleForm(request.POST)
         if form.is_valid():
-            vehicle = form.save(commit=True)
-            vehicle.created_by = request.user
-            vehicle.save()
-            return redirect('vehicle_list')
+            try:
+                vehicle = form.save(commit=True)
+                vehicle.created_by = request.user
+                vehicle.save()
+                return redirect('vehicle_list')
+            except IntegrityError:
+                form.add_error(None, "Error saving the vehicle. Please check the uniqueness of the fields.")
     else:
         form = VehicleForm()
 
@@ -233,7 +235,7 @@ def trips_list(request):
 @login_required
 def trip_detail(request, trip_id):
     trip = get_object_or_404(Trip, id=trip_id)
-    driver = get_object_or_404(Employee, name=trip.driver_id)
+    driver = get_object_or_404(Employee, name=trip.vehicle.driver_id)
     vehicle = get_object_or_404(Vehicle, id=trip.vehicle.id)
     return render(request, 'details/trip_details.html', {'trip': trip, 'driver': driver, 'vehicle': vehicle})
 
@@ -242,7 +244,7 @@ def edit_trip(request, trip_id):
     trip = get_object_or_404(Trip, id=trip_id)
 
     if request.method == 'POST':
-        form = TripsForm(request.POST, instance=trip)
+        form = EditTripsForm(request.POST, instance=trip)
         if form.is_valid():
             print(form.cleaned_data)
             up_trip = form.save(commit=True)
@@ -253,7 +255,7 @@ def edit_trip(request, trip_id):
 
             return redirect('trips_list')
     else:
-        form = TripsForm(instance=trip)
+        form = EditTripsForm(instance=trip)
 
     return render(request, 'edits/edit_trip.html', {'form': form, 'trip': trip})
 
@@ -269,3 +271,23 @@ def delete_employee(request, emp_id):
     emp.delete()
     return redirect('employee_list')
 
+def check_contact_uniqueness(request):
+    key = request.POST.get('contact_number')
+    if Employee.objects.filter(contact_number=key).exists():
+        return HttpResponse("Already registered")
+    else:
+        return HttpResponse("Not registred yet")
+
+def check_license_uniqueness(request):
+    key = request.POST.get('driver_license_number')
+    if Employee.objects.filter(driver_license_number=key).exists():
+        return HttpResponse("Already registered")
+    else:
+        return HttpResponse("Not registred yet")
+
+def check_regitration_uniqueness(request):
+    key = request.POST.get('registration_number')
+    if Vehicle.objects.filter(registration_number=key).exists():
+        return HttpResponse("Already registered")
+    else:
+        return HttpResponse("Not registred yet")

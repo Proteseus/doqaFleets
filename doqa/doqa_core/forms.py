@@ -21,6 +21,13 @@ class VehicleForm(forms.ModelForm):
         model = Vehicle
         fields = ['registration_number', 'make', 'model', 'year', 'next_maintenance_date', 'driver_id']
 
+    def __init__(self, *args, **kwargs):
+        super(VehicleForm, self).__init__(*args, **kwargs)
+
+        # Override the queryset for the driver_id field
+        unassigned_employees = Employee.objects.filter(assigned=False)
+        self.fields['driver_id'].queryset = unassigned_employees
+
 class EmployeeForm(forms.ModelForm):
     class Meta:
         model = Employee
@@ -58,6 +65,16 @@ class TripsForm(forms.ModelForm):
     actual_start_time = forms.DateTimeField(required=False, widget=forms.DateTimeInput(attrs={'type': 'datetime-local'}))
     actual_end_time = forms.DateTimeField(required=False, widget=forms.DateTimeInput(attrs={'type': 'datetime-local'}))
 
+
+    def __init__(self, *args, **kwargs):
+        super(TripsForm, self).__init__(*args, **kwargs)
+
+        # Override the queryset for the driver_id field
+        allowed_statuses = ['PENDING', 'In Progress']
+        assigned_vehicles = Trip.objects.filter(status__in=allowed_statuses)
+        excluded_vehicle_ids = assigned_vehicles.values_list('vehicle', flat=True)
+        self.fields['vehicle'].queryset = Vehicle.objects.exclude(id__in=excluded_vehicle_ids)
+
     def clean_start_location(self):
         start_location_str = self.cleaned_data['start_location']
         return self.parse_point(start_location_str)
@@ -77,6 +94,28 @@ class TripsForm(forms.ModelForm):
         except (ValueError, IndexError):
             raise forms.ValidationError("Invalid input format. Use 'lat,long'.")
 
+class EditTripsForm(forms.ModelForm):
+    class Meta:
+        model = Trip
+        fields = ['vehicle', 'planned_start_time', 'planned_end_time', 'start_location', 'end_location', 'start_location_name', 'end_location_name']
+        widgets = {
+            'planned_start_time': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+            'planned_end_time': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+            'start_location': forms.TextInput(attrs={'type': 'location-input'}),
+            'end_location': forms.TextInput(attrs={'type': 'location-input'}),
+            'start_location_name': forms.TextInput(attrs={'type': 'location-input'}),
+            'end_location_name': forms.TextInput(attrs={'type': 'location-input'}),
+            'vehicle': forms.TextInput()
+        }
+
+    STATUS_CHOICES = [
+        ('In Progress', 'In Progress'),
+        ('Complete', 'Complete'),
+    ]
+
+    status = forms.ChoiceField(choices=STATUS_CHOICES, widget=forms.Select())
+    actual_start_time = forms.DateTimeField(required=False, widget=forms.DateTimeInput(attrs={'type': 'datetime-local'}))
+    actual_end_time = forms.DateTimeField(required=False, widget=forms.DateTimeInput(attrs={'type': 'datetime-local'}))
 
 class InventoryForm(forms.ModelForm):
     class Meta:
