@@ -93,7 +93,8 @@
                        <!-- New Vehicle title and close arrow -->
                        <div class="w-full">
                            <label for="registrationNumber" class="block mb-2">Registration Number</label>
-                           {% render_field form.registration_number class="w-[90%] rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" placeholder="A23143" required="" %}
+                           {% render_field form.registration_number hx-post="/check_regitration_uniqueness/" hx-target="#registration_number_error" hx-trigger="change" class="w-[90%] rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" placeholder="A23143" required="" %}
+                           <div id="registration_number_error"></div>
                        </div>
                        <div class="w-full">
                            <label for="make" class="block mb-2">Make</label>
@@ -139,6 +140,7 @@
                                 <th scope="col" class="px-6 py-3">Make</th>
                                 <th scope="col" class="px-6 py-3">Model</th>
                                 <th scope="col" class="px-6 py-3">Year</th>
+                                <th scope="col" class="px-6 py-3">Driver</th>
                                 <th scope="col" class="px-6 py-3">Next Maintenance</th>
                             </tr>
                         </thead>
@@ -149,6 +151,7 @@
                                     <td class="px-6 py-4">{{ vehicle.make }}</td>
                                     <td class="px-6 py-4">{{ vehicle.model }}</td>
                                     <td class="px-6 py-4">{{ vehicle.year }}</td>
+                                    <td class="px-6 py-4">{{ vehicle.driver_id }}</td>
                                     <td class="px-6 py-4">{{ vehicle.next_maintenance_date }}</td>
                                 </tr>
                             {% endfor %}
@@ -190,7 +193,7 @@
             //Navigates to vehicle detail for each table entry
             const tableRows = document.querySelectorAll(" tbody tr");
             for (const tableRow of tableRows)tableRow.addEventListener("click", function() {
-                window.open(this.dataset.href, "_blank"); // opening it in a new tab
+                window.location.href = this.dataset.href; // opening it in a new tab
             });
         </script>
     </div>

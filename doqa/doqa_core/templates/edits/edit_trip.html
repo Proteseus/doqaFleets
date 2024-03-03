@@ -87,11 +87,11 @@
                             <div class="self-stretch flex flex-col items-start justify-start gap-[1.5rem_0rem] text-left text-foundation-grey-normal">
                                 <div class="w-full flex flex-col items-start py-2">
                                     <label for="startingTimeDate" class="block mb-2 text-foundation-grey-normal">Planned Start Time</label>
-                                    {% render_field form.planned_start_time class="w-[90%] rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" placeholder="2456789" required="" %}
+                                    {% render_field form.planned_start_time readonly=True class="w-[90%] rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" placeholder="2456789" required="" %}
                                 </div>
                                 <div class="w-full flex flex-col items-start py-2">
                                     <label for="endTimeDate" class="block mb-2 text-foundation-grey-normal">Planned End Time</label>
-                                    {% render_field form.planned_end_time class="w-[90%] rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" placeholder="" required="" %}
+                                    {% render_field form.planned_end_time readonly=True class="w-[90%] rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" placeholder="" required="" %}
                                 </div>
                             </div>
                         </div>
@@ -99,7 +99,7 @@
                         <div class="self-stretch relative box-border h-[0.063rem] border-t-[1px] border-solid border-gray-200"></div>
 
                         <!-- Vehicle Details -->
-                        <div class="flex flex-col items-start justify-start gap-2 py-6">
+                        <div class="hidden flex flex-col items-start justify-start gap-2 py-6">
                             <b class="relative leading-[120%]"> Assign Vehicle</b>
                             <div class="self-stretch flex flex-col items-start justify-start gap-[1.5rem_0rem] text-left text-foundation-grey-normal">
                                 <div class="w-full flex flex-col items-start py-2">

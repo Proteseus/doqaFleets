@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
 <body>
@@ -12,7 +13,7 @@
               Dashboard
             </div>
             <div class="flex flex-row items-center justify-start gap-[0rem_0.5rem] text-[1rem]">
-              <img class="w-[1.5rem] relative h-[1.5rem]" alt="" src="/solarlogin3boldduotone.a3232c09.svg">
+                <img class="w-[1.5rem] relative h-[1.5rem]" alt="" src="{% static "img/solarlogin3boldduotone.a3232c09.svg" %}">
 
               <a href="{% url 'logout' %}" onclick="return confirm('Are you sure you want to logout?');" class="relative leading-[120%]">Logout</a>
             </div>

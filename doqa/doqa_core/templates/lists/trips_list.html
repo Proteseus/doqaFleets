@@ -116,10 +116,10 @@
 
     <script>
         //Navigates to view trip for each table entry
-        /*const tableRows = document.querySelectorAll(" tbody tr");
+        const tableRows = document.querySelectorAll(" tbody tr");
         for (const tableRow of tableRows)tableRow.addEventListener("click", function() {
-            window.open(this.dataset.href, "_blank"); // opening it in a new tab
-        });*/
+            window.location.href = this.dataset.href; // opening it in a new tab
+        });
         const openDrawerBtn = document.getElementById("openDrawerBtn");
         const closeDrawerBtn = document.getElementById("closeDrawerBtn");
         const closeDrawerBtnCancel = document.getElementById("closeDrawerBtnCancel");

@@ -51,11 +51,13 @@
                         </div>
                         <div class="w-full">
                             <label for="contactNumber" class="block mb-2">Phone Number</label>
-                            {% render_field form.contact_number class="w-[90%] rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" placeholder="0923344556" required="" %}
+                            {% render_field form.contact_number hx-post="/check_contact_uniqueness/" hx-target="#contact_number_error" hx-trigger="change" class="w-[90%] rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" placeholder="0923344556" required="" %}
+                            <div id="contact_number_error"></div>
                         </div>
                         <div class="w-full">
                             <label for="driverLicense" class="block mb-2">Driver License Number</label>
-                            {% render_field form.driver_license_number class="w-[90%] rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" placeholder="2456789" required="" %}
+                            {% render_field form.driver_license_number hx-post="/check_license_uniqueness/" hx-target="#driver_license_number_error" hx-trigger="change" class="w-[90%] rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" placeholder="2456789" required="" %}
+                            <div id="driver_license_number_error"></div>
                         </div>
                         <!--* Buttons Container -->
                         <div class="self-stretch flex flex-row items-start justify-between py-2 px-0">
