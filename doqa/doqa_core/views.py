@@ -13,6 +13,9 @@ from .forms import LoginForm, VehicleForm, EmployeeForm, MaintenanceForm, TripsF
 from .models import Vehicle, Employee, Maintenance, Trip, Inventory
 from .utils import find_coordinates, get_route
 
+########################################User Methods########################################
+
+# User Login
 def login_(request):
     if request.user.is_authenticated:
         return redirect('trips_list')
@@ -29,11 +32,15 @@ def login_(request):
 
     return render(request, 'login.html', {'form': form})
 
+# User Logout
 @login_required
 def logout_(request):
     logout(request)
     return redirect('login')
 
+########################################Dashboard########################################
+
+# Dashboard view
 @login_required
 def dashboard(request):
     vehicle_count = Vehicle.objects.count()
@@ -53,10 +60,9 @@ def dashboard(request):
 
     return render(request, 'dashboard.html', context)
 
-@login_required
-def pre_route(request):
-    return render(request, 'routing/pre_route.html')
+########################################Trip Methods########################################
 
+# get coordinates of locations
 def coordinates(loc):
     if loc:
         coord = find_coordinates(loc)
@@ -64,6 +70,7 @@ def coordinates(loc):
         point_val = f"{coord['result'][1]}, {coord['result'][2]}"
         return loc_title, point_val
 
+# prepare to inject location options to the form in the UI
 def get_options(request):
     if request.method == 'GET':
         for key in request.GET.keys():
@@ -76,6 +83,7 @@ def get_options(request):
 
         return HttpResponse(response_data)
 
+# process given location and pass data to routed page
 def result(request):
     route = ""
     for key in request.POST.keys():
@@ -88,6 +96,7 @@ def result(request):
     showroute_url = f'/route/{route}'
     return redirect('showroute', lat1=coords[0], long1=coords[1], start_name=coords[2], lat2=coords[3], long2=coords[4], end_name=coords[5])
 
+# show partially filled form along with maped route data
 @login_required
 def showroute(request, lat1=None, long1=None, start_name=None, lat2=None, long2=None, end_name=None):
     figure = folium.Figure()
@@ -117,52 +126,6 @@ def showroute(request, lat1=None, long1=None, start_name=None, lat2=None, long2=
     return render(request, 'showroute.html', context)
 
 @login_required
-def create_vehicle(request):
-    if request.method == 'POST':
-        form = VehicleForm(request.POST)
-        if form.is_valid():
-            try:
-                vehicle = form.save(commit=True)
-                vehicle.created_by = request.user
-                vehicle.save()
-                return redirect('vehicle_list')
-            except IntegrityError:
-                form.add_error(None, "Error saving the vehicle. Please check the uniqueness of the fields.")
-    else:
-        form = VehicleForm()
-
-    return render(request, 'lists/vehicle_list.html', {'form': form})
-
-@login_required
-def create_employee(request):
-    if request.method == 'POST':
-        form = EmployeeForm(request.POST)
-        if form.is_valid():
-            emp = form.save(commit=True)
-            emp.created_by = request.user
-            emp.save()
-            return redirect('employee_list')
-    else:
-        form = EmployeeForm()
-
-    return render(request, 'lists/employee_list.html', {'form': form})
-
-@login_required
-def create_maintenance(request):
-    if request.method == 'POST':
-        form = MaintenanceForm(request.POST)
-        if form.is_valid():
-            m_order = form.save(commit=True)
-            m_order.created_by = request.user
-            m_order.save()
-            return redirect('vehicle_detail', form.cleaned_data['vehicle'].id)
-    else:
-        form = MaintenanceForm()
-
-    return render(request, 'details/vehicle_details.html', {'form': form})
-
-
-@login_required
 def create_trip(request):
     if request.method == 'POST':
         form = TripsForm(request.POST)
@@ -176,56 +139,6 @@ def create_trip(request):
         form = TripsForm()
 
     return redirect('trips_list')
-
-@login_required
-def create_inventory(request):
-    if request.method == 'POST':
-        form = InventoryForm(request.POST)
-        if form.is_valid():
-            instance = form.save(commit=False)
-            instance.save()
-            return redirect('inventory_list')
-    else:
-        form = InventoryForm()
-
-    return render(request, 'lists/inventory_list.html', {'form': form})
-
-@login_required
-def employee_list(request):
-    employees = Employee.objects.all()
-    form = EmployeeForm()
-    return render(request, 'lists/employee_list.html', {'employees': employees, 'form': form})
-
-@login_required
-def vehicle_list(request):
-    vehicles = Vehicle.objects.all()
-    form = VehicleForm()
-    return render(request, 'lists/vehicle_list.html', {'vehicles': vehicles, 'form': form})
-
-@login_required
-def vehicle_detail(request, vehicle_id):
-    vehicle = get_object_or_404(Vehicle, id=vehicle_id)
-    driver = Employee.objects.filter(id=vehicle.driver_id_id)
-    maintenance_orders = Maintenance.objects.filter(vehicle=vehicle_id)
-    trips = Trip.objects.filter(vehicle=vehicle_id)
-
-    form = MaintenanceForm()
-
-    context = {
-        'vehicle': vehicle,
-        'driver': driver,
-        'maintenance_orders': maintenance_orders,
-        'trips': trips,
-        'form': form
-    }
-
-    return render(request, 'details/vehicle_details.html', context)
-
-
-@login_required
-def inventory_list(request):
-    inventories = Inventory.objects.all()
-    return render(request, 'lists/inventory_list.html', {'inventory': inventories})
 
 @login_required
 def trips_list(request):
@@ -265,6 +178,78 @@ def delete_trip(request, trip_id):
     trip.delete()
     return redirect('trips_list')
 
+########################################Vehicle Methods########################################
+
+@login_required
+def create_vehicle(request):
+    if request.method == 'POST':
+        form = VehicleForm(request.POST)
+        if form.is_valid():
+            try:
+                vehicle = form.save(commit=True)
+                vehicle.created_by = request.user
+                vehicle.save()
+                return redirect('vehicle_list')
+            except IntegrityError:
+                form.add_error(None, "Error saving the vehicle. Please check the uniqueness of the fields.")
+    else:
+        form = VehicleForm()
+
+    return render(request, 'lists/vehicle_list.html', {'form': form})
+
+@login_required
+def vehicle_list(request):
+    vehicles = Vehicle.objects.all()
+    form = VehicleForm()
+    return render(request, 'lists/vehicle_list.html', {'vehicles': vehicles, 'form': form})
+
+@login_required
+def vehicle_detail(request, vehicle_id):
+    vehicle = get_object_or_404(Vehicle, id=vehicle_id)
+    driver = Employee.objects.filter(id=vehicle.driver_id_id)
+    maintenance_orders = Maintenance.objects.filter(vehicle=vehicle_id)
+    trips = Trip.objects.filter(vehicle=vehicle_id)
+
+    form = MaintenanceForm()
+
+    context = {
+        'vehicle': vehicle,
+        'driver': driver,
+        'maintenance_orders': maintenance_orders,
+        'trips': trips,
+        'form': form
+    }
+
+    return render(request, 'details/vehicle_details.html', context)
+
+def check_regitration_uniqueness(request):
+    key = request.POST.get('registration_number')
+    if Vehicle.objects.filter(registration_number=key).exists():
+        return HttpResponse("Already registered")
+    else:
+        return HttpResponse("Not registred yet")
+
+########################################Employee Methods########################################
+@login_required
+def create_employee(request):
+    if request.method == 'POST':
+        form = EmployeeForm(request.POST)
+        if form.is_valid():
+            emp = form.save(commit=True)
+            emp.created_by = request.user
+            emp.save()
+            return redirect('employee_list')
+    else:
+        form = EmployeeForm()
+
+    return render(request, 'lists/employee_list.html', {'form': form})
+
+@login_required
+def employee_list(request):
+    employees = Employee.objects.all()
+    form = EmployeeForm()
+    return render(request, 'lists/employee_list.html', {'employees': employees, 'form': form})
+
 @login_required
 def delete_employee(request, emp_id):
     emp = get_object_or_404(Employee, id=emp_id)
@@ -285,9 +270,26 @@ def check_license_uniqueness(request):
     else:
         return HttpResponse("Not registred yet")
 
-def check_regitration_uniqueness(request):
-    key = request.POST.get('registration_number')
-    if Vehicle.objects.filter(registration_number=key).exists():
-        return HttpResponse("Already registered")
+########################################Maintenance Methods########################################
+
+@login_required
+def create_maintenance(request):
+    if request.method == 'POST':
+        form = MaintenanceForm(request.POST)
+        if form.is_valid():
+            m_order = form.save(commit=True)
+            m_order.created_by = request.user
+            m_order.save()
+            return redirect('vehicle_detail', form.cleaned_data['vehicle'].id)
     else:
-        return HttpResponse("Not registred yet")
+        form = MaintenanceForm()
+
+    return render(request, 'details/vehicle_details.html', {'form': form})
+
+########################################Inventory Methods########################################
+
+@login_required
+def inventory_list(request):
+    inventories = Inventory.objects.all()
+    return render(request, 'lists/inventory_list.html', {'inventory': inventories})
+

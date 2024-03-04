@@ -43,7 +43,6 @@ class MaintenanceForm(forms.ModelForm):
                 }
 
 class TripsForm(forms.ModelForm):
-    #fuax_loc = forms.CharField(widget=forms.TextInput())
     class Meta:
         model = Trip
         fields = ['vehicle', 'planned_start_time', 'planned_end_time', 'start_location', 'end_location', 'start_location_name', 'end_location_name']
@@ -69,7 +68,7 @@ class TripsForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(TripsForm, self).__init__(*args, **kwargs)
 
-        # Override the queryset for the driver_id field
+        # Override the queryset for the vehicle field
         allowed_statuses = ['PENDING', 'In Progress']
         assigned_vehicles = Trip.objects.filter(status__in=allowed_statuses)
         excluded_vehicle_ids = assigned_vehicles.values_list('vehicle', flat=True)
