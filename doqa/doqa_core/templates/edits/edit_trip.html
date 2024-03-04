@@ -37,7 +37,7 @@
                 </div>
                 <!-- Render map here -->
                 <button id="openDrawerBtn" class="fixed top-32 right-16 z-10 font-medium cursor-pointer rounded-rounded-lg bg-foundation-green-normal text-white hover:bg-foundation-green-normal-hover flex flex-row items-center justify-center overflow-hidden py-boundvariablesdata4 px-boundvariablesdata9 gap-2 w-fit text-[1.25rem] text-white">
-                    <img class="w-[1.25rem] relative h-[1.25rem]" alt="" src="/double-alt-arrow-left-white.14ea06f8.svg">
+                    <img class="w-[1.25rem] relative h-[1.25rem]" alt="" src="{% static "img/double-alt-arrow-left-white.14ea06f8.svg" %}">
                     Edit Trip
                 </button>
 
@@ -99,7 +99,7 @@
                                 </div>
                                 <div class="w-full flex flex-col items-start py-2">
                                     <label for="endTimeDate" class="block mb-2 text-foundation-grey-normal">Actual End Time</label>
-                                    {% render_field form.actual_end_time class="w-[90%] rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" placeholder="" required="" %}
+                                    {% render_field form.actual_end_time class="w-[90%] rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" placeholder="" %}
                                 </div>
                             </div>
                         </div>

@@ -180,7 +180,8 @@ def edit_trip(request, trip_id):
 @login_required
 def delete_trip(request, trip_id):
     trip = get_object_or_404(Trip, id=trip_id)
-    trip.delete()
+    trip.status = "CANCELLED"
+    trip.save()
     return redirect('trips_list')
 
 ########################################Vehicle Methods########################################
