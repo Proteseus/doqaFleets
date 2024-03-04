@@ -6,6 +6,7 @@ from django.http import JsonResponse
 from django.shortcuts import HttpResponse, render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import cache_control
 
 import folium
 
@@ -42,6 +43,7 @@ def logout_(request):
 
 # Dashboard view
 @login_required
+@cache_control(no_cache=True, must_revalidate=True)
 def dashboard(request):
     vehicle_count = Vehicle.objects.count()
     employee_count = Employee.objects.count()
@@ -141,11 +143,13 @@ def create_trip(request):
     return redirect('trips_list')
 
 @login_required
+@cache_control(no_cache=True, must_revalidate=True)
 def trips_list(request):
     trips = Trip.objects.all()
     return render(request, 'lists/trips_list.html', {'trips': trips})
 
 @login_required
+@cache_control(no_cache=True, must_revalidate=True)
 def trip_detail(request, trip_id):
     trip = get_object_or_404(Trip, id=trip_id)
     driver = get_object_or_404(Employee, name=trip.vehicle.driver_id)
@@ -153,6 +157,7 @@ def trip_detail(request, trip_id):
     return render(request, 'details/trip_details.html', {'trip': trip, 'driver': driver, 'vehicle': vehicle})
 
 @login_required
+@cache_control(no_cache=True, must_revalidate=True)
 def edit_trip(request, trip_id):
     trip = get_object_or_404(Trip, id=trip_id)
 
@@ -249,6 +254,24 @@ def employee_list(request):
     employees = Employee.objects.all()
     form = EmployeeForm()
     return render(request, 'lists/employee_list.html', {'employees': employees, 'form': form})
+
+@login_required
+def employee_detail(request, driver_id):
+    driver = get_object_or_404(Employee, id=driver_id)
+    if Vehicle.objects.filter(driver_id=driver_id):
+        vehicle = get_object_or_404(Vehicle, driver_id=driver_id)
+        trips = Trip.objects.filter(vehicle=vehicle)
+
+        context = {
+            'driver': driver,
+            'trips': trips,
+        }
+    else:
+        context = {
+            'driver': driver,
+            'trips': []
+        }
+    return render(request, 'details/employee_details.html', context)
 
 @login_required
 def delete_employee(request, emp_id):

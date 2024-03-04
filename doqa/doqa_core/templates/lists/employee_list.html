@@ -88,7 +88,7 @@
                         </thead>
                         <tbody>
                             {% for employee in employees %}
-                            <tr class="hover: cursor-pointer hover:bg-foundation-white-light-active">
+                            <tr data-href="{% url 'employee_detail' employee.id %}"  class="hover: cursor-pointer hover:bg-foundation-white-light-active">
                                 <td scope="row" class="px-6 py-4 font-medium whitespace-nowrap">{{ employee.name }}</td>
                                 <td class="px-6 py-4">{{ employee.contact_number }}</td>
                                 <td class="px-6 py-4">{{ employee.driver_license_number }}</td>
@@ -105,10 +105,10 @@
 
         <script>
             //Navigates to view trip for each table entry
-            /*const tableRows = document.querySelectorAll(" tbody tr");
+            const tableRows = document.querySelectorAll(" tbody tr");
             for (const tableRow of tableRows)tableRow.addEventListener("click", function() {
-            window.open(this.dataset.href, "_blank"); // opening it in a new tab
-        });*/
+                window.location.href = this.dataset.href; // opening it in a new tab
+            });
             const openDrawerBtn = document.getElementById("openDrawerBtn");
             const closeDrawerBtn = document.getElementById("closeDrawerBtn");
             const closeDrawerBtnCancel = document.getElementById("closeDrawerBtnCancel");

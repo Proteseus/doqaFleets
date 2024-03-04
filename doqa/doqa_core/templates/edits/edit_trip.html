@@ -2,7 +2,7 @@
 {% load static %}
 {% load widget_tweaks %}
 {% block extra_head %}
-    {{ map.header.render|safe }}
+{{ map.header.render|safe }}
 {% endblock %}
 
 {% block content %}
@@ -20,7 +20,7 @@
                     <div class="flex flex-row items-center justify-start gap-[0rem_0.5rem] text-[1rem]">
                         <img class="w-[1.5rem] relative h-[1.5rem]" alt="" src="{% static "img/solarlogin3boldduotone.a3232c09.svg" %}">
                         <a href="{% url 'logout' %}" onclick="return confirm('Are you sure you want to logout?');" class="relative leading-[120%]">Logout</a>
-                     </div>
+                    </div>
                 </div>
             </div>
             <!-- Header -->
@@ -54,7 +54,7 @@
                     <!-- New trip title and close arrow -->
                     <form method="post" action="{% url 'edit_trip' trip.id %}" class="w-full">
                         {% csrf_token %}
-<div class="self-stretch flex flex-col items-start justify-start text-left text-[0.75rem] text-foundation-grey-normal">
+                        <div class="self-stretch flex flex-col items-start justify-start text-left text-[0.75rem] text-foundation-grey-normal">
                             <div class="self-stretch overflow-hidden flex flex-row items-center justify-between py-boundvariablesdata1 px-[0rem] text-center text-[1rem] text-foundation-blue-normal">
                                 <!-- Location Info -->
                                 <div class="flex flex-row items-center justify-between w-full gap-[0.875rem_0rem] text-left text-[0.75rem] text-foundation-white-dark-active">
@@ -92,6 +92,14 @@
                                 <div class="w-full flex flex-col items-start py-2">
                                     <label for="endTimeDate" class="block mb-2 text-foundation-grey-normal">Planned End Time</label>
                                     {% render_field form.planned_end_time readonly=True class="w-[90%] rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" placeholder="" required="" %}
+                                </div>
+                                <div class="w-full flex flex-col items-start py-2">
+                                    <label for="startingTimeDate" class="block mb-2 text-foundation-grey-normal">Actual Start Time</label>
+                                    {% render_field form.actual_start_time class="w-[90%] rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" placeholder="2456789" required="" %}
+                                </div>
+                                <div class="w-full flex flex-col items-start py-2">
+                                    <label for="endTimeDate" class="block mb-2 text-foundation-grey-normal">Actual End Time</label>
+                                    {% render_field form.actual_end_time class="w-[90%] rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" placeholder="" required="" %}
                                 </div>
                             </div>
                         </div>
