@@ -8,7 +8,7 @@
 <body>
     <div class="w-full relative bg-white h-screen flex flex-row items-start justify-start text-left text-[1.5rem] text-foundation-grey-normal font-satoshi-body-small">
         <!-- Main Screen -->
-        <div class="self-stretch flex flex-col items-start justify-start">
+        <div class=" w-full self-stretch flex flex-col items-start justify-start">
             <div class="w-full bg-foundation-white-light box-border flex flex-col items-start justify-start py-[1.25rem] px-[2.25rem] border-b-[1px] border-solid border-foundation-white-normal-hover">
                 <!-- Header -->
                 <div class="self-stretch flex flex-row items-center justify-start gap-[0rem_2rem]">
@@ -23,7 +23,7 @@
             </div>
             <!-- Header -->
 
-            <div class="w-screen flex-1 flex flex-col items-start justify-start text-[0.75rem]">
+            <div class="w-auto flex-1 flex flex-col items-start justify-start text-[0.75rem]">
                 <!-- Render map in here -->
                 <div class="w-full h-full relative overflow-hidden map-object">
                     {% if map %}
@@ -109,7 +109,6 @@
                         <div class="self-stretch relative box-border h-[0.063rem] border-t-[1px] border-solid border-gray-200"></div>
                     </div>
 
-                    <img class="self-stretch relative rounded-xl max-w-full overflow-hidden h-[12rem] shrink-0 object-cover" alt="" src="{{ vehicle.image.url }}">
 
                     <div class="self-stretch flex flex-col items-start justify-start gap-[1rem_0rem]">
                         <b class="relative leading-[120%]">Vehicle Details</b>
