@@ -1,8 +1,39 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block extra_head %}
-    {{ map.header.render|safe }}
-{% endblock %}
+
+{% block extrahead %}
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+
+<script>
+    L_NO_TOUCH = false;
+    L_DISABLE_3D = false;
+</script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+<script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<style>
+#map_a50d3f9f59adbad9e57d97d39236aa6d {
+    position: relative;
+    width: 100.0%;
+    height: 100.0%;
+    left: 0.0%;
+    top: 0.0%;
+}
+.leaflet-container { font-size: 1rem; }
+.leaflet-right {display: None}
+</style>
+{% endblock extrahead %}
 
 {% block content %}
 <body>
@@ -22,23 +53,16 @@
                 </div>
             </div>
             <!-- Header -->
-
             <div class="w-auto flex-1 flex flex-col items-start justify-start text-[0.75rem]">
                 <!-- Render map in here -->
                 <div class="w-full h-full relative overflow-hidden map-object">
-                    {% if map %}
-                    {{ map.html.render|safe }}
-                    <script>
-                        {{ map.script.render|safe }}
-                    </script>
-                    {% endif %}
+                    <div class="folium-map" id="map_a50d3f9f59adbad9e57d97d39236aa6d" ></div>
                 </div>
                 <!-- Render map here -->
-                <button id="openDrawerBtn" class="fixed top-32 right-16 z-10 font-medium cursor-pointer rounded-rounded-lg bg-foundation-green-normal text-white hover:bg-foundation-green-normal-hover flex flex-row items-center justify-center overflow-hidden py-boundvariablesdata4 px-boundvariablesdata9 gap-2 w-fit text-[1.25rem] text-white">
+                <button id="openDrawerBtn" class="fixed top-32 right-16 z-10 font-medium cursor-pointer rounded-rounded-lg bg-foundation-green-normal hover:bg-foundation-green-normal-hover flex flex-row items-center justify-center overflow-hidden py-boundvariablesdata4 px-boundvariablesdata9 gap-2 w-fit text-[1.25rem] text-white">
                     <img class="w-[1.25rem] relative h-[1.25rem]" alt="" src="{% static "img/double-alt-arrow-left-white.14ea06f8.svg" %}">
                     Trip Details
                 </button>
-
                 <!--  Drawer -->
                 <section id="drawer" class="h-[88vh] hidden fixed top-[87.2px] right-0 overflow-y-scroll overflow-x-hidden transition-all duration-500 z-10 bg-foundation-white-light box-border shrink-0 flex-col items-start justify-start p-[2.25rem] gap-[1.5rem_0rem] text-center text-[1rem] text-foundation-white-dark-active border-l-[1px] border-solid border-foundation-white-normal-hover">
                     <div class="self-stretch flex flex-row items-center justify-start text-left text-foundation-grey-normal">
@@ -79,7 +103,7 @@
                                     <b class="relative leading-[120%]">{{ trip.planned_start_time }}</b>
                                 </div>
                             </div>
-                       </div>
+                        </div>
                         <div class="self-stretch relative box-border h-[0.063rem] border-t-[1px] border-solid border-gray-200"></div>
                         <div class="self-stretch overflow-hidden flex flex-row items-center justify-between py-boundvariablesdata1 px-[0rem]">
                             <div class="flex flex-row items-center justify-start">
@@ -109,7 +133,6 @@
                         <div class="self-stretch relative box-border h-[0.063rem] border-t-[1px] border-solid border-gray-200"></div>
                     </div>
 
-
                     <div class="self-stretch flex flex-col items-start justify-start gap-[1rem_0rem]">
                         <b class="relative leading-[120%]">Vehicle Details</b>
                         <div class="self-stretch flex flex-col items-start justify-start gap-[1.5rem_0rem] text-left text-foundation-grey-normal">
@@ -132,20 +155,19 @@
                                         <b class="relative leading-[120%]">{{ vehicle.year }}</b>
                                     </div>
                                 </div>
-                           </div>
+                            </div>
                             <div class="self-stretch flex flex-col items-start justify-start gap-[0.5rem_0rem]">
                                 <div class="self-stretch relative leading-[120%]">
                                     Vehicle ID
                                 </div>
                                 <div class="self-stretch rounded-lg bg-foundation-white-light-active flex flex-row items-center justify-start py-boundvariablesdata8 px-boundvariablesdata1 text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active">
                                     <div class="flex-1 flex flex-row items-center justify-start gap-[0rem_0.625rem]">
-                                        <img class="w-[1rem] relative h-[1rem] overflow-hidden shrink-0 hidden" alt="" src="/user.cf6dfad7.svg">
-
+                                        <img class="w-[1rem] relative h-[1rem] overflow-hidden shrink-0 hidden" alt="" src="{% static "img/user.cf6dfad7.svg" %}">
                                         <div class="flex-1 relative leading-[120%]">{{ vehicle.registration_number }}</div>
-                                        <img class="w-[0.75rem] relative h-[0.75rem] overflow-hidden shrink-0 hidden" alt="" src="/x.d9b2ef17.svg">
+                                        <img class="w-[0.75rem] relative h-[0.75rem] overflow-hidden shrink-0 hidden" alt="" src="{% static "img/x.d9b2ef17.svg" %}">
                                     </div>
                                 </div>
-                           </div>
+                            </div>
                         </div>
                     </div>
                     <div class="self-stretch flex flex-col items-start justify-start gap-[1rem_0rem]">
@@ -156,7 +178,6 @@
                                 <div class="self-stretch rounded-lg bg-foundation-white-light-active flex flex-row items-center justify-start py-boundvariablesdata8 px-boundvariablesdata1 text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active">
                                     <div class="flex-1 flex flex-row items-center justify-start gap-[0rem_0.625rem]">
                                         <img class="w-[1rem] relative h-[1rem] overflow-hidden shrink-0 hidden" alt="" src="/user.cf6dfad7.svg">
-
                                         <div class="flex-1 relative leading-[120%]">
                                             {{ driver.name }}
                                         </div>
@@ -171,25 +192,23 @@
                                 <div class="self-stretch rounded-lg bg-foundation-white-light-active flex flex-row items-center justify-start py-boundvariablesdata8 px-boundvariablesdata1 text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active">
                                     <div class="flex-1 flex flex-row items-center justify-start gap-[0rem_0.625rem]">
                                         <img class="w-[1rem] relative h-[1rem] overflow-hidden shrink-0 hidden" alt="" src="/user.cf6dfad7.svg">
-
                                         <div class="flex-1 relative leading-[120%]">{{ driver.driver_license_number }}</div>
                                         <img class="w-[0.75rem] relative h-[0.75rem] overflow-hidden shrink-0 hidden" alt="" src="/x.d9b2ef17.svg">
                                     </div>
                                 </div>
-                           </div>
+                            </div>
                             <div class="self-stretch flex flex-col items-start justify-start gap-[0.5rem_0rem]">
                                 <div class="self-stretch relative leading-[120%]">Phone</div>
                                 <div class="self-stretch rounded-lg bg-foundation-white-light-active flex flex-row items-center justify-start py-boundvariablesdata8 px-boundvariablesdata1 text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active">
                                     <div class="flex-1 flex flex-row items-center justify-start gap-[0rem_0.625rem]">
                                         <img class="w-[1rem] relative h-[1rem] overflow-hidden shrink-0 hidden" alt="" src="/user.cf6dfad7.svg">
-
                                         <div class="flex-1 relative leading-[120%]">
                                             {{ driver.contact_number }}
                                         </div>
                                         <img class="w-[0.75rem] relative h-[0.75rem] overflow-hidden shrink-0 hidden" alt="" src="/x.d9b2ef17.svg">
                                     </div>
                                 </div>
-                           </div>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -208,7 +227,75 @@
         closeDrawerBtn.addEventListener("click", ()=>{
             drawer.style.display = "none";
         });
+
+        // Function to extract coordinates from a string
+        function extractCoordinates(point) {
+            var matches = point.match(/POINT \(([^)]+)\)/);
+            if (matches) {
+                var coordinates = matches[1].split(' ');
+                return { lat: parseFloat(coordinates[1]), lon: parseFloat(coordinates[0]) };
+            }
+            return null;
+        }
+
+        // Extract coordinates for point1
+        var point1Data = extractCoordinates("{{ trip.start_location }}");
+        var lat1 = point1Data ? point1Data.lat : null;
+        var lon1 = point1Data ? point1Data.lon : null;
+
+        // Extract coordinates for point2
+        var point2Data = extractCoordinates("{{ trip.end_location }}");
+        var lat2 = point2Data ? point2Data.lat : null;
+        var lon2 = point2Data ? point2Data.lon : null;
+
+        console.log(lat1, lon1, lat2, lon2);
+
+        // Now you can use lat1, lon1, lat2, lon2 in your JavaScript code
+
+        // Map Script
+        var map_a50d3f9f59adbad9e57d97d39236aa6d = L.map(
+            "map_a50d3f9f59adbad9e57d97d39236aa6d",
+            {
+                center: [0.0, 0.0],
+                crs: L.CRS.EPSG3857,
+                zoom: 4,
+                zoomControl: true,
+                preferCanvas: false,
+            }
+        );
+
+        var tile_layer_91a182e7bac4642dba1c6712e8793047 = L.tileLayer(
+            "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+            {"attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors", "detectRetina": false, "maxNativeZoom": 19, "maxZoom": 19, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+        );
+
+        tile_layer_91a182e7bac4642dba1c6712e8793047.addTo(map_a50d3f9f59adbad9e57d97d39236aa6d);
+
+        var marker_bbf56ca3ef0052738b54fe2209f49596 = L.marker(
+            [9.025, 38.7469],
+            {}
+        ).addTo(map_a50d3f9f59adbad9e57d97d39236aa6d);
+
+        var popup_ef89c11477b94a5ef0102aaf1c3ca0aa = L.popup({"maxWidth": "100%"});
+
+        var html_4f6f70927af4ed9f3fe0e05bd36b618d = $(`<div id="html_4f6f70927af4ed9f3fe0e05bd36b618d" style="width: 100.0%; height: 100.0%;">Current Location</div>`)[0];
+        popup_ef89c11477b94a5ef0102aaf1c3ca0aa.setContent(html_4f6f70927af4ed9f3fe0e05bd36b618d);
+
+        marker_bbf56ca3ef0052738b54fe2209f49596.bindPopup(popup_ef89c11477b94a5ef0102aaf1c3ca0aa);
+
+        L.Routing.control({
+            waypoints: [
+                L.latLng(lat1, lon1),
+                L.latLng(lat2, lon2)
+            ],
+            routeWhileDragging: true,
+            show: false,
+            lineOptions: {
+                styles: [{color: 'red', opacity: 0.8, weight: 4}]
+            },
+            addWaypoints: false,
+            router: L.Routing.mapbox("pk.eyJ1IjoiaG9ycmlibGVib2IxMSIsImEiOiJjbHNvZm42ZWEwYmViMmprNTRpaThvZ2ZhIn0.ROEbyxFl7m7I-7KNof8kMQ"),
+        }).addTo(map_a50d3f9f59adbad9e57d97d39236aa6d).setWaypoints({{ trip.route_data.coordinates }});
     </script>
-    <script src="{% static "js/ViewTrip.js" %}"></script>
 </body>
 {% endblock %}

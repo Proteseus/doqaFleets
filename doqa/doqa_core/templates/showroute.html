@@ -1,6 +1,43 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load widget_tweaks %}
+
+{% block extrahead %}
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+
+<script>
+    L_NO_TOUCH = false;
+    L_DISABLE_3D = false;
+</script>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+<!-- Add this script tag to include Leaflet Routing Machine -->
+<script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<style>
+#map_a50d3f9f59adbad9e57d97d39236aa6d {
+    position: relative;
+    width: 100.0%;
+    height: 100.0%;
+    left: 0.0%;
+    top: 0.0%;
+}
+.leaflet-container { font-size: 1rem; }
+.leaflet-right {display: None}
+</style>
+{% endblock extrahead %}
+
 {% block content %}
 <body>
     <div class="w-full relative bg-white h-screen flex flex-row items-start justify-start text-left text-[1.5rem] text-foundation-grey-normal font-satoshi-body-small">
@@ -23,13 +60,7 @@
             <div class="w-screen flex-1 flex flex-col items-start justify-start text-[0.75rem]">
                 <!-- Render map in here -->
                 <div class="w-full h-full relative overflow-hidden shrink-0 map-object">
-                    {% if map %}
-                    {{ map.header.render|safe }}
-                    {{ map.html.render|safe }}
-                    <script>
-                        {{ map.script.render|safe }}
-                    </script>
-                    {% endif %}
+                    <div class="folium-map" id="map_a50d3f9f59adbad9e57d97d39236aa6d" ></div>
                 </div>
                 <!-- Render map here -->
                 <button id="openDrawerBtn" class="fixed top-32 right-16 z-10 font-medium cursor-pointer rounded-rounded-lg bg-foundation-green-normal text-white hover:bg-foundation-green-normal-hover flex flex-row items-center justify-center overflow-hidden py-boundvariablesdata4 px-boundvariablesdata9 gap-2 w-fit text-[1.25rem] text-white">
@@ -114,6 +145,13 @@
                                     {% render_field form.status class="w-[98%] hidden rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" required="" %}
                                 </div>
                             </div>
+                            <b class="relative leading-[120%] hidden">Route</b>
+                            <div class="self-stretch flex flex-col items-start justify-start gap-[1.5rem_0rem] text-left text-foundation-grey-normal">
+                                <div class="w-full flex flex-col items-start py-2">
+                                    <label for="registrationNumber" class="hidden block mb-2">Status</label>
+                                    {% render_field form.route_data id="routeDataInput" class="w-[98%] hidden rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" required="" %}
+                                </div>
+                            </div>
                         </div>
 
                         <!--* Buttons Container -->
@@ -146,7 +184,62 @@
         closeDrawerBtn.addEventListener("click", ()=>{
             drawer.style.display = "none";
         });
+
+        // Map Script
+        var map_a50d3f9f59adbad9e57d97d39236aa6d = L.map(
+            "map_a50d3f9f59adbad9e57d97d39236aa6d",
+            {
+                center: [0.0, 0.0],
+                crs: L.CRS.EPSG3857,
+                zoom: 2,
+                zoomControl: true,
+                preferCanvas: false,
+            }
+        );
+
+        var tile_layer_91a182e7bac4642dba1c6712e8793047 = L.tileLayer(
+            "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+            {"attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors", "detectRetina": false, "maxNativeZoom": 19, "maxZoom": 19, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+        );
+
+        tile_layer_91a182e7bac4642dba1c6712e8793047.addTo(map_a50d3f9f59adbad9e57d97d39236aa6d);
+
+        /*var marker_bbf56ca3ef0052738b54fe2209f49596 = L.marker(
+            [9.025, 38.7469],
+            {}
+        ).addTo(map_a50d3f9f59adbad9e57d97d39236aa6d);
+*/
+//        var popup_ef89c11477b94a5ef0102aaf1c3ca0aa = L.popup({"maxWidth": "100%"});
+
+//        var html_4f6f70927af4ed9f3fe0e05bd36b618d = $(`<div id="html_4f6f70927af4ed9f3fe0e05bd36b618d" style="width: 100.0%; height: 100.0%;">Current Location</div>`)[0];
+//        popup_ef89c11477b94a5ef0102aaf1c3ca0aa.setContent(html_4f6f70927af4ed9f3fe0e05bd36b618d);
+
+//        marker_bbf56ca3ef0052738b54fe2209f49596.bindPopup(popup_ef89c11477b94a5ef0102aaf1c3ca0aa);
+
+        var lat1 = {{ map_points.lat2 }};
+        var lon1 = {{ map_points.lon2 }};
+        var lat2 = {{ map_points.lat1 }};
+        var lon2 = {{ map_points.lon1 }};
+        //var polyline = L.polyline([[lat1, lon1], [lat2, lon2]], {color: 'red'}).addTo(map_a50d3f9f59adbad9e57d97d39236aa6d);
+
+        var control = L.Routing.control({
+            waypoints: [
+                L.latLng(lat1, lon1),
+                L.latLng(lat2, lon2)
+            ],
+            draggableWaypoints: false, // Disable dragging of waypoints
+            addWaypoints: true, // Disable adding new waypoints
+            routeWhileDragging: true,
+            router: L.Routing.mapbox("pk.eyJ1IjoiaG9ycmlibGVib2IxMSIsImEiOiJjbHNvZm42ZWEwYmViMmprNTRpaThvZ2ZhIn0.ROEbyxFl7m7I-7KNof8kMQ"),
+        }).addTo(map_a50d3f9f59adbad9e57d97d39236aa6d);
+
+        control.on('routeselected', function (e) {
+            var routeData = e.route;
+            document.getElementById('routeDataInput').value = JSON.stringify(routeData);
+        });
+ 
     </script>
     <script src="{% static "js/ViewTrip.js" %}"></script>
 </body>
 {% endblock %}
+
