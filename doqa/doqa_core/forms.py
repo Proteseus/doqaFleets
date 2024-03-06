@@ -45,7 +45,7 @@ class MaintenanceForm(forms.ModelForm):
 class TripsForm(forms.ModelForm):
     class Meta:
         model = Trip
-        fields = ['vehicle', 'planned_start_time', 'planned_end_time', 'start_location', 'end_location', 'start_location_name', 'end_location_name']
+        fields = ['vehicle', 'planned_start_time', 'planned_end_time', 'start_location', 'end_location', 'start_location_name', 'end_location_name', 'route_data']
         widgets = {
             'planned_start_time': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
             'planned_end_time': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
@@ -96,7 +96,7 @@ class TripsForm(forms.ModelForm):
 class EditTripsForm(forms.ModelForm):
     class Meta:
         model = Trip
-        fields = ['vehicle', 'planned_start_time', 'planned_end_time', 'start_location', 'end_location', 'start_location_name', 'end_location_name']
+        fields = ['vehicle', 'planned_start_time', 'planned_end_time', 'start_location', 'end_location', 'start_location_name', 'end_location_name', 'route_data']
         widgets = {
             'planned_start_time': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
             'planned_end_time': forms.DateTimeInput(attrs={'type': 'datetime-local'}),

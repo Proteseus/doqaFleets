@@ -1,5 +1,5 @@
 from logging import log
-import pprint
+import json
 from django.db.models.fields import Empty
 from django.contrib.gis.geos import Point
 from django.http import JsonResponse
@@ -123,8 +123,8 @@ def showroute(request, lat1=None, long1=None, start_name=None, lat2=None, long2=
     }
     
     form = TripsForm(initial=initial_form_data)
-
-    context = {'map': figure, 'form': form}
+    points = {'lat1': lat1, 'lon1': long1, 'lat2': lat2, 'lon2': long2}
+    context = {'map_points': points, 'form': form}
     return render(request, 'showroute.html', context)
 
 @login_required
@@ -134,6 +134,7 @@ def create_trip(request):
         if form.is_valid():
             print(form.cleaned_data['start_location'])
             trip = form.save(commit=True)
+            trip.route_data = json.dumps(form.cleaned_data['route_data'])
             trip.created_by = request.user
             trip.save()
             return redirect('trips_list')

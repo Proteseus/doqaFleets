@@ -78,6 +78,7 @@ class Trip(models.Model):
     actual_start_time = models.DateTimeField(null=True, blank=True)
     actual_end_time = models.DateTimeField(null=True, blank=True)
     status = models.CharField(max_length=15, default='PENDING')
+    route_data = models.JSONField(null=True, default=None)
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, editable=False)
 
     def __str__(self):
