@@ -13,7 +13,6 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
-<!-- Add this script tag to include Leaflet Routing Machine -->
 <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
 
@@ -42,7 +41,7 @@
 <body>
     <div class="w-full relative bg-white h-screen flex flex-row items-start justify-start text-left text-[1.5rem] text-foundation-grey-normal font-satoshi-body-small">
         <!-- Main Screen -->
-        <div class="self-stretch flex flex-col items-start justify-start">
+        <div class="w-full self-stretch flex flex-col items-start justify-start">
             <div class="w-full bg-foundation-white-light box-border flex flex-col items-start justify-start py-[1.25rem] px-[2.25rem] border-b-[1px] border-solid border-foundation-white-normal-hover">
                 <!-- Header -->
                 <div class="self-stretch overflow-hidden flex flex-row items-center justify-start gap-[0rem_2rem]">
@@ -56,7 +55,6 @@
                 </div>
             </div>
             <!-- Header -->
-
             <div class="w-screen flex-1 flex flex-col items-start justify-start text-[0.75rem]">
                 <!-- Render map in here -->
                 <div class="w-full h-full relative overflow-hidden shrink-0 map-object">
@@ -67,17 +65,14 @@
                     <img class="w-[1.25rem] relative h-[1.25rem]" alt="" src="{% static "img/double-alt-arrow-left-white.14ea06f8.svg" %}">
                     Trip Details
                 </button>
-
                 <!--  Drawer -->
                 <section id="drawer" class="h-[88vh] flex w-[480px] fixed top-[87.2px] right-0 overflow-y-scroll overflow-x-hidden transition-all duration-500 z-10 bg-foundation-white-light box-border shrink-0 flex-col items-start justify-start p-[2.25rem] gap-[1.5rem_0rem] text-center text-[1rem] text-foundation-white-dark-active border-l-[1px] border-solid border-foundation-white-normal-hover">
-                    <!-- New trip title and close arrow -->
                     <div class="self-stretch flex flex-row items-center justify-start text-left text-foundation-grey-normal">
                         <b class="flex-1 relative leading-[120%]">New Trip Details</b>
                         <div id="closeDrawerBtn" class="px-2 py-2 cursor-pointer">
                             <img class="w-[1.25rem] relative h-[1.25rem]" alt="" src="/solardoublealtarrowrightlineduotone.99509c5d.svg">
                         </div>
                     </div>
-                    <!-- New trip title and close arrow -->
                     <form method="post" action="/register_trip/" class="w-full">
                         {% csrf_token %}
                         <div class="self-stretch flex flex-col items-start justify-start text-left text-[0.75rem] text-foundation-grey-normal">
@@ -197,13 +192,19 @@
             }
         );
 
-        var tile_layer_91a182e7bac4642dba1c6712e8793047 = L.tileLayer(
-            "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-            {"attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors", "detectRetina": false, "maxNativeZoom": 19, "maxZoom": 19, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+        var mapboxAccessToken = 'pk.eyJ1IjoiaG9ycmlibGVib2IxMSIsImEiOiJjbHRnNW4wbWowcGMyMmlybnE3M3d6bGswIn0.3G3maVqRz7uZVzKlwFhTFg'; // Replace with your Mapbox access token
+
+        var tile_layer_mapbox = L.tileLayer(
+            "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=" + mapboxAccessToken,
+            {
+                attribution: "Map data &copy; <a href='https://www.mapbox.com/'>Mapbox</a> contributors, OpenStreetMap",
+                id: "mapbox/streets-v12", // Replace with your desired Mapbox style
+                tileSize: 512,
+                zoomOffset: -1
+            }
         );
 
-        tile_layer_91a182e7bac4642dba1c6712e8793047.addTo(map_a50d3f9f59adbad9e57d97d39236aa6d);
-
+        tile_layer_mapbox.addTo(map_a50d3f9f59adbad9e57d97d39236aa6d);
         /*var marker_bbf56ca3ef0052738b54fe2209f49596 = L.marker(
             [9.025, 38.7469],
             {}
