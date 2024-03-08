@@ -31,6 +31,7 @@
     height: 100.0%;
     left: 0.0%;
     top: 0.0%;
+    z-index: 0;
 }
 .leaflet-container { font-size: 1rem; }
 .leaflet-right {display: None}
@@ -70,7 +71,8 @@
 
                 <!--  Drawer -->
                 <!--* don't fucking ask me why 88vh works. It just does -->
-                <section id="drawer" class="h-[88vh] flex w-[480px] fixed top-[87.2px] right-0 overflow-y-scroll overflow-x-hidden transition-all duration-500 z-10 bg-foundation-white-light box-border shrink-0 flex-col items-start justify-start p-[2.25rem] gap-[1.5rem_0rem] text-center text-[1rem] text-foundation-white-dark-active border-l-[1px] border-solid border-foundation-white-normal-hover">
+                <section id="drawer" class="h-[88vh] flex w-[300px] fixed top-[87.2px] right-0 overflow-y-scroll overflow-x-hidden transition-all duration-500 z-10 bg-foundation-white-light box-border shrink-0 flex-col items-start justify-start p-[2.25rem] gap-[1.5rem_0rem] text-center text-[1rem] text-foundation-white-dark-active border-l-[1px] border-solid border-foundation-white-normal-hover"
+                >
                     <!-- New trip title and close arrow -->
                     <div class="self-stretch flex flex-row items-center justify-start text-left text-foundation-grey-normal">
                         <b class="flex-1 relative leading-[120%]">Edit Trip Details</b>
@@ -179,15 +181,18 @@
             </div>
         </div>
     </div>
-    <script>const openDrawerBtn = document.getElementById("openDrawerBtn");
+    <script>
+        const openDrawerBtn = document.getElementById("openDrawerBtn");
         const closeDrawerBtn = document.getElementById("closeDrawerBtn");
         const drawer = document.getElementById("drawer");
         openDrawerBtn.addEventListener("click", ()=>{
             drawer.style.display = "flex";
-            drawer.style.width = "480px";
+            drawer.style.width = "300px";
+            drawer.style.height = "95vh";
         });
         closeDrawerBtn.addEventListener("click", ()=>{
             drawer.style.display = "none";
+            //drawer.style.width = "0px";
         });
 
         // Function to extract coordinates from a string
@@ -263,6 +268,6 @@
         }).addTo(map_a50d3f9f59adbad9e57d97d39236aa6d);
 
     </script>
-    <script src="/EditTrip.e100f903.js"></script>
+    <script src="{% static "js/EditTrip.e100f903.js" %}"></script>
 </body>
 {% endblock %}

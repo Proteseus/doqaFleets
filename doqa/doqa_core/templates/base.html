@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}doqaFleets{% endblock %}</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{% static 'css/gb.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/global.css' %}" />
     <link rel="stylesheet" href="{% static 'css/Dashboard.css' %}" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space Grotesk:wght@400;500&display=swap">
@@ -35,6 +35,7 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="{% static "js/tailwind.config.js" %}"></script>
     {% tailwind_css %}
     {% block extrahead %}
 
@@ -73,7 +74,7 @@
           </li>
           <li class="rounded-mini overflow-hidden flex flex-row items-center justify-start py-4 px-5">
               <a style="min-width: 20px" href="{% url 'inventory_list' %}">
-                  <img class="w-[1rem] relative h-[1rem] overflow-hidden shrink-0" alt="inventory_icon" src="{% static "img/solarusersgrouproundedlineduotone.a200ef7b.svg" %}">
+                  <img class="w-[1rem] relative h-[1rem] overflow-hidden shrink-0" alt="inventory_icon" src="{% static "img/inventory_unselected.svg" %}">
             </a>
           </li>
         </ul>

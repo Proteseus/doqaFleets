@@ -68,7 +68,7 @@
                     Trip Details
                 </button>
                 <!--  Drawer -->
-                <section id="drawer" class="h-[88vh] hidden fixed top-[87.2px] right-0 overflow-y-scroll overflow-x-hidden transition-all duration-500 z-10 bg-foundation-white-light box-border shrink-0 flex-col items-start justify-start p-[2.25rem] gap-[1.5rem_0rem] text-center text-[1rem] text-foundation-white-dark-active border-l-[1px] border-solid border-foundation-white-normal-hover">
+                <section id="drawer" class="h-[88vh] flex w-[300px] fixed top-10 right-0 overflow-y-scroll overflow-x-hidden transition-all duration-500 z-10 bg-foundation-white-light box-border shrink-0 flex-col items-start justify-start p-[2.25rem] gap-[1.5rem_0rem] text-center text-[1rem] text-foundation-white-dark-active border-l-[1px] border-solid border-foundation-white-normal-hover">
                     <div class="self-stretch flex flex-row items-center justify-start text-left text-foundation-grey-normal">
                         <b class="flex-1 relative leading-[120%]">Trip Details</b>
                         <div id="closeDrawerBtn" class="px-2 py-2 cursor-pointer">
@@ -226,7 +226,7 @@
         const drawer = document.getElementById("drawer");
         openDrawerBtn.addEventListener("click", ()=>{
             drawer.style.display = "flex";
-            drawer.style.width = "480px";
+            drawer.style.width = "300px";
         });
         closeDrawerBtn.addEventListener("click", ()=>{
             drawer.style.display = "none";
@@ -299,7 +299,6 @@
 
         marker_bbf56ca3ef0052738b54fe2209f49596.bindPopup(popup_ef89c11477b94a5ef0102aaf1c3ca0aa);
 */
- 
         L.Routing.control({
             waypoints: [
                 L.latLng(9.018516,38.798026),
@@ -313,5 +312,6 @@
             addWaypoints: false,
         }).addTo(map_a50d3f9f59adbad9e57d97d39236aa6d);
     </script>
+    <script src="{% static "js/ViewTrip.051d098b.js" %}"></script>
 </body>
 {% endblock %}
