@@ -45,8 +45,8 @@ INSTALLED_APPS = [
     'django.contrib.gis',
     'widget_tweaks',
     'django_extensions',
-    'tailwind',
-    'doqa_core'
+    'doqa_core',
+    'django_browser_reload'
 ]
 
 MIDDLEWARE = [
@@ -57,6 +57,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_browser_reload.middleware.BrowserReloadMiddleware',
 ]
 
 ROOT_URLCONF = 'doqa.urls'
