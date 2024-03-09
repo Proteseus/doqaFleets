@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends './bases/nav.html' %}
 {% load static %}
 {% load widget_tweaks %}
 
@@ -38,8 +38,7 @@
 </style>
 {% endblock extrahead %}
 
-{% block content %}
-<body>
+{% block sub_content %}
     <div class="w-full relative bg-white h-screen flex flex-row items-start justify-start text-left text-[1.5rem] text-foundation-grey-normal font-satoshi-body-small">
         <!-- Main Screen -->
         <div class="w-full self-stretch flex flex-col items-start justify-start">
@@ -152,11 +151,7 @@
 
                         <!--* Buttons Container -->
                         <div class="self-stretch flex flex-row items-start justify-between py-2 px-0">
-                            <!-- ! Return to trip management page -->
-                            <button id="closeDrawerBtn" class="min-w-[10.688rem] text-xl text-foundation-red-normal cursor-pointer hover:bg-foundation-white-light-active bg-transparent rounded-rounded-lg py-boundvariablesdata4 px-boundvariablesdata9 border-[1px] border-solid border-foundation-red-normal">
-                                Cancel
-                            </button>
-                            <!-- Form submit button -->
+                           <!-- Form submit button -->
                             <button type="submit" class="w-[10.688rem] text-xl rounded-rounded-lg bg-foundation-green-normal text-white cursor-pointer hover:bg-foundation-green-normal-hover overflow-hidden py-boundvariablesdata4 px-boundvariablesdata9 border-[1px] border-solid border-foundation-green-normal">
                                 Schedule Trip
                             </button>
@@ -171,14 +166,10 @@
     </div>
     <script>
         const openDrawerBtn = document.getElementById("openDrawerBtn");
-        const closeDrawerBtn = document.getElementById("closeDrawerBtn");
         const drawer = document.getElementById("drawer");
         openDrawerBtn.addEventListener("click", ()=>{
             drawer.style.display = "flex";
             drawer.style.width = "480px";
-        });
-        closeDrawerBtn.addEventListener("click", ()=>{
-            drawer.style.display = "none";
         });
 
         // Map Script
@@ -242,6 +233,5 @@
  
     </script>
     <script src="{% static "js/ViewTrip.js" %}"></script>
-</body>
-{% endblock %}
+{% endblock sub_content %}
 

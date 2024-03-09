@@ -31,7 +31,7 @@ def login_(request):
     else:
         form = LoginForm()
 
-    return render(request, 'login.html', {'form': form})
+    return render(request, 'bases/login.html', {'form': form})
 
 # User Logout
 @login_required
@@ -60,7 +60,7 @@ def dashboard(request):
         'trips': trip_data,
     }
 
-    return render(request, 'dashboard.html', context)
+    return render(request, 'bases/dashboard.html', context)
 
 ########################################Trip Methods########################################
 

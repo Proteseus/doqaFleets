@@ -1,8 +1,7 @@
-{% extends '../base.html' %}
+{% extends '../bases/nav.html' %}
 {% load static %}
 {% load widget_tweaks %}
-{% block content %}
-<body>
+{% block sub_content %}
     <div class="w-full h-screen relative bg-white overflow-hidden flex flex-row items-start justify-start text-left text-[1.5rem] text-foundation-grey-normal font-satoshi-body-small">
         <!-- Main Screen -->
         <div class="self-stretch flex-1 flex flex-col items-start justify-start">
@@ -30,106 +29,63 @@
                         <button id="openDrawerBtn2" class="text-xl rounded-rounded-lg cursor-pointer py-boundvariablesdata4 px-boundvariablesdata9 border-[1px] border-solid border-foundation-green-normal text-foundation-green-normal bg-white hover:bg-foundation-white-light-active">
                             New Vehicle
                         </button>
-                        <button id="openDrawerBtn" class="hidden font-medium text-xl cursor-pointer rounded-rounded-lg bg-foundation-green-normal text-white hover:bg-foundation-green-normal-hover overflow-hidden py-boundvariablesdata4 px-boundvariablesdata9 ">
-                            Schedule Maintenance
-                        </button>
                     </div>
                 </div>
-                <!--* Schedule Maintainance Drawer -->
-                <!--* don't fucking ask me why 88vh works. It just does -->
-                <section id="drawer" class="h-[88vh] overflow-y-scroll hidden fixed top-[87.2px] right-0 overflow-x-hidden transition-all duration-500 z-10 bg-foundation-white-light box-border overflow-hidden flex-col items-start justify-start p-[2.25rem] text-left text-[1.5rem] text-foundation-white-dark-active font-satoshi-body-small border-l-[1px] border-solid border-foundation-white-normal-hover">
+                <!--* New Vehicle and Vehicle Detail Drawer -->
+                <section id="drawer2" class=" h-[88vh] overflow-y-scroll hidden fixed top-[87.2px] right-0 overflow-x-hidden transition-all duration-500 z-10 bg-foundation-white-light box-border overflow-hidden flex-col items-start justify-start p-[2.25rem] text-left text-[1.5rem]  font-satoshi-body-small border-l-[1px] border-solid border-foundation-white-normal-hover">
                     <div class="self-stretch flex flex-col items-start justify-start gap-[2.5rem_0rem]">
+                        <!-- New Vehicle title and close arrow -->
                         <div class="self-stretch flex flex-row items-center justify-between text-center">
-                            <div class="relative leading-[120%] font-medium">
-                                Schedule Maintenance
+                            <div class="relative pb-4 leading-[120%] font-medium text-5xl text-foundation-white-dark-active">
+                                New Vehicle
                             </div>
-                            <div id="closeDrawerBtn" class="px-2 py-2 cursor-pointer">
+                            <div id="closeDrawerBtn2" class="px-2 py-2 cursor-pointer">
                                 <img class="w-[1.25rem] relative h-[1.25rem]" alt="" src="{% static "img/solardoublealtarrowrightlineduotone.99509c5d.svg" %}">
                             </div>
                         </div>
-                        <form class="self-stretch flex flex-col items-start justify-start gap-[1.5rem_0rem] text-base text-foundation-grey-normal">
+                        <!-- New Vehicle title and close arrow -->
+                        <form method="post" action="{% url 'register_vehicle' %}" class="self-stretch pb-12 flex flex-col items-start justify-start gap-[1.5rem_0rem] text-base">
+                            {% csrf_token %}
                             <div class="w-full">
-                                <label for="vehicleId" class="block mb-2">Vehicle ID</label>
-                                <input type="text" name="vehicleId" id="vehicleId" class="w-[90%] rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" placeholder="A23143" required="">
+                                <label for="registrationNumber" class="block mb-2">Registration Number</label>
+                                {% render_field form.registration_number hx-post="/check_regitration_uniqueness/" hx-target="#registration_number_error" hx-trigger="change" class="w-[90%] rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" placeholder="A23143" required="" %}
+                                <div id="registration_number_error"></div>
                             </div>
                             <div class="w-full">
-                                <label for="description" class="block mb-2">Description</label>
-                                <textarea name="description" id="description" class="w-[90%] h-44 rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" placeholder="What's wrong with the vehicle?" required=""></textarea>
+                                <label for="make" class="block mb-2">Make</label>
+                                {% render_field form.make class="w-[90%] rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" placeholder="IVECO" required="" %}
                             </div>
                             <div class="w-full">
-                                <label for="scheduledDate" class="block mb-2 text-base">Scheduled Date</label>
-                                <input type="date" name="scheduledDate" id="scheduledDate" class="w-[90%] rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" required="">
+                                <label for="model" class="block mb-2">Model</label>
+                                {% render_field form.model class="w-[90%] rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" placeholder="Daily 4x4" required="" %}
                             </div>
-
+                            <div class="w-full">
+                                <label for="year" class="block mb-2">Year</label>
+                                {% render_field form.year maxlength="4" class="w-[90%] rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" placeholder="2021" required="" %}
+                            </div>
+                            <div class="w-full">
+                                <label for="image" class="block mb-2">Next Maintenance</label>
+                                {% render_field form.next_maintenance_date class="w-[90%] rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" placeholder="2456789" required=False %}
+                            </div>
+                            <div class="w-full">
+                                <label for="driver" class="block mb-2">Assigned Driver</label>
+                                {% render_field form.driver_id class="w-[90%] rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" placeholder="2456789" required="" %}
+                            </div>
+                            <!--* Buttons Container -->
+                            <div class="self-stretch flex flex-row items-start justify-between py-2 px-0">
+                                <button id="closeDrawerBtnCancel" class="w-[10.688rem] text-xl text-foundation-red-normal cursor-pointer hover:bg-foundation-white-light-active bg-transparent rounded-rounded-lg py-boundvariablesdata4 px-boundvariablesdata9 border-[1px] border-solid border-foundation-red-normal">
+                                    Cancel
+                                </button>
+                                <!-- Form submit button -->
+                                <button type="submit" class="w-[10.688rem] text-xl rounded-rounded-lg bg-foundation-green-normal text-white cursor-pointer hover:bg-foundation-green-normal-hover overflow-hidden py-boundvariablesdata4 px-boundvariablesdata9 ">
+                                    Next
+                                </button>
+                            </div>
+                            <!--* Buttons Container -->
                         </form>
-                        <!--* Buttons Container -->
-                        <div class="self-stretch flex flex-row items-start justify-between py-2 px-0">
-                            <button id="closeDrawerBtnCancel" class="w-[10.688rem] text-xl text-foundation-red-normal cursor-pointer hover:bg-foundation-white-light-active bg-transparent rounded-rounded-lg py-boundvariablesdata4 px-boundvariablesdata9 border-[1px] border-solid border-foundation-red-normal">
-                                Cancel
-                            </button>
-                            <!-- Form submit button -->
-                            <button type="submit" class="w-[10.688rem] text-xl rounded-rounded-lg bg-foundation-green-normal text-white cursor-pointer hover:bg-foundation-green-normal-hover overflow-hidden py-boundvariablesdata4 px-boundvariablesdata9 ">
-                                Next
-                            </button>
-                        </div>
-                        <!--* Buttons Container -->
                     </div>
                 </section>
-
-                <!--* Schedule Maintainance Drawer -->
-               <!--* New Vehicle and Vehicle Detail Drawer -->
-               <section id="drawer2" class=" h-[88vh] overflow-y-scroll hidden fixed top-[87.2px] right-0 overflow-x-hidden transition-all duration-500 z-10 bg-foundation-white-light box-border overflow-hidden flex-col items-start justify-start p-[2.25rem] text-left text-[1.5rem]  font-satoshi-body-small border-l-[1px] border-solid border-foundation-white-normal-hover">
-                   <form method="post" action="{% url 'register_vehicle' %}" class="self-stretch pb-12 flex flex-col items-start justify-start gap-[1.5rem_0rem] text-base">
-                       {% csrf_token %}
-                       <!-- New Vehicle title and close arrow -->
-                       <div class="self-stretch flex flex-row items-center justify-between text-center">
-                           <div class="relative pb-4 leading-[120%] font-medium text-5xl text-foundation-white-dark-active">
-                               New Vehicle
-                           </div>
-                           <div id="closeDrawerBtn2" class="px-2 py-2 cursor-pointer">
-                               <img class="w-[1.25rem] relative h-[1.25rem]" alt="" src="{% static "img/solardoublealtarrowrightlineduotone.99509c5d.svg" %}">
-                           </div>
-                       </div>
-                       <!-- New Vehicle title and close arrow -->
-                       <div class="w-full">
-                           <label for="registrationNumber" class="block mb-2">Registration Number</label>
-                           {% render_field form.registration_number hx-post="/check_regitration_uniqueness/" hx-target="#registration_number_error" hx-trigger="change" class="w-[90%] rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" placeholder="A23143" required="" %}
-                           <div id="registration_number_error"></div>
-                       </div>
-                       <div class="w-full">
-                           <label for="make" class="block mb-2">Make</label>
-                           {% render_field form.make class="w-[90%] rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" placeholder="IVECO" required="" %}
-                       </div>
-                       <div class="w-full">
-                           <label for="model" class="block mb-2">Model</label>
-                           {% render_field form.model class="w-[90%] rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" placeholder="Daily 4x4" required="" %}
-                       </div>
-                       <div class="w-full">
-                           <label for="year" class="block mb-2">Year</label>
-                           {% render_field form.year maxlength="4" class="w-[90%] rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" placeholder="2021" required="" %}
-                       </div>
-                       <div class="w-full">
-                           <label for="image" class="block mb-2">Next Maintenance</label>
-                           {% render_field form.next_maintenance_date class="w-[90%] rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" placeholder="2456789" required=False %}
-                       </div>
-                       <div class="w-full">
-                           <label for="driver" class="block mb-2">Assigned Driver</label>
-                           {% render_field form.driver_id class="w-[90%] rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" placeholder="2456789" required="" %}
-                       </div>
-                       <!--* Buttons Container -->
-                       <div class="self-stretch flex flex-row items-start justify-between py-2 px-0">
-                           <button id="closeDrawerBtn" class="w-[10.688rem] text-xl text-foundation-red-normal cursor-pointer hover:bg-foundation-white-light-active bg-transparent rounded-rounded-lg py-boundvariablesdata4 px-boundvariablesdata9 border-[1px] border-solid border-foundation-red-normal">
-                               Cancel
-                           </button>
-                           <!-- Form submit button -->
-                           <button type="submit" class="w-[10.688rem] text-xl rounded-rounded-lg bg-foundation-green-normal text-white cursor-pointer hover:bg-foundation-green-normal-hover overflow-hidden py-boundvariablesdata4 px-boundvariablesdata9 ">
-                               Add
-                           </button>
-                       </div>
-                       <!--* Buttons Container -->
-                   </form>
-               </section>
-               <!--* New Vehicle and Vehicle Detail Drawer -->
+                <!--* New Vehicle and Vehicle Detail Drawer -->
 
                 <!-- Vehicle Table -->
                 <div class="relative overflow-x-auto py-6 px-9">
@@ -146,14 +102,14 @@
                         </thead>
                         <tbody>
                             {% for vehicle in vehicles %}
-                                <tr data-href="{% url 'vehicle_detail' vehicle.id %}" class="hover: cursor-pointer hover:bg-foundation-white-light-active">
-                                    <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap">{{ vehicle.registration_number }}</th>
-                                    <td class="px-6 py-4">{{ vehicle.make }}</td>
-                                    <td class="px-6 py-4">{{ vehicle.model }}</td>
-                                    <td class="px-6 py-4">{{ vehicle.year }}</td>
-                                    <td class="px-6 py-4">{{ vehicle.driver_id }}</td>
-                                    <td class="px-6 py-4">{{ vehicle.next_maintenance_date }}</td>
-                                </tr>
+                            <tr data-href="{% url 'vehicle_detail' vehicle.id %}" class="hover: cursor-pointer hover:bg-foundation-white-light-active">
+                                <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap">{{ vehicle.registration_number }}</th>
+                                <td class="px-6 py-4">{{ vehicle.make }}</td>
+                                <td class="px-6 py-4">{{ vehicle.model }}</td>
+                                <td class="px-6 py-4">{{ vehicle.year }}</td>
+                                <td class="px-6 py-4">{{ vehicle.driver_id }}</td>
+                                <td class="px-6 py-4">{{ vehicle.next_maintenance_date }}</td>
+                            </tr>
                             {% endfor %}
                         </tbody>
                     </table>
@@ -165,30 +121,21 @@
 
 
         <script>
-            const openDrawerBtn = document.getElementById("openDrawerBtn");
             const openDrawerBtn2 = document.getElementById("openDrawerBtn2");
-            const closeDrawerBtn = document.getElementById("closeDrawerBtn");
             const closeDrawerBtnCancel = document.getElementById("closeDrawerBtnCancel");
             const closeDrawerBtn2 = document.getElementById("closeDrawerBtn2");
-            const drawer = document.getElementById("drawer");
             const drawer2 = document.getElementById("drawer2");
-            openDrawerBtn.addEventListener("click", ()=>{
-                drawer.style.display = "flex";
-                drawer.style.width = "480px";
-            });
+
             openDrawerBtn2.addEventListener("click", ()=>{
                 drawer2.style.display = "flex";
                 drawer2.style.width = "480px";
-            });
-            closeDrawerBtn.addEventListener("click", ()=>{
-                drawer.style.display = "none";
             });
             closeDrawerBtn2.addEventListener("click", ()=>{
                 drawer2.style.display = "none";
             });
             //For the Cancel button
             closeDrawerBtnCancel.addEventListener("click", ()=>{
-                drawer.style.display = "none";
+                drawer2.style.display = "none";
             });
             //Navigates to vehicle detail for each table entry
             const tableRows = document.querySelectorAll(" tbody tr");
@@ -198,5 +145,4 @@
         </script>
         <script src="{% static "js/VehicleManagement.72b8fb2a.js" %}"></script>
     </div>
-</body>
-{% endblock %}
+{% endblock sub_content %}

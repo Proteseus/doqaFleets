@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}doqaFleets{% endblock %}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/global.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/Dashboard.css' %}" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space Grotesk:wght@400;500&display=swap">
+
+    <style>
+    @font-face {
+        font-family: Satoshi;
+        src: url("{% static "otf/Satoshi-Regular.43133080.otf" %}");
+        font-weight: 400;
+    }
+
+    @font-face {
+        font-family: Satoshi;
+        src: url("{% static "otf/Satoshi-Medium.f335f454.otf" %}");
+        font-weight: 500;
+    }
+
+    @font-face {
+        font-family: Satoshi;
+        src: url("{% static "otf/Satoshi-Bold.326d1817.otf" %}");
+        font-weight: 700;
+    }
+    </style>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    {% block extrahead %}
+
+    {% endblock extrahead %}
+</head>
+{% block login_content %}
+<body class="h-screen">
+</body>
+{% endblock login_content %}
+
+{% block main_content %}
+<body>
+</body>
+{% endblock main_content %}
+</html>
+

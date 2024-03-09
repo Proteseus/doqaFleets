@@ -1,13 +1,148 @@
-{% extends 'base.html' %}
+               <!--  Drawer -->
+                <section id="drawer" class="h-[88vh] flex w-[300px] fixed top-10 right-0 overflow-y-scroll overflow-x-hidden transition-all duration-500 z-10 bg-foundation-white-light box-border shrink-0 flex-col items-start justify-start p-[2.25rem] gap-[1.5rem_0rem] text-center text-[1rem] text-foundation-white-dark-active border-l-[1px] border-solid border-foundation-white-normal-hover">
+                    <div class="self-stretch flex flex-row items-center justify-start text-left text-foundation-grey-normal">
+                        <b class="flex-1 relative leading-[120%]">Trip Details</b>
+                   </div>
+                    <div class="self-stretch flex flex-col items-start justify-start text-left text-[0.75rem] text-foundation-grey-normal">
+                        <div class="self-stretch overflow-hidden flex flex-row items-center justify-between py-boundvariablesdata1 px-[0rem] text-center text-[1rem] text-foundation-blue-normal">
+                            <div class="w-[7.5rem] rounded-3xl bg-foundation-blue-light box-border flex flex-row items-center justify-center py-[0.5rem] px-[1rem] border-[1px] border-solid border-foundation-grey-light">
+                                <b class="w-[5.25rem] relative leading-[120%] inline-block h-[1.375rem] shrink-0">{{ trip.status }}</b>
+                            </div>
+                            <div class="flex flex-col items-start justify-start gap-[0.875rem_0rem] text-left text-[0.75rem] text-foundation-white-dark-active">
+                                <div class="flex flex-row items-center justify-start">
+                                    <div class="flex flex-col items-start justify-start gap-[0.25rem_0rem]">
+                                        <b class="relative leading-[120%]">{{ trip.start_location }}
+                                        </b>
+                                        <div class="relative text-[0.625rem] leading-[120%]">
+                                            Start Location
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex flex-row items-center justify-start">
+                                    <div class="flex flex-col items-start justify-start gap-[0.25rem_0rem]">
+                                        <b class="relative leading-[120%]">{{ trip.end_location }}</b>
+                                        <div class="relative text-[0.625rem] leading-[120%]">
+                                            End Location
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="self-stretch relative box-border h-[0.063rem] border-t-[1px] border-solid border-gray-200"></div>
+                        <div class="self-stretch overflow-hidden flex flex-row items-center justify-between py-boundvariablesdata1 px-[0rem]">
+                            <div class="flex flex-row items-center justify-start">
+                                <div class="flex flex-col items-start justify-start">
+                                    <b class="relative leading-[120%]">{{ trip.planned_start_time }}</b>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="self-stretch relative box-border h-[0.063rem] border-t-[1px] border-solid border-gray-200"></div>
+                        <div class="self-stretch overflow-hidden flex flex-row items-center justify-between py-boundvariablesdata1 px-[0rem]">
+                            <div class="flex flex-row items-center justify-start">
+                                <div class="flex flex-col items-start justify-start">
+                                    <b class="relative leading-[120%]">{{ trip.planned_end_time }}</b>
+                                </div>
+                            </div>
+                            <div class="flex flex-row items-center justify-start gap-[0rem_2.5rem] text-foundation-white-dark-active">
+                                <div class="flex flex-row items-center justify-start">
+                                    <div class="flex flex-col items-start justify-start gap-[0.25rem_0rem]">
+                                        <b class="relative leading-[120%]">9:30pm</b>
+                                        <div class="relative text-[0.625rem] leading-[120%]">
+                                            Planned End
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex flex-row items-center justify-center">
+                                    <div class="flex flex-col items-start justify-start gap-[0.25rem_0rem]">
+                                        <b class="relative leading-[120%]">-</b>
+                                        <div class="relative text-[0.625rem] leading-[120%]">
+                                            Actual End
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="self-stretch relative box-border h-[0.063rem] border-t-[1px] border-solid border-gray-200"></div>
+                    </div>
 
-{% block content %}
-<h2>Edit Trip</h2>
-
-    <form method="post" action="{% url 'edit_trip' trip.id %}">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Update Trip</button>
-    </form>
-
-    <a href="{% url 'trip_detail' trip.id %}">Back to Trip Detail</a>
-{% endblock %}
+                    <div class="self-stretch flex flex-col items-start justify-start gap-[1rem_0rem]">
+                        <b class="relative leading-[120%]">Vehicle Details</b>
+                        <div class="self-stretch flex flex-col items-start justify-start gap-[1.5rem_0rem] text-left text-foundation-grey-normal">
+                            <div class="self-stretch flex flex-row items-start justify-between py-[1.5rem] px-[1rem]">
+                                <div class="flex flex-col items-start justify-start gap-[0.5rem_0rem] max-w-[7.5rem]">
+                                    <div class="relative leading-[120%]">Make</div>
+                                    <div class="rounded-3xl bg-foundation-white-normal flex flex-row items-center justify-center py-[0.5rem] px-[1rem] text-center border-[1px] border-solid border-foundation-grey-light-active">
+                                        <b class="relative leading-[120%]">{{ vehicle.make }}</b>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col items-start justify-start gap-[0.5rem_0rem] max-w-[7.5rem]">
+                                    <div class="relative leading-[120%]">Model</div>
+                                    <div class="rounded-3xl bg-foundation-white-normal flex flex-row items-center justify-center py-[0.5rem] px-[1rem] text-center border-[1px] border-solid border-foundation-grey-light-active">
+                                        <b class="relative leading-[120%]">{{ vehicle.model }}</b>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col items-start justify-start gap-[0.5rem_0rem]">
+                                    <div class="relative leading-[120%]">Year</div>
+                                    <div class="rounded-3xl bg-foundation-white-normal flex flex-row items-center justify-center py-[0.5rem] px-[1.125rem] text-center border-[1px] border-solid border-foundation-grey-light-active">
+                                        <b class="relative leading-[120%]">{{ vehicle.year }}</b>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="self-stretch flex flex-col items-start justify-start gap-[0.5rem_0rem]">
+                                <div class="self-stretch relative leading-[120%]">
+                                    Vehicle ID
+                                </div>
+                                <div class="self-stretch rounded-lg bg-foundation-white-light-active flex flex-row items-center justify-start py-boundvariablesdata8 px-boundvariablesdata1 text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active">
+                                    <div class="flex-1 flex flex-row items-center justify-start gap-[0rem_0.625rem]">
+                                        <img class="w-[1rem] relative h-[1rem] overflow-hidden shrink-0 hidden" alt="" src="{% static "img/user.cf6dfad7.svg" %}">
+                                        <div class="flex-1 relative leading-[120%]">{{ vehicle.registration_number }}</div>
+                                        <img class="w-[0.75rem] relative h-[0.75rem] overflow-hidden shrink-0 hidden" alt="" src="{% static "img/x.d9b2ef17.svg" %}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="self-stretch flex flex-col items-start justify-start gap-[1rem_0rem]">
+                        <b class="relative leading-[120%]">Driver Details</b>
+                        <div class="self-stretch flex flex-col items-start justify-start gap-[1.5rem_0rem] text-left text-foundation-grey-normal">
+                            <div class="self-stretch flex flex-col items-start justify-start gap-[0.5rem_0rem]">
+                                <div class="self-stretch relative leading-[120%]">Name</div>
+                                <div class="self-stretch rounded-lg bg-foundation-white-light-active flex flex-row items-center justify-start py-boundvariablesdata8 px-boundvariablesdata1 text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active">
+                                    <div class="flex-1 flex flex-row items-center justify-start gap-[0rem_0.625rem]">
+                                        <img class="w-[1rem] relative h-[1rem] overflow-hidden shrink-0 hidden" alt="" src="/user.cf6dfad7.svg">
+                                        <div class="flex-1 relative leading-[120%]">
+                                            {{ driver.name }}
+                                        </div>
+                                        <img class="w-[0.75rem] relative h-[0.75rem] overflow-hidden shrink-0 hidden" alt="" src="/x.d9b2ef17.svg">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="self-stretch flex flex-col items-start justify-start gap-[0.5rem_0rem]">
+                                <div class="self-stretch relative leading-[120%]">
+                                    Employee ID
+                                </div>
+                                <div class="self-stretch rounded-lg bg-foundation-white-light-active flex flex-row items-center justify-start py-boundvariablesdata8 px-boundvariablesdata1 text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active">
+                                    <div class="flex-1 flex flex-row items-center justify-start gap-[0rem_0.625rem]">
+                                        <img class="w-[1rem] relative h-[1rem] overflow-hidden shrink-0 hidden" alt="" src="/user.cf6dfad7.svg">
+                                        <div class="flex-1 relative leading-[120%]">{{ driver.driver_license_number }}</div>
+                                        <img class="w-[0.75rem] relative h-[0.75rem] overflow-hidden shrink-0 hidden" alt="" src="/x.d9b2ef17.svg">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="self-stretch flex flex-col items-start justify-start gap-[0.5rem_0rem]">
+                                <div class="self-stretch relative leading-[120%]">Phone</div>
+                                <div class="self-stretch rounded-lg bg-foundation-white-light-active flex flex-row items-center justify-start py-boundvariablesdata8 px-boundvariablesdata1 text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active">
+                                    <div class="flex-1 flex flex-row items-center justify-start gap-[0rem_0.625rem]">
+                                        <img class="w-[1rem] relative h-[1rem] overflow-hidden shrink-0 hidden" alt="" src="/user.cf6dfad7.svg">
+                                        <div class="flex-1 relative leading-[120%]">
+                                            {{ driver.contact_number }}
+                                        </div>
+                                        <img class="w-[0.75rem] relative h-[0.75rem] overflow-hidden shrink-0 hidden" alt="" src="/x.d9b2ef17.svg">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- Drawer -->
+ 

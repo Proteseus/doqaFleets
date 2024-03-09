@@ -1,8 +1,7 @@
-{% extends '../base.html' %}
+{% extends '../bases/nav.html' %}
 {% load static %}
 {% load widget_tweaks %}
-{% block content %}
-<body>
+{% block sub_content %}
     <div class="w-full relative bg-white h-screen overflow-hidden flex flex-row items-start justify-start text-left text-[1.5rem] text-foundation-grey-normal font-satoshi-body-small">
         <!-- Main Screen -->
         <div class="self-stretch flex-1 flex flex-col items-start justify-start">
@@ -22,7 +21,7 @@
 
                 <!--* Schedule Maintainance Drawer -->
                 <!--* don't fucking ask me why 88vh works. It just does -->
-                <section id="drawer" class="h-[88vh] overflow-y-scroll hidden fixed top-10 right-0 overflow-x-hidden transition-all duration-500 z-10 bg-foundation-white-light box-border overflow-hidden flex-col items-start justify-start p-[2.25rem] text-left text-[1.5rem] text-foundation-white-dark-active font-satoshi-body-small border-l-[1px] border-solid border-foundation-white-normal-hover">
+                <section id="drawer" class="h-[88vh] overflow-y-scroll hidden fixed top-[87.2px] right-0 overflow-x-hidden transition-all duration-500 z-10 bg-foundation-white-light box-border flex-col items-start justify-start p-[2.25rem] text-left text-[1.5rem] text-foundation-white-dark-active font-satoshi-body-small border-l-[1px] border-solid border-foundation-white-normal-hover">
                     <div class="self-stretch flex flex-col items-start justify-start gap-[2.5rem_0rem]">
                         <div class="self-stretch flex flex-row items-center justify-between text-center">
                             <div class="relative leading-[120%] font-medium">
@@ -47,7 +46,7 @@
                                 {% render_field form.scheduled_date class="w-[90%] rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" required="" %}
                             </div>
                             <div class="w-full">
-                                <label for="vehicleId" class="block mb-2">Vehicle ID</label>
+                                <label for="vehicleId" class="block mb-2">Status</label>
                                 {% render_field form.status readonly=True class="w-[90%] rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" placeholder="A23143" required=""%}
                             </div>
                             <div class="self-stretch flex flex-row items-start justify-between py-2 px-0">
@@ -60,9 +59,6 @@
                                 </button>
                             </div>
                         </form>
-                        <!--* Buttons Container -->
-                        
-                        <!--* Buttons Container -->
                     </div>
                 </section>
                <!--* Schedule Maintainance Drawer -->
@@ -200,5 +196,4 @@
 
     </script>
     <script src="{% static "js/DriverDetails.7ba5cd83.js" %}"></script>
-    </body>
-{% endblock %}
+{% endblock sub_content %}

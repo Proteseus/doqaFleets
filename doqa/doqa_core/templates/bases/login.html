@@ -1,0 +1,24 @@
+{% extends "./base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+{% block main_content %}
+<div class="bg-gray-50 flex flex-col items-center justify-center h-full">
+        <div class="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0 font-satoshi-body-small">
+            <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+                <h1 class="text-7xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">Sign in to your account</h1>
+                <form class="space-y-4 md:space-y-6" method="post" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    <div>
+                        <label for="username" class="block mb-2 text-sm font-medium text-gray-900">Username</label>
+                        {% render_field form.username class="w-[90%] rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" required=True %}
+                    </div>
+                    <div>
+                        <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Password</label>
+                        {% render_field form.password class="w-[90%] rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" required=True %}
+                    </div>
+                    <button type="submit" class="w-full text-whitebg-foundation-green-normal text-white hover:foundation-green-normal-hover focus:ring-4 focus:outline-none focus:ring-foundation-green-light-active font-medium rounded-rounded-lg text-base px-5 py-2.5 text-center">Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock main_content %}

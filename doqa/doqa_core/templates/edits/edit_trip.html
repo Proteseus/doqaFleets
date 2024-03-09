@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends '../bases/nav.html' %}
 {% load static %}
 {% load widget_tweaks %}
 
@@ -38,15 +38,13 @@
 </style>
 {% endblock extrahead %}
 
-{% block content %}
-<body>
-    <div class="w-92 relative bg-white h-screen flex flex-row items-start justify-start text-left text-[1.5rem] text-foundation-grey-normal font-satoshi-body-small">
+{% block sub_content %}
+    <div class="w-full relative bg-white h-screen flex flex-row items-start justify-start text-left text-[1.5rem] text-foundation-grey-normal font-satoshi-body-small">
         <!-- Main Screen -->
-
         <div class=" w-full self-stretch flex flex-col items-start justify-start" >
             <div class="w-full bg-foundation-white-light box-border flex flex-col items-start justify-start py-[1.25rem] px-[2.25rem] border-b-[1px] border-solid border-foundation-white-normal-hover">
                 <!-- Header -->
-                <div class="self-stretch overflow-hidden flex flex-row items-center justify-start gap-[0rem_2rem]">
+                <div class="self-stretch flex flex-row items-center justify-start gap-[0rem_2rem]">
                     <div class="flex-1 relative leading-[120%] font-medium">
                         Trip Management
                     </div>
@@ -64,18 +62,14 @@
                     <div class="folium-map" id="map_a50d3f9f59adbad9e57d97d39236aa6d" ></div>
                 </div>
                 <!-- Render map here -->
-                <button id="openDrawerBtn" class="fixed top-32 right-16 z-10 font-medium cursor-pointer rounded-rounded-lg bg-foundation-green-normal text-white hover:bg-foundation-green-normal-hover flex flex-row items-center justify-center overflow-hidden py-boundvariablesdata4 px-boundvariablesdata9 gap-2 w-fit text-[1.25rem] text-white">
-                    <img class="w-[1.25rem] relative h-[1.25rem]" alt="" src="{% static "img/double-alt-arrow-left-white.14ea06f8.svg" %}">
-                    Edit Trip
-                </button>
 
                 <!--  Drawer -->
                 <!--* don't fucking ask me why 88vh works. It just does -->
-                <section id="drawer" class="h-[88vh] flex w-[300px] fixed top-[87.2px] right-0 overflow-y-scroll overflow-x-hidden transition-all duration-500 z-10 bg-foundation-white-light box-border shrink-0 flex-col items-start justify-start p-[2.25rem] gap-[1.5rem_0rem] text-center text-[1rem] text-foundation-white-dark-active border-l-[1px] border-solid border-foundation-white-normal-hover"
+                <section id="drawer" class="h-[88vh] flex w-[300px] fixed top-10 right-0 overflow-y-scroll overflow-x-hidden transition-all duration-500 z-10 bg-foundation-white-light box-border shrink-0 flex-col items-start justify-start p-[2.25rem] gap-[1.5rem_0rem] text-center text-[1rem] text-foundation-white-dark-active border-l-[1px] border-solid border-foundation-white-normal-hover"
                 >
                     <!-- New trip title and close arrow -->
                     <div class="self-stretch flex flex-row items-center justify-start text-left text-foundation-grey-normal">
-                        <b class="flex-1 relative leading-[120%]">Edit Trip Details</b>
+                        <b class="flex-1 relative leading-[120%]">Update Trip</b>
                         <div id="closeDrawerBtn" class="px-2 py-2 cursor-pointer">
                             <img class="w-[1.25rem] relative h-[1.25rem]" alt="" src="{% static "img/solardoublealtarrowrightlineduotone.99509c5d.svg" %}">
                         </div>
@@ -166,10 +160,6 @@
                         <!-- Status -->
                         <!--* Buttons Container -->
                         <div class="self-stretch flex flex-row items-start justify-between py-2 px-0">
-                            <!-- ! Return to trip management page -->
-                            <button id="closeDrawerBtn" class="min-w-[10.688rem] text-xl text-foundation-red-normal cursor-pointer hover:bg-foundation-white-light-active bg-transparent rounded-rounded-lg py-boundvariablesdata4 px-boundvariablesdata9 border-[1px] border-solid border-foundation-red-normal">
-                                Cancel
-                            </button>
                             <!-- Form submit button -->
                             <button type="submit" class="w-[10.688rem] text-xl rounded-rounded-lg bg-foundation-green-normal text-white cursor-pointer hover:bg-foundation-green-normal-hover overflow-hidden py-boundvariablesdata4 px-boundvariablesdata9 border-[1px] border-solid border-foundation-green-normal">
                                 Save
@@ -182,19 +172,6 @@
         </div>
     </div>
     <script>
-        const openDrawerBtn = document.getElementById("openDrawerBtn");
-        const closeDrawerBtn = document.getElementById("closeDrawerBtn");
-        const drawer = document.getElementById("drawer");
-        openDrawerBtn.addEventListener("click", ()=>{
-            drawer.style.display = "flex";
-            drawer.style.width = "300px";
-            drawer.style.height = "95vh";
-        });
-        closeDrawerBtn.addEventListener("click", ()=>{
-            drawer.style.display = "none";
-            //drawer.style.width = "0px";
-        });
-
         // Function to extract coordinates from a string
         function extractCoordinates(point) {
             var matches = point.match(/POINT \(([^)]+)\)/);
@@ -216,8 +193,8 @@
         var lon2 = point2Data ? point2Data.lon : null;
 
         console.log(lat1, lon1, lat2, lon2);
-        var routeData = JSON.parse('{{ trip.route_data|safe }}');
-        // console.log(routeData.coordinates);
+        var routes = {{ trip.route_data|safe }}
+
         // Map Script
         var map_a50d3f9f59adbad9e57d97d39236aa6d = L.map(
             "map_a50d3f9f59adbad9e57d97d39236aa6d",
@@ -228,46 +205,33 @@
                 zoomControl: true,
                 preferCanvas: false,
             }
-        );
+            );
 
         var mapboxAccessToken = 'pk.eyJ1IjoiaG9ycmlibGVib2IxMSIsImEiOiJjbHRnNW4wbWowcGMyMmlybnE3M3d6bGswIn0.3G3maVqRz7uZVzKlwFhTFg';
         var tile_layer_mapbox = L.tileLayer(
-            "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=" + mapboxAccessToken,
-            {
-                attribution: "Map data &copy; <a href='https://www.mapbox.com/'>Mapbox</a> contributors, OpenStreetMap",
-                id: "mapbox/streets-v12",
-                tileSize: 512,
+                "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=" + mapboxAccessToken,
+                {
+                    attribution: "Map data &copy; <a href='https://www.mapbox.com/'>Mapbox</a> contributors, OpenStreetMap",
+                    id: "mapbox/streets-v12",
+                    tileSize: 512,
                 zoomOffset: -1
             }
         );
 
         tile_layer_mapbox.addTo(map_a50d3f9f59adbad9e57d97d39236aa6d);
 
-        var waypoints = routeData.coordinates.map(coord => L.latLng(coord[1], coord[0]));
-
         L.Routing.control({
-            waypoints: [
-                L.latLng(lat1, lon1),
-                L.latLng(lat2, lon2)
-            ],
+            waypoints: routes['waypoints'],
             routeWhileDragging: false,
             addWaypoints: false, // Disable adding new waypoints
             show: false,
             lineOptions: {
                 styles: [{color: 'red', opacity: 0.8, weight: 4}]
             },
-        }).addTo(map_a50d3f9f59adbad9e57d97d39236aa6d);
-
-        var coordinates = routeData.coordinates.map(coord => [coord[1], coord[0]]);
-
-        // Create a polyline using Leaflet's L.polyline
-        var polyline = L.polyline(coordinates, {
-            color: 'red',
-            opacity: 0.8,
-            weight: 4
+            router: L.Routing.mapbox(mapboxAccessToken),
+            route: JSON.parse('{{ trip.route_data|safe|escapejs }}')
         }).addTo(map_a50d3f9f59adbad9e57d97d39236aa6d);
 
     </script>
     <script src="{% static "js/EditTrip.e100f903.js" %}"></script>
-</body>
-{% endblock %}
+{% endblock sub_content %}
