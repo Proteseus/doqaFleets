@@ -156,6 +156,13 @@
                                     {% render_field form.route_data id="routeDataInput" class="w-[98%] hidden rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" required="" %}
                                 </div>
                             </div>
+                            <b class="relative leading-[120%] hidden">Distance</b>
+                            <div class="self-stretch flex flex-col items-start justify-start gap-[1.5rem_0rem] text-left text-foundation-grey-normal">
+                                <div class="w-full flex flex-col items-start py-2">
+                                    <label for="routeDistanceInput" class="hidden block mb-2">Distance</label>
+                                    {% render_field form.distance id="routeDistanceInput" class="w-[98%] hidden rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" required="" %}
+                                </div>
+                            </div>
                         </div>
                         <!-- Status -->
                         <!--* Buttons Container -->
@@ -222,6 +229,7 @@
 
         L.Routing.control({
             waypoints: routes['waypoints'],
+            draggableWaypoints: false,
             routeWhileDragging: false,
             addWaypoints: false, // Disable adding new waypoints
             show: false,

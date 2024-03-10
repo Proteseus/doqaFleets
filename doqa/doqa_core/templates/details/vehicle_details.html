@@ -99,12 +99,16 @@
                             <p class="font-space-grostek-subheadline">{{ vehicle.driver_id }}</p>
                         </div>
                         <div>
+                            <b>Fuel</b>
+                            <p class="font-space-grostek-subheadline">{{ vehicle.fuel }}</p>
+                        </div>
+                        <div>
                             <b>Last Maintainance Date</b>
-                            <p class="font-space-grostek-subheadline">{{ vehicle.last_maintenance_date }}</p>
+                            <p class="font-space-grostek-subheadline">{{ vehicle.get_last_to_now_maintenance_date|default:"No maintenance records" }}</p>
                         </div>
                         <div>
                             <b>Next Maintainance Date</b>
-                            <p class="font-space-grostek-subheadline">{{ vehicle.next_maintenance_date }}</p>
+                            <p class="font-space-grostek-subheadline">{{ vehicle.get_latest_to_now_maintenance_date|default:"No maintenance records" }}</p>
                         </div>
                     </div>
                     <!-- The rest of a Vehicles Details -->
@@ -160,6 +164,7 @@
                                 <th scope="col" class="px-6 py-3 w-[300px]">Description</th>
                                 <th scope="col" class="px-6 py-3">Scheduled Date</th>
                                 <th scope="col" class="px-6 py-3">Status</th>
+                                <th scope="col" class="px-6 px-3">Set Complete</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -168,6 +173,13 @@
                                 <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap">{{ m_order.description }}</th>
                                 <td class="px-6 py-4">{{ m_order.scheduled_date }}</td>
                                 <td class="px-6 py-4">{{ m_order.status }}</td>
+                                <td class="px-6 py-4">
+                                    {% if m_order.status != 'COMPLETE' %}
+                                    <a href="{% url 'complete_maintenance' m_order.id vehicle.id %}">Complete</a>
+                                    {% else %}
+                                        <!-- Empty if it's complete -->
+                                    {% endif %}
+                                </td>
                             </tr>
                             {% endfor %}
                         </tbody>

@@ -97,6 +97,7 @@
                                 <th scope="col" class="px-6 py-3">Model</th>
                                 <th scope="col" class="px-6 py-3">Year</th>
                                 <th scope="col" class="px-6 py-3">Driver</th>
+                                <th scope="col" class="px-6 py-3">Fuel [in ltr]</th>
                                 <th scope="col" class="px-6 py-3">Next Maintenance</th>
                             </tr>
                         </thead>
@@ -108,6 +109,7 @@
                                 <td class="px-6 py-4">{{ vehicle.model }}</td>
                                 <td class="px-6 py-4">{{ vehicle.year }}</td>
                                 <td class="px-6 py-4">{{ vehicle.driver_id }}</td>
+                                <td class="px-9 py-4">{{ vehicle.fuel }}</td>
                                 <td class="px-6 py-4">{{ vehicle.next_maintenance_date }}</td>
                             </tr>
                             {% endfor %}

@@ -143,8 +143,15 @@
                             <b class="relative leading-[120%] hidden">Route</b>
                             <div class="self-stretch flex flex-col items-start justify-start gap-[1.5rem_0rem] text-left text-foundation-grey-normal">
                                 <div class="w-full flex flex-col items-start py-2">
-                                    <label for="registrationNumber" class="hidden block mb-2">Status</label>
+                                    <label for="routeDataInput" class="hidden block mb-2">Distance</label>
                                     {% render_field form.route_data id="routeDataInput" class="w-[98%] hidden rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" required="" %}
+                                </div>
+                            </div>
+                            <b class="relative leading-[120%] hidden">Distance</b>
+                            <div class="self-stretch flex flex-col items-start justify-start gap-[1.5rem_0rem] text-left text-foundation-grey-normal">
+                                <div class="w-full flex flex-col items-start py-2">
+                                    <label for="routeDistanceInput" class="hidden block mb-2">Distance</label>
+                                    {% render_field form.distance id="routeDistanceInput" class="w-[98%] hidden rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" required="" %}
                                 </div>
                             </div>
                         </div>
@@ -197,17 +204,6 @@
         );
 
         tile_layer_mapbox.addTo(map_a50d3f9f59adbad9e57d97d39236aa6d);
-        /*var marker_bbf56ca3ef0052738b54fe2209f49596 = L.marker(
-            [9.025, 38.7469],
-            {}
-        ).addTo(map_a50d3f9f59adbad9e57d97d39236aa6d);
-*/
-//        var popup_ef89c11477b94a5ef0102aaf1c3ca0aa = L.popup({"maxWidth": "100%"});
-
-//        var html_4f6f70927af4ed9f3fe0e05bd36b618d = $(`<div id="html_4f6f70927af4ed9f3fe0e05bd36b618d" style="width: 100.0%; height: 100.0%;">Current Location</div>`)[0];
-//        popup_ef89c11477b94a5ef0102aaf1c3ca0aa.setContent(html_4f6f70927af4ed9f3fe0e05bd36b618d);
-
-//        marker_bbf56ca3ef0052738b54fe2209f49596.bindPopup(popup_ef89c11477b94a5ef0102aaf1c3ca0aa);
 
         var lat1 = {{ map_points.lat2 }};
         var lon1 = {{ map_points.lon2 }};
@@ -220,17 +216,22 @@
                 L.latLng(lat1, lon1),
                 L.latLng(lat2, lon2)
             ],
-            draggableWaypoints: false, // Disable dragging of waypoints
-            addWaypoints: true, // Disable adding new waypoints
+            draggableWaypoints: false,
+            addWaypoints: true,
             routeWhileDragging: true,
-            router: L.Routing.mapbox("pk.eyJ1IjoiaG9ycmlibGVib2IxMSIsImEiOiJjbHNvZm42ZWEwYmViMmprNTRpaThvZ2ZhIn0.ROEbyxFl7m7I-7KNof8kMQ"),
+            router: L.Routing.mapbox("pk.eyJ1IjoiaG9ycmlibGVib2IxMSIsImEiOiJjbHRnNW4wbWowcGMyMmlybnE3M3d6bGswIn0.3G3maVqRz7uZVzKlwFhTFg"),
         }).addTo(map_a50d3f9f59adbad9e57d97d39236aa6d);
 
         control.on('routeselected', function (e) {
             var routeData = e.route;
             document.getElementById('routeDataInput').value = JSON.stringify(routeData);
         });
- 
+
+        // Access the distance from the control
+        control.on('routesfound', function (e) {
+            var totalDistance = e.routes[0].summary.totalDistance;
+            document.getElementById('routeDistanceInput').value = totalDistance;
+        });
     </script>
     <script src="{% static "js/ViewTrip.js" %}"></script>
 {% endblock sub_content %}

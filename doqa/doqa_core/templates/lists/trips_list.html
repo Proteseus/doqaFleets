@@ -84,6 +84,7 @@
                   <th scope="col" class="px-6 py-3">Drivers Name</th>
                   <th scope="col" class="px-6 py-3">Start Location</th>
                   <th scope="col" class="px-6 py-3">End Location</th>
+                  <th scope="col" class="px-6 py-3">Distance [in m]</th>
                   <th scope="col" class="px-6 py-3">Planned Start Time</th>
                   <th scope="col" class="px-6 py-3">Planned End Time</th>
                   <th scope="col" class="px-6 py-3">Status</th>
@@ -98,18 +99,25 @@
                         <td class="px-6 py-4">{{ trip.vehicle.driver_id }}</td>
                         <td class="px-6 py-4">{{ trip.start_location_name }}</td>
                         <td class="px-6 py-4">{{ trip.end_location_name }}</td>
+                        <td class="py-6 py-4">{{ trip.distance }}</td>
                         <td class="px-6 py-4">{{ trip.planned_start_time }}</td>
                         <td class="px-6 py-4">{{ trip.planned_end_time }}</td>
                         <td class="px-6 py-4">{{ trip.status }}</td>
                         <td class="px-6 py-4">
                             {% if trip.status != "CANCELLED" %}
-                                <a href="{% url 'edit_trip' trip.id %}">Edit</a>
+                                <a href="{% url 'edit_trip' trip.id %}">Update</a>
                             {% else %}
                                 <!-- Display nothing if trip.status is "CANCELLED" -->
-                        {% endif %}
+                            {% endif %}
                         </td>
-                        <td class="px-6 py-4"><a href="{% url 'delete_trip' trip.id %}">Cancel</a></td>
-                    </tr>
+                        <td class="px-6 py-4">
+                            {% if trip.status != "CANCELLED" %}
+                                <a href="{% url 'delete_trip' trip.id %}">Cancel</a>
+                            {% else %}
+                                <!-- Display nothing if trip.status is "CANCELLED" -->
+                            {% endif %}
+                        </td>
+                   </tr>
                 {% endfor %}
               </tbody>
             </table>
