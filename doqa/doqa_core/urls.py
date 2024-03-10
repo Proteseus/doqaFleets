@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import login_, logout_, dashboard, get_options, result, coordinates, showroute, create_vehicle, create_employee, employee_detail, create_maintenance, create_trip, employee_list, vehicle_list, vehicle_detail, inventory_list, trips_list, trip_detail, edit_trip, delete_trip, delete_employee, check_contact_uniqueness, check_license_uniqueness, check_regitration_uniqueness
+from .views import login_, logout_, dashboard, get_options, result, coordinates, showroute, create_vehicle, create_employee, employee_detail, create_maintenance, complete_maintenance, create_trip, check_available_vehicles, employee_list, vehicle_list, vehicle_detail, inventory_list, trips_list, trip_detail, edit_trip, delete_trip, delete_employee, check_contact_uniqueness, check_license_uniqueness, check_regitration_uniqueness
 
 urlpatterns = [
     path('login/', login_, name='login'),
@@ -15,6 +15,7 @@ urlpatterns = [
     path('employee/<uuid:driver_id>/', employee_detail, name='employee_detail'),
     path('employee/<uuid:emp_id>/delete/', delete_employee, name='delete_employee'),
     path('register_maintenance/', create_maintenance, name='register_maintenance'),
+    path('complete_maintenance/<uuid:m_order_id>,<uuid:vehicle_id>', complete_maintenance, name='complete_maintenance'),
     path('register_trip/', create_trip, name='register_trip'),
     path('trips_list/', trips_list, name='trips_list'),
     path('trip/<uuid:trip_id>/', trip_detail, name='trip_detail'),
@@ -30,6 +31,7 @@ htmx_patterns = [
     path('check_contact_uniqueness/', check_contact_uniqueness, name='check_contact_uniqueness'),
     path('check_license_uniqueness/', check_license_uniqueness, name='check_license_uniqueness'),
     path('check_regitration_uniqueness/', check_regitration_uniqueness, name='check_regitration_uniqueness'),
+    path('check_available_vehicles/', check_available_vehicles, name='check_available_vehicles'),
 
 ]
 

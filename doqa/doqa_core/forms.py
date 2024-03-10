@@ -1,9 +1,11 @@
+from datetime import timedelta
 from django import forms
 from django.utils.http import formatdate
 from .models import Vehicle, Employee, Maintenance, Trip, Inventory
 from django.contrib.gis.forms import PointField
 from django.contrib.gis.geos import Point
 from django.contrib.auth.forms import AuthenticationForm
+from django.utils import timezone
 
 class LoginForm(AuthenticationForm):
     username = forms.CharField(
@@ -45,7 +47,7 @@ class MaintenanceForm(forms.ModelForm):
 class TripsForm(forms.ModelForm):
     class Meta:
         model = Trip
-        fields = ['vehicle', 'planned_start_time', 'planned_end_time', 'start_location', 'end_location', 'start_location_name', 'end_location_name', 'route_data']
+        fields = ['vehicle', 'planned_start_time', 'planned_end_time', 'start_location', 'end_location', 'start_location_name', 'end_location_name', 'route_data', 'distance']
         widgets = {
             'planned_start_time': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
             'planned_end_time': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
@@ -68,11 +70,6 @@ class TripsForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(TripsForm, self).__init__(*args, **kwargs)
 
-        # Override the queryset for the vehicle field
-        allowed_statuses = ['PENDING', 'In Progress']
-        assigned_vehicles = Trip.objects.filter(status__in=allowed_statuses)
-        excluded_vehicle_ids = assigned_vehicles.values_list('vehicle', flat=True)
-        self.fields['vehicle'].queryset = Vehicle.objects.exclude(id__in=excluded_vehicle_ids)
 
     def clean_start_location(self):
         start_location_str = self.cleaned_data['start_location']
@@ -96,7 +93,7 @@ class TripsForm(forms.ModelForm):
 class EditTripsForm(forms.ModelForm):
     class Meta:
         model = Trip
-        fields = ['vehicle', 'planned_start_time', 'planned_end_time', 'start_location', 'end_location', 'start_location_name', 'end_location_name', 'route_data']
+        fields = ['vehicle', 'planned_start_time', 'planned_end_time', 'start_location', 'end_location', 'start_location_name', 'end_location_name', 'route_data', 'distance']
         widgets = {
             'planned_start_time': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
             'planned_end_time': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
@@ -120,3 +117,4 @@ class InventoryForm(forms.ModelForm):
     class Meta:
         model = Inventory
         fields = '__all__'
+

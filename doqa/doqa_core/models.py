@@ -1,4 +1,5 @@
 import uuid
+from datetime import date
 from django.contrib.gis.db.models import PointField
 from django.db import models
 from django.contrib.auth.models import User
@@ -23,12 +24,40 @@ class Vehicle(models.Model):
     year = models.IntegerField()
     driver_id = models.OneToOneField(Employee, on_delete=models.CASCADE)
     current_location = PointField(null=True, blank=True)
+    fuel = models.FloatField(null=True, default=30)
     last_maintenance_date = models.DateField(null=True, blank=True)
     next_maintenance_date = models.DateField(null=True, blank=True)
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, editable=False)
 
     def __str__(self):
         return self.registration_number
+
+    def get_latest_to_now_maintenance_date(self):
+        today = date.today()
+
+        # Get the closest pending maintenance date
+        closest_pending_maintenance = Maintenance.objects.filter(vehicle=self).filter(
+            scheduled_date__gte=today, status='PENDING'
+        ).order_by("scheduled_date").first()
+
+        # If there's a pending maintenance, return its scheduled date
+        if closest_pending_maintenance:
+            return closest_pending_maintenance.scheduled_date
+        else:
+            return None
+        # Return the latest completed maintenance date
+        return latest_completed_maintenance.completed_date if latest_completed_maintenance else None
+
+    def get_last_to_now_maintenance_date(self):
+        today = date.today()
+
+         # If there's no pending maintenance, get the latest completed maintenance date
+        latest_completed_maintenance = Maintenance.objects.filter(vehicle=self).filter(
+            completed_date__lte=today
+        ).order_by("-completed_date").first()
+
+        # Return the latest completed maintenance date
+        return latest_completed_maintenance.completed_date if latest_completed_maintenance else None
 
 class Alert(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -79,6 +108,7 @@ class Trip(models.Model):
     actual_end_time = models.DateTimeField(null=True, blank=True)
     status = models.CharField(max_length=15, default='PENDING')
     route_data = models.JSONField(null=True, default=None)
+    distance = models.FloatField(null=True, default=None)
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, editable=False)
 
     def __str__(self):

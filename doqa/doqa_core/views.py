@@ -7,6 +7,7 @@ from django.shortcuts import HttpResponse, render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import cache_control
+from django.utils import timezone
 
 import folium
 
@@ -144,6 +145,23 @@ def create_trip(request):
     return redirect('trips_list')
 
 @login_required
+def check_available_vehicles(request):
+    planned_start_time = request.POST.get('planned_start_time')
+    planned_end_time = request.POST.get('planned_end_time')
+
+    # Convert string to datetime objects
+    planned_start_time = timezone.datetime.strptime(planned_start_time, '%Y-%m-%dT%H:%M')
+    planned_end_time = timezone.datetime.strptime(planned_end_time, '%Y-%m-%dT%H:%M')
+
+    # Check for available vehicles within the specified time range
+    available_vehicles = Vehicle.objects.exclude(
+        trips__planned_start_time__lt=planned_end_time,
+        trips__planned_end_time__gt=planned_start_time,
+    ).values('id', 'make', 'model')  # Adjust these fields based on your actual model fields
+
+    return JsonResponse({'available_vehicles': list(available_vehicles)})
+
+@login_required
 @cache_control(no_cache=True, must_revalidate=True)
 def trips_list(request):
     trips = Trip.objects.all()
@@ -196,6 +214,13 @@ def create_vehicle(request):
                 vehicle = form.save(commit=True)
                 vehicle.created_by = request.user
                 vehicle.save()
+                  # Create a maintenance entry for the new vehicle
+                Maintenance.objects.create(
+                    vehicle=vehicle,
+                    description="Service",
+                    scheduled_date=vehicle.next_maintenance_date,  # You can adjust this as needed
+                    created_by=request.user
+                )
                 return redirect('vehicle_list')
             except IntegrityError:
                 form.add_error(None, "Error saving the vehicle. Please check the uniqueness of the fields.")
@@ -310,6 +335,16 @@ def create_maintenance(request):
         form = MaintenanceForm()
 
     return render(request, 'details/vehicle_details.html', {'form': form})
+
+@login_required
+def complete_maintenance(request, m_order_id, vehicle_id):
+    m_order = get_object_or_404(Maintenance, id=m_order_id)
+    # Set the completed_date to the current time
+    m_order.completed_date = timezone.now()
+    m_order.status = "COMPLETE"
+    # Save the changes
+    m_order.save()
+    return redirect('vehicle_detail', vehicle_id)
 
 ########################################Inventory Methods########################################
 
