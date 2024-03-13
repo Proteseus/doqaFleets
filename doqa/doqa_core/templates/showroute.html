@@ -114,6 +114,8 @@
                                     <label for="endTimeDate" class="block mb-2 text-foundation-grey-normal">Planned End Time</label>
                                     {% render_field form.planned_end_time class="w-[90%] rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" placeholder="" required="" %}
                                 </div>
+
+                                <button id="sendDataButton" hx-post="/check_available_vehicles/" hx-target="#id_vehicle" hx-swap="innerHTML" class="p-2 bg-green-100 rounded-lg place-self-end">Fetch Assigned Vehicles</button>
                             </div>
                         </div>
                         <!-- Schedule Details -->
@@ -179,6 +181,27 @@
             drawer.style.width = "480px";
         });
 
+        document.getElementById('sendDataButton').addEventListener('click', function() {
+            var input1Value = document.getElementById('id_planned_start_time').value;
+            var input2Value = document.getElementById('id_planned_end_time').value;
+
+            // Constructing the payload
+            var payload = {
+                input1: input1Value,
+                input2: input2Value
+            };
+
+            // Sending the payload via HTMX post request
+            htmx.ajax({
+                method: 'POST',
+                url: '/check_available_vehicles/',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+        });
+
         // Map Script
         var map_a50d3f9f59adbad9e57d97d39236aa6d = L.map(
             "map_a50d3f9f59adbad9e57d97d39236aa6d",
@@ -197,7 +220,7 @@
             "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=" + mapboxAccessToken,
             {
                 attribution: "Map data &copy; <a href='https://www.mapbox.com/'>Mapbox</a> contributors, OpenStreetMap",
-                id: "mapbox/streets-v12", // Replace with your desired Mapbox style
+                id: "mapbox/streets-v12",
                 tileSize: 512,
                 zoomOffset: -1
             }

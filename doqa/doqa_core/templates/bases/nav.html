@@ -13,7 +13,7 @@
       <!-- Navigation -->
       <nav class="flex-1 overflow-hidden flex flex-col items-center justify-around">
         <ul class="rounded-mini bg-foundation-green-light flex flex-col items-center justify-start p-[0.125rem] gap-6 mb-8">
-          <li class="rounded-mini flex flex-row items-center justify-start py-4 px-5 active:bg-foundation-green-light border-[1px] border-solid border-foundation-green-light-active shadow-[0px_4px_4px_rgba(0,_0,_0,_0.08),_0px_4px_8px_rgba(50,_50,_71,_0.01)]">
+          <li class="rounded-mini flex flex-row items-center justify-start py-4 px-5 active:border-[1px] border-solid border-foundation-green-light-active shadow-[0px_4px_4px_rgba(0,_0,_0,_0.08),_0px_4px_8px_rgba(50,_50,_71,_0.01)]">
               <a style="min-width: 20px" href="{% url 'dashboard' %}">
                   <img class="w-[1rem] relative h-[1rem] overflow-hidden shrink-0" alt="dashboard_icon" src="{% static "img/solarwidget4boldduotone.9680120d.svg" %}">
             </a>
@@ -51,3 +51,15 @@
   </div>
 </section>
 {% endblock main_content %}
+
+<script>
+  const navItems = document.querySelectorAll('.rounded-mini');  // Select all navigation items
+
+  navItems.forEach(item => {
+    item.addEventListener('click', function() {
+      navItems.forEach(element => element.classList.remove('active'));  // Remove active class from all elements on click
+      this.classList.add('active');  // Add active class to the clicked element
+    });
+  });
+</script>
+

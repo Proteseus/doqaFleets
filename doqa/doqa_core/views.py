@@ -154,12 +154,17 @@ def check_available_vehicles(request):
     planned_end_time = timezone.datetime.strptime(planned_end_time, '%Y-%m-%dT%H:%M')
 
     # Check for available vehicles within the specified time range
-    available_vehicles = Vehicle.objects.exclude(
-        trips__planned_start_time__lt=planned_end_time,
-        trips__planned_end_time__gt=planned_start_time,
-    ).values('id', 'make', 'model')  # Adjust these fields based on your actual model fields
+    # Retrieve trip IDs based on the allowed statuses
+    allowed_statuses = ['PENDING', 'In Progress']
+    trip_ids = Trip.objects.filter(planned_start_time__lt=planned_end_time, planned_end_time__gt=planned_start_time).values_list('vehicle_id', flat=True)
 
-    return JsonResponse({'available_vehicles': list(available_vehicles)})
+    # Retrieve available vehicles that are not part of any trip with allowed statuses
+    available_vehicles = Vehicle.objects.exclude(id__in=trip_ids).values('id', 'registration_number')
+    # Generate HTML options for the available vehicles
+    options_html = ''
+    for vehicles in available_vehicles:
+        options_html += f'<option value="{vehicles["id"]}">{vehicles["registration_number"]}</option>'
+    return HttpResponse(options_html)
 
 @login_required
 @cache_control(no_cache=True, must_revalidate=True)
