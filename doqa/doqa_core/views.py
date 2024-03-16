@@ -15,18 +15,27 @@ from .forms import LoginForm, VehicleForm, EmployeeForm, MaintenanceForm, TripsF
 from .models import Vehicle, Employee, Maintenance, Trip, Inventory
 from .utils import find_coordinates, get_route
 from .reports import generate_and_merge_reports
+from .decorators import staff_required
+
+########################################Admin Methods########################################
+
+@staff_required
+def admin_view(request):
+    # Your admin view logic goes here
+    return render(request, 'admin.html')
 
 ########################################User Methods########################################
 
 # User Login
 def login_(request):
-    if request.user.is_authenticated:
-        return redirect('trips_list')
     if request.method == 'POST':
-        form = LoginForm(request, data=request.POST)
+        form = LoginForm(request, data=request.POST)  # Instantiate your LoginForm with POST data
         if form.is_valid():
-            user = form.get_user()
-            login(request, user)
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
             return redirect('dashboard')
         #else:
             #messages.error(request, 'Invalid login credentials')
@@ -34,6 +43,7 @@ def login_(request):
         form = LoginForm()
 
     return render(request, 'bases/login.html', {'form': form})
+
 
 # User Logout
 @login_required

@@ -58,6 +58,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_browser_reload.middleware.BrowserReloadMiddleware',
+    'doqa_core.middleware.SingleSessionMiddleware',
+    'doqa_core.middleware.HideAdminLoginMiddleware',
 ]
 
 ROOT_URLCONF = 'doqa.urls'
@@ -153,3 +155,12 @@ TAILWIND_APP_NAME = 'doqa_core'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 GDAL_LIBRARY_PATH = '/usr/lib/libgdal.so'  # Adjust the path based on your system
+
+# Set up authentication backend
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+# login and logout URLs
+LOGIN_URL = '/login/'
+LOGOUT_URL = '/logout/'
