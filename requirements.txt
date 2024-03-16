@@ -8,3 +8,5 @@ polyline
 psycopg2
 django-leaflet
 Pillow
+reportlab
+PyPDF2

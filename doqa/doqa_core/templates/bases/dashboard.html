@@ -61,6 +61,10 @@
             <div class="self-stretch flex flex-col items-start justify-start">
               <b class="relative leading-[120%]">Trips Overview</b>
             </div>
+            <div class="self-stretch flex flex-col items-end justify-end">
+              <button hx-post="/generate_reports/" hx-target="#report_result" hx-headers='{"X-CSRFToken": "{{ csrf_token }}" }' class="font-medium cursor-pointer rounded-rounded-lg bg-foundation-green-normal text-white hover:bg-foundation-red-normal-hover overflow-hidden flex flex-row items-center justify-center py-boundvariablesdata4 px-boundvariablesdata9 gap-[0rem_0.5rem] text-xl">Get Monthly Report</button>
+              <div id="report_result"></div>
+            </div>
             <div class="self-stretch flex flex-col items-start justify-start text-foundation-white-dark-active font-space-grostek-subheadline">
             </div>
           </div>
