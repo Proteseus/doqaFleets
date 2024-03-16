@@ -1,8 +1,9 @@
 import uuid
-from datetime import date
+from datetime import date, datetime
 from django.contrib.gis.db.models import PointField
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 class Employee(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -11,6 +12,7 @@ class Employee(models.Model):
     driver_license_number = models.CharField(max_length=20, unique=True)
     assigned = models.BooleanField(default=False)
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, editable=False)
+    created_on = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.name
@@ -28,6 +30,7 @@ class Vehicle(models.Model):
     last_maintenance_date = models.DateField(null=True, blank=True)
     next_maintenance_date = models.DateField(null=True, blank=True)
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, editable=False)
+    created_on = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.registration_number
@@ -66,6 +69,7 @@ class Alert(models.Model):
     timestamp = models.DateTimeField()
     status = models.CharField(max_length=10)
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, editable=False)
+    created_on = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.vehicle
@@ -78,6 +82,7 @@ class Maintenance(models.Model):
     completed_date = models.DateField(null=True, blank=True)
     status = models.CharField(max_length=10, default='PENDING')
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, editable=False)
+    created_on = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.id
@@ -85,10 +90,9 @@ class Maintenance(models.Model):
 
 class Report(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE)
-    report_type = models.CharField(max_length=50)
-    value = models.DecimalField(max_digits=10, decimal_places=2)
-    timestamp = models.DateTimeField()
+    report_type = models.CharField(max_length=50, default="GENERAL")
+    location = models.CharField()
+    timestamp = models.DateTimeField(default=timezone.now)
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, editable=False)
 
     def __str__(self):
@@ -110,6 +114,7 @@ class Trip(models.Model):
     route_data = models.JSONField(null=True, default=None)
     distance = models.FloatField(null=True, default=None)
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, editable=False)
+    created_on = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.id
@@ -123,6 +128,7 @@ class Inventory(models.Model):
     last_restock_date = models.DateField()
     reorder_threshold = models.IntegerField()
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, editable=False)
+    created_on = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.item_name

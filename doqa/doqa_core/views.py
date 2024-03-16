@@ -14,6 +14,7 @@ import folium
 from .forms import LoginForm, VehicleForm, EmployeeForm, MaintenanceForm, TripsForm, EditTripsForm, InventoryForm
 from .models import Vehicle, Employee, Maintenance, Trip, Inventory
 from .utils import find_coordinates, get_route
+from .reports import generate_and_merge_reports
 
 ########################################User Methods########################################
 
@@ -357,4 +358,17 @@ def complete_maintenance(request, m_order_id, vehicle_id):
 def inventory_list(request):
     inventories = Inventory.objects.all()
     return render(request, 'lists/inventory_list.html', {'inventory': inventories})
+
+########################################Report Methods########################################
+
+@login_required
+def generate_reports(request):
+    try:
+        output_pdf_path = generate_and_merge_reports()
+        if output_pdf_path:
+            response = HttpResponse('Report generated')
+            return response
+    except Exception as e:
+        error_message = f'Failed to generate report: {str(e)}'
+        return HttpResponse(error_message, status=500)
 
