@@ -9,4 +9,5 @@ psycopg2
 django-leaflet
 Pillow
 reportlab
+django-browser-reload
 PyPDF2
