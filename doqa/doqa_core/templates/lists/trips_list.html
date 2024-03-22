@@ -42,7 +42,7 @@
                 {% csrf_token %}
                 <div class="self-stretch flex flex-col items-start gap-2 py-3 px-4">
                   <label> Start Location </label>
-                  <input placeholder="Addis Ababa" list="res" name="start_location" hx-trigger="change" hx-get="/get_options" hx-target="#res" class="w-[90%] rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active">
+                  <input placeholder="Addis Ababa" list="res" name="start_location" hx-trigger="change" hx-get="/get_options" hx-target="#res" class="w-[90%] rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" required=True>
                   <datalist id="res">
                     {% for option in options %}
                         <option value="{{ option.value }}">{{ option.label }}</option>
@@ -52,7 +52,7 @@
                 </div>
                 <div class="self-stretch flex flex-col items-start gap-2 py-2 px-3">
                   <label> End Location </label>
-                  <input placeholder="Gonder" list="res2" name="end_location" hx-trigger="change" hx-get="/get_options" hx-target="#res2" class="w-[90%] rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active">
+                  <input placeholder="Gonder" list="res2" name="end_location" hx-trigger="change" hx-get="/get_options" hx-target="#res2" class="w-[90%] rounded-xl bg-foundation-white-light-active py-boundvariablesdata8 px-boundvariablesdata1 text-[1rem] text-foundation-white-dark-active font-space-grostek-subheadline border-[1px] border-solid border-foundation-white-normal-active" required=True>
                    <datalist id="res2">
                     {% for option in options %}
                         <option value="{{ option.value }}">{{ option.label }}</option>
