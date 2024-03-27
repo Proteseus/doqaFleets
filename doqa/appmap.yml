@@ -1,0 +1,10 @@
+appmap_dir: tmp/appmap
+language: python
+name: doqa
+packages:
+- path: doqa_core
+- path: doqa
+- path: django
+  shallow: true
+  exclude:
+    - django/contrib
