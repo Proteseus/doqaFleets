@@ -252,6 +252,19 @@
 
         tile_layer_mapbox.addTo(map_a50d3f9f59adbad9e57d97d39236aa6d);
 
+        // current location of vehicle
+        var marker_bbf56ca3ef0052738b54fe2209f49596 = L.marker(
+            [9.025, 38.7469],
+            
+        ).addTo(map_a50d3f9f59adbad9e57d97d39236aa6d);
+
+        var popup_ef89c11477b94a5ef0102aaf1c3ca0aa = L.popup({"maxWidth": "100%"});
+
+        var html_4f6f70927af4ed9f3fe0e05bd36b618d = $(`<div id="html_4f6f70927af4ed9f3fe0e05bd36b618d" style="width: 100.0%; height: 100.0%;">Current Location</div>`)[0];
+        popup_ef89c11477b94a5ef0102aaf1c3ca0aa.setContent(html_4f6f70927af4ed9f3fe0e05bd36b618d);
+
+        marker_bbf56ca3ef0052738b54fe2209f49596.bindPopup(popup_ef89c11477b94a5ef0102aaf1c3ca0aa);
+
         L.Routing.control({
             waypoints: routes['waypoints'],
             draggableWaypoints: false,

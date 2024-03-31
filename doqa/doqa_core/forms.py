@@ -33,7 +33,7 @@ class VehicleForm(forms.ModelForm):
 class EmployeeForm(forms.ModelForm):
     class Meta:
         model = Employee
-        fields = '__all__'
+        fields = ['name', 'driver_license_number', 'contact_number']
 
 class MaintenanceForm(forms.ModelForm):
     class Meta:
