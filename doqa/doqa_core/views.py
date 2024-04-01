@@ -8,6 +8,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import cache_control
 from django.utils import timezone
+from django.contrib import messages
 
 import folium
 
@@ -37,8 +38,9 @@ def login_(request):
             if user is not None:
                 login(request, user)
             return redirect('dashboard')
-        #else:
-            #messages.error(request, 'Invalid login credentials')
+        else:
+            messages.error(request, 'Invalid login credentials')
+            return render(request, 'bases/login.html', {'form': form})
     else:
         form = LoginForm()
 

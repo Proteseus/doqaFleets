@@ -19,7 +19,13 @@
                 <button type="submit" class="w-full bg-foundation-green-normal text-white hover:foundation-green-normal-hover focus:ring-4 focus:outline-none focus:ring-foundation-green-light-active font-medium rounded-rounded-lg text-xl px-5 py-2.5 text-center">
                     Login
                 </button>
-
+                <div id="login_error">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <p>{{ message }}</p>
+                        {% endfor %}
+                    {% endif %}
+                </div>
             </form>
         </div>
     </div>

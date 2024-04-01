@@ -254,3 +254,4 @@ ValueError: The view doqa_core.views.generate_reports didn't return an HttpRespo
 2024-03-31 07:50:54,785 - WARNING - Not Found: /user.cf6dfad7.svg
 2024-03-31 07:50:54,806 - WARNING - Not Found: /x.d9b2ef17.svg
 2024-03-31 07:50:54,833 - WARNING - Not Found: /user.cf6dfad7.svg
+2024-04-01 16:31:19,024 - WARNING - Not Found: /favicon.ico
